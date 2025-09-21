@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206;
 
 import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -35,6 +36,10 @@ public class App extends Application {
    */
   public static void setRoot(String fxml) throws IOException {
     scene.setRoot(loadFxml(fxml));
+
+    Stage stage = (Stage) scene.getWindow();
+    stage.setScene(scene);
+    stage.show();
   }
 
   /**
@@ -73,11 +78,11 @@ public class App extends Application {
    * This method is invoked when the application starts. It loads and shows the "room" scene.
    *
    * @param stage the primary stage of the application
-   * @throws IOException if the "src/main/resources/fxml/room.fxml" file is not found
+   * @throws IOException if the "src/main/resources/fxml/trialroom.fxml" file is not found
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    Parent root = loadFxml("room");
+    Parent root = loadFxml("trialroom");
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
