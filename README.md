@@ -12,7 +12,7 @@
   These are your credentials to invoke the APIs. 
 
   The token credits are charged as follows:
-  - 1 token credit per 1 character for Google "Standard" Text-to-Speech. 
+  - 1 token credit per 1 character for Googlel "Standard" Text-to-Speech. 
   - 4 token credit per 1 character for Google "WaveNet" and "Neural2" Text-to-Speech.
   - 1 token credit per 1 character for OpenAI Text-to-Text.
   - 1 token credit per 1 token for OpenAI Chat Completions (as determined by OpenAI, charging both input and output tokens).

@@ -3,7 +3,7 @@ package nz.ac.auckland.se206.speech;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import javafx.concurrent.Task;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -34,8 +34,8 @@ public class TextToSpeech {
           protected Void call() {
             try {
               ApiProxyConfig config = ApiProxyConfig.readConfig();
-              Provider provider = Provider.GOOGLE;
-              Voice voice = Voice.GOOGLE_EN_US_STANDARD_H;
+              Provider provider = Provider.OPENAI;
+              Voice voice = Voice.OPENAI_NOVA; // or another OpenAI voice, e.g., Voice.OPENAI_ALLOY
 
               TextToSpeechRequest ttsRequest = new TextToSpeechRequest(config);
               ttsRequest.setText(text).setProvider(provider).setVoice(voice);
@@ -44,7 +44,7 @@ public class TextToSpeech {
               String audioUrl = ttsResult.getAudioUrl();
 
               try (InputStream inputStream =
-                  new BufferedInputStream(URI.create(audioUrl).toURL().openStream())) {
+                  new BufferedInputStream(new URL(audioUrl).openStream())) {
                 Player player = new Player(inputStream);
                 player.play();
               } catch (JavaLayerException | IOException e) {
