@@ -1,17 +1,17 @@
 package nz.ac.auckland.se206.gpt.openai;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
-
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest.Model;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import org.junit.jupiter.api.Test;
 
 public class ChatCompletionServiceTest {
 
@@ -28,10 +28,8 @@ public class ChatCompletionServiceTest {
         .addMessage("user", "What's one city there?");
 
     chatCompletionRequest.setN(1);
-    chatCompletionRequest.setTemperature(1.5);
-    chatCompletionRequest.setTopP(0.05);
     chatCompletionRequest.setMaxTokens(300);
-    chatCompletionRequest.setModel(ChatCompletionRequest.Model.GPT_4_1_NANO);
+    chatCompletionRequest.setModel(Model.GPT_4_1_NANO);
     Set<String> results = new HashSet<>();
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();

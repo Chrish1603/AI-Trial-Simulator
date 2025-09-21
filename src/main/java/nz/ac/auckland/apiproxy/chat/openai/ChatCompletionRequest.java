@@ -1,22 +1,18 @@
 package nz.ac.auckland.apiproxy.chat.openai;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
-
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
+import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.apiproxy.service.EndPoints;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
-import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
-import nz.ac.auckland.apiproxy.service.EndPoints;
 
 public class ChatCompletionRequest {
 
@@ -165,8 +161,14 @@ public class ChatCompletionRequest {
       if (!responseChat.success && responseChat.code != 0) {
         throw new ApiProxyException("Problem calling API: " + responseChat.message);
       }
-      return new ChatCompletionResult(responseChat.chat_completion);
+      ChatCompletionResult result = new ChatCompletionResult(responseChat.chat_completion);
+      System.out.println(
+          "*** ChatCompletion used "
+              + result.getUsageTotalTokens()
+              + " tokens. If this seems like a lot, try other models that might use less tokens."
+              + " GPT4 models tend to use less than the GPT5 models.");
 
+      return result;
     } catch (Exception e) {
       throw new ApiProxyException("Problem calling API: " + e.getMessage());
     }
