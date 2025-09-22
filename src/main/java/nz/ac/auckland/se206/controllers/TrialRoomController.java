@@ -46,6 +46,8 @@ public class TrialRoomController {
   // === State ===
   static final java.util.Map<String, List<String>> conversationHistories =
       new java.util.HashMap<>();
+  // Shared conversation history (excluding flashbacks) that all participants can access
+  static final java.util.List<String> sharedConversationHistory = new java.util.ArrayList<>();
   private boolean verdictGiven = false;
 
   // === FXML lifecycle ===
@@ -227,7 +229,7 @@ public class TrialRoomController {
       String flashback = callGptApi(combinedPrompt);
       String displayName = PARTICIPANT_DISPLAY_NAMES.getOrDefault(participantId, participantId);
       String formatted = displayName + ": " + flashback;
-      // Add to this participant's history only
+      // Add flashback only to this participant's history (flashbacks are participant-specific)
       conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>()).add(formatted);
       // Remove the loading message if present, then append the real flashback
       javafx.application.Platform.runLater(
