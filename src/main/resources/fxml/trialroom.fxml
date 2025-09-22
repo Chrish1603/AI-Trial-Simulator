@@ -15,9 +15,9 @@
             <Image url="@../images/trialroom.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="aiDefendent" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="207.0" layoutX="31.0" layoutY="148.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="111.0" />
-      <Rectangle fx:id="humanWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="220.0" layoutX="190.0" layoutY="132.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="200.0" />
-      <Rectangle fx:id="aiWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="202.0" layoutX="410.0" layoutY="157.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="172.0" />
+      <Rectangle fx:id="aiDefendent" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="309.0" layoutX="39.0" layoutY="226.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="151.0" />
+      <Rectangle fx:id="humanWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="335.0" layoutX="252.0" layoutY="200.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="263.0" />
+      <Rectangle fx:id="aiWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="298.0" layoutX="554.0" layoutY="230.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="217.0" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="211.0" layoutY="27.0" prefHeight="17.0" prefWidth="117.0" text="Time Left">
          <font>
             <Font size="16.0" />
