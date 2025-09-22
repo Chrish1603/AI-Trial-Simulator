@@ -29,6 +29,9 @@ public class ChatController {
   // Reference to per-participant conversation histories in TrialRoomController
   private static Map<String, java.util.List<String>> conversationHistories =
       nz.ac.auckland.se206.controllers.TrialRoomController.conversationHistories;
+  // Reference to shared conversation history (excluding flashbacks)
+  private static java.util.List<String> sharedConversationHistory =
+      nz.ac.auckland.se206.controllers.TrialRoomController.sharedConversationHistory;
 
   public static void clearChat() {
     if (instance != null && instance.txtaChat != null) {
@@ -145,10 +148,12 @@ public class ChatController {
     // Only print the user's message once, with correct display name
     // Always show 'User' for user's own messages
     txtaChat.appendText("User: " + message + "\n\n");
-    // Add user message to this participant's history only
+    // Add user message to the current participant's history
     conversationHistories
         .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
         .add("User: " + message);
+    // Also add to shared conversation history so all participants know about it
+    sharedConversationHistory.add("User: " + message);
     // Run GPT in a background thread
     new Thread(
             new Runnable() {
@@ -166,13 +171,13 @@ public class ChatController {
                   javafx.application.Platform.runLater(
                       () -> {
                         appendChatMessage(displayResponse);
-                        // Add AI response to this participant's history only
+                        // Add AI response to this participant's history
+                        String responseMessage = getDisplayName(participantRole) + ": " + displayResponse.getContent();
                         conversationHistories
                             .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
-                            .add(
-                                getDisplayName(participantRole)
-                                    + ": "
-                                    + displayResponse.getContent());
+                            .add(responseMessage);
+                        // Also add to shared conversation history so all participants know about it
+                        sharedConversationHistory.add(responseMessage);
                       });
                 }
               }
@@ -214,30 +219,93 @@ public class ChatController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    // Prepend persona context to user message if needed
-    String personaPrefix = "";
-    if (msg.getRole().equals("user") && participantRole != null) {
+    // Create a fresh request for each message to include full conversation context
+    ApiProxyConfig config = ApiProxyConfig.readConfig();
+    ChatCompletionRequest freshRequest =
+        new ChatCompletionRequest(config)
+            .setN(1)
+            .setTemperature(0.2)
+            .setTopP(0.5)
+            .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
+            .setMaxTokens(100);
+
+    // Add system prompt with participant role context
+    String systemPrompt = getSystemPrompt();
+    if (participantRole != null) {
       switch (participantRole) {
         case "aiDefendent":
-          personaPrefix = "You are the AI defendant. Answer as MediSort-5: ";
+          systemPrompt += " You are the AI defendant MediSort-5.";
           break;
         case "humanWitness":
-          personaPrefix = "You are the human witness. Answer as Dr. Payne Gaun: ";
+          systemPrompt += " You are the human witness Dr. Payne Gaun.";
           break;
         case "aiWitness":
-          personaPrefix = "You are the AI witness. Answer as PathoScan-7: ";
+          systemPrompt += " You are the AI witness PathoScan-7.";
           break;
         default:
           break;
       }
-      msg = new ChatMessage("user", personaPrefix + msg.getContent());
     }
-    chatCompletionRequest.addMessage(msg);
+    freshRequest.addMessage("system", systemPrompt);
+
+    // Add participant's own history (including their flashback) as context
+    java.util.List<String> currentHistory = conversationHistories.get(participantRole);
+    if (currentHistory != null) {
+      for (String historyMsg : currentHistory) {
+        // Parse the history message to extract role and content
+        String[] parts = historyMsg.split(": ", 2);
+        if (parts.length == 2) {
+          String speaker = parts[0];
+          String content = parts[1];
+          
+          // Map display names back to roles for the API
+          String role = "user"; // Default to user
+          if ("MediSort-5".equals(speaker)) {
+            role = "assistant";
+          } else if ("Dr. Payne Gaun".equals(speaker)) {
+            role = "assistant";
+          } else if ("PathoScan-7".equals(speaker)) {
+            role = "assistant";
+          }
+          
+          freshRequest.addMessage(role, content);
+        }
+      }
+    }
+
+    // Add shared conversation history (conversations with other participants) as context
+    for (String sharedMsg : sharedConversationHistory) {
+      // Skip if this message is already in the participant's own history
+      if (currentHistory != null && currentHistory.contains(sharedMsg)) {
+        continue;
+      }
+      
+      // Parse the shared message to extract role and content
+      String[] parts = sharedMsg.split(": ", 2);
+      if (parts.length == 2) {
+        String speaker = parts[0];
+        String content = parts[1];
+        
+        // Map display names back to roles for the API
+        String role = "user"; // Default to user
+        if ("MediSort-5".equals(speaker)) {
+          role = "assistant";
+        } else if ("Dr. Payne Gaun".equals(speaker)) {
+          role = "assistant";
+        } else if ("PathoScan-7".equals(speaker)) {
+          role = "assistant";
+        }
+        
+        freshRequest.addMessage(role, content);
+      }
+    }
+
+    // Add the current message
+    freshRequest.addMessage(msg);
+
     try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      ChatCompletionResult chatCompletionResult = freshRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      // Do not appendChatMessage here; let the background thread handle it
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       e.printStackTrace();
