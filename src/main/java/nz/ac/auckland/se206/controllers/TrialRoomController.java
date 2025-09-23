@@ -1,8 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,16 +14,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
-import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
-import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
-import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 
 public class TrialRoomController {
 
   private static final Set<String> flashbackShown = new HashSet<>();
   private static boolean isFirstTime = true;
+  private static Scene trialRoomScene;
 
   @FXML private javafx.scene.control.Button btnGuilty;
   @FXML private javafx.scene.control.Button btnNotGuilty;
@@ -37,11 +32,6 @@ public class TrialRoomController {
   private static final String AI_DEFENDANT = "aiDefendent";
   private static final String HUMAN_WITNESS = "humanWitness";
   private static final String AI_WITNESS = "aiWitness";
-  private static final java.util.Map<String, String> PARTICIPANT_DISPLAY_NAMES =
-      java.util.Map.of(
-          AI_DEFENDANT, "MediSort-5",
-          HUMAN_WITNESS, "Dr. Payne Gaun",
-          AI_WITNESS, "PathoScan-7");
 
   // === State ===
   static final java.util.Map<String, List<String>> conversationHistories =
@@ -53,6 +43,13 @@ public class TrialRoomController {
   // === FXML lifecycle ===
   @FXML
   void initialize() {
+    // Store reference to trial room scene
+    javafx.application.Platform.runLater(() -> {
+      if (btnGuilty != null) {
+        trialRoomScene = btnGuilty.getScene();
+      }
+    });
+    
     // Ensure verdict buttons are visible at start
     if (btnGuilty != null) {
       btnGuilty.setVisible(true);
@@ -142,13 +139,47 @@ public class TrialRoomController {
     // Ensure a conversation history exists for this participant
     conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>());
 
+    // Check if flashback should be shown first
+    if (!flashbackShown.contains(participantId)) {
+      showFlashback(participantId, event);
+      flashbackShown.add(participantId);
+      return;
+    }
+
+    // Otherwise, go directly to chat
+    showChatInterface(participantId, event);
+  }
+
+  /**
+   * Shows the flashback for the given participant
+   */
+  private void showFlashback(String participantId, MouseEvent event) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
+    Parent root = loader.load();
+    
+    FlashbackController controller = loader.getController();
+    String returnFxml = getFxmlFileForParticipant(participantId);
+    controller.initializeFlashback(participantId, returnFxml);
+    
+    Scene scene = new Scene(root);
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  /**
+   * Shows the chat interface for the given participant
+   */
+  private void showChatInterface(String participantId, MouseEvent event) throws IOException {
     String fxmlFile = getFxmlFileForParticipant(participantId);
     if (fxmlFile == null) {
       return;
     }
+    
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
       Parent root = loader.load();
+      
       // Set participant in ChatController if present and show conversation history
       Object controller = loader.getController();
       if (controller instanceof ChatController) {
@@ -157,24 +188,12 @@ public class TrialRoomController {
         ChatController.showConversationHistory(conversationHistories.get(participantId));
         // Set previous scene so chat can return
         ChatController.setPreviousScene(((Node) event.getSource()).getScene());
-        // Show loading message if flashback not already shown
-        if (!flashbackShown.contains(participantId)) {
-          ChatController.appendParticipantMessage(participantId, "Loading flashback...");
-        }
       }
+      
       Scene scene = new Scene(root);
       Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
       stage.setScene(scene);
       stage.show();
-      // After scene is shown, trigger flashback only if not already shown
-      new Thread(
-              () -> {
-                if (flashbackShown.add(participantId)) {
-                  triggerFlashback(participantId);
-                }
-                // Otherwise, do nothing: just show chat with history
-              })
-          .start();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -193,82 +212,12 @@ public class TrialRoomController {
     }
   }
 
+
+
   /**
-   * Triggers a unique flashback for the given participant using GPT API.
-   *
-   * @param participantId the participant's id
+   * Gets the trial room scene for returning from flashback
    */
-  private void triggerFlashback(String participantId) {
-    String chatPrompt = getChatPrompt();
-    String prompt;
-    switch (participantId) {
-      case AI_DEFENDANT:
-        prompt =
-            "You are the AI defendant. Describe your perspective of the incident very briefly as a"
-                + " flashback, including your reasoning and actions.";
-        break;
-      case HUMAN_WITNESS:
-        prompt =
-            "You are the human witness. Describe your perspective of the incident very briefly as a"
-                + " flashback, including what you saw and your thoughts.";
-        break;
-      case AI_WITNESS:
-        prompt =
-            "You are the AI witness. Only describe your perspective of the incident very briefly as"
-                + " a flashback, including your observations and analysis.";
-        break;
-      default:
-        prompt = "Describe your perspective of the incident.";
-        break;
-    }
-    // Combine chat prompt with specific participant prompt
-    String combinedPrompt = chatPrompt + "\n" + prompt;
-
-    // Call GPT API to generate the flashback
-    try {
-      String flashback = callGptApi(combinedPrompt);
-      String displayName = PARTICIPANT_DISPLAY_NAMES.getOrDefault(participantId, participantId);
-      String formatted = displayName + ": " + flashback;
-      // Add flashback only to this participant's history (flashbacks are participant-specific)
-      conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>()).add(formatted);
-      // Remove the loading message if present, then append the real flashback
-      javafx.application.Platform.runLater(
-          () -> {
-            ChatController.showConversationHistory(conversationHistories.get(participantId));
-          });
-    } catch (Exception e) {
-      javafx.application.Platform.runLater(
-          () -> TextToSpeech.speak("Sorry, I couldn't generate a flashback right now."));
-      e.printStackTrace();
-    }
-  }
-
-  /** Placeholder for GPT API call. Replace with actual implementation. */
-  private String callGptApi(String prompt) throws ApiProxyException {
-    // Read API config
-    ApiProxyConfig config = ApiProxyConfig.readConfig();
-    // Create a chat completion request
-    ChatCompletionRequest request =
-        new ChatCompletionRequest(config)
-            .setModel(ChatCompletionRequest.Model.GPT_4o_MINI)
-            .addMessage("user", prompt)
-            .setMaxTokens(256)
-            .setTemperature(0.7);
-    ChatCompletionResult result = request.execute();
-    if (result.getNumChoices() > 0) {
-      return result.getChoice(0).getChatMessage().getContent();
-    } else {
-      return "[No response from GPT]";
-    }
-  }
-
-  private String getChatPrompt() {
-    try {
-      // Adjust the path if needed for your build system
-      return new String(Files.readAllBytes(Paths.get("src/main/resources/prompts/chat.txt")));
-    } catch (IOException e) {
-      e.printStackTrace();
-      return "";
-    }
+  public static Scene getTrialRoomScene() {
+    return trialRoomScene;
   }
 }
