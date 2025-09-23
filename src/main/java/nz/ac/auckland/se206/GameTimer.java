@@ -20,7 +20,7 @@ public class GameTimer {
     return instance;
   }
 
-  private static final int ROUND_SECONDS = 120;
+  private static final int ROUND_SECONDS = 300;
   private static final int VERDICT_SECONDS = 10;
 
   private int timeLeft;
