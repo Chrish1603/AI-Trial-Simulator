@@ -115,7 +115,8 @@ public class FlashbackController {
 
       // Set up the chat controller
       Object controller = loader.getController();
-      if (controller instanceof ChatController chatController) {
+      if (controller instanceof ChatController) {
+        ChatController chatController = (ChatController) controller;
         chatController.setParticipant(participantId);
         ChatController.showConversationHistory(
             TrialRoomController.conversationHistories.get(participantId));
