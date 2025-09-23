@@ -22,16 +22,64 @@ import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+/**
+ * Base controller for all chat interfaces. Contains common functionality
+ * for chatting with AI characters and managing conversation histories.
+ */
 public class ChatController {
-  private static Scene previousScene;
-  private static ChatController instance;
+  protected static Scene previousScene;
+  protected static ChatController instance;
 
   // Reference to per-participant conversation histories in TrialRoomController
-  private static Map<String, java.util.List<String>> conversationHistories =
+  protected static Map<String, java.util.List<String>> conversationHistories =
       nz.ac.auckland.se206.controllers.TrialRoomController.conversationHistories;
   // Reference to shared conversation history (excluding flashbacks)
-  private static java.util.List<String> sharedConversationHistory =
+  protected static java.util.List<String> sharedConversationHistory =
       nz.ac.auckland.se206.controllers.TrialRoomController.sharedConversationHistory;
+
+  @FXML protected ImageView imgDefendant;
+  @FXML protected ImageView imgGraph;
+  @FXML protected javafx.scene.control.Label lblTimer;
+  @FXML protected TextArea txtaChat;
+  @FXML protected TextField txtInput;
+  @FXML protected Button btnSend;
+  @FXML protected Button btnBack;
+
+  protected static final Map<String, String> DISPLAY_NAME_MAP =
+      Map.of(
+          "aiDefendent", "MediSort-5",
+          "humanWitness", "Dr. Payne Gaun",
+          "aiWitness", "PathoScan-7");
+
+  // === Instance fields ===
+  protected String participantRole;
+  protected ChatCompletionRequest chatCompletionRequest;
+
+  // === Methods that can be overridden by subclasses ===
+  protected String getParticipantRole() {
+    // Use the dynamically set participant role if available, otherwise use default
+    return participantRole != null ? participantRole : "genericChat";
+  }
+  
+  protected String getSystemPromptSuffix() {
+    // Default system prompt suffix - subclasses should override this
+    return " You are a helpful assistant in the trial room.";
+  }
+  
+  /**
+   * Provides additional context that can be added to the system prompt.
+   * Subclasses can override this to provide dynamic context based on UI state.
+   * 
+   * @return additional context string, or empty string if no additional context
+   */
+  protected String getAdditionalContext() {
+    return "";
+  }
+
+  // === Static utility methods ===
+  public static void setPreviousScene(Scene scene) {
+    previousScene = scene;
+  }
 
   public static void clearChat() {
     if (instance != null && instance.txtaChat != null) {
@@ -48,43 +96,6 @@ public class ChatController {
     }
   }
 
-  @FXML private ImageView imgDefendant;
-  @FXML private ImageView imgGraph;
-  @FXML private javafx.scene.control.Label lblTimer;
-  @FXML private TextArea txtaChat;
-  @FXML private TextField txtInput;
-  @FXML private Button btnSend;
-  @FXML private Button btnBack;
-
-  private static final Map<String, String> DISPLAY_NAME_MAP =
-      Map.of(
-          "aiDefendent", "MediSort-5",
-          "humanWitness", "Dr. Payne Gaun",
-          "aiWitness", "PathoScan-7");
-
-  // === Instance fields ===
-  private String participantRole;
-  private ChatCompletionRequest chatCompletionRequest;
-
-  // === FXML lifecycle ===
-  @FXML
-  public void initialize() throws ApiProxyException {
-    // Any required initialization code can be placed here
-    // Set the static instance for external access
-    instance = this;
-    // Bind timer label to global timer
-    if (lblTimer != null) {
-      lblTimer
-          .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
-    }
-  }
-
-  // === Static utility methods ===
-  public static void setPreviousScene(Scene scene) {
-    previousScene = scene;
-  }
-
   public static void appendSystemMessage(String message) {
     if (instance != null && instance.txtaChat != null) {
       instance.txtaChat.appendText("SYSTEM: " + message + "\n\n");
@@ -97,12 +108,33 @@ public class ChatController {
     }
   }
 
+  // === FXML lifecycle ===
+  @FXML
+  public void initialize() throws ApiProxyException {
+    // Set the static instance for external access
+    instance = this;
+    // Set the participant role for this controller
+    this.participantRole = getParticipantRole();
+    // Initialize chat request
+    initializeChatRequest();
+    // Bind timer label to global timer
+    if (lblTimer != null) {
+      lblTimer
+          .textProperty()
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+    }
+  }
+
   // === Public instance methods ===
   public void setParticipant(String participantId) {
     this.participantRole = participantId;
   }
 
-  public void setProfession(String profession) {
+  /**
+   * Initializes the chat completion request with default settings.
+   * This method is called automatically during initialization.
+   */
+  protected void initializeChatRequest() {
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
@@ -112,7 +144,6 @@ public class ChatController {
               .setTopP(0.5)
               .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
               .setMaxTokens(100);
-      runGpt(new ChatMessage("system", getSystemPrompt()));
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
@@ -120,73 +151,86 @@ public class ChatController {
 
   // === Event handler methods ===
   @FXML
-  private void onShowGraph() {
+  protected void onShowGraph() {
     if (imgGraph != null) {
       imgGraph.setVisible(true);
     }
   }
 
   @FXML
-  private void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
+  protected void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;
     }
     txtInput.clear();
+    
     // Ensure chatCompletionRequest is initialized
     if (chatCompletionRequest == null) {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.2)
-              .setTopP(0.5)
-              .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
-              .setMaxTokens(100);
+      initializeChatRequest();
     }
-    ChatMessage msg = new ChatMessage("user", message);
-    // Only print the user's message once, with correct display name
-    // Always show 'User' for user's own messages
+    
+    // Process user message
+    processUserMessage(message);
+    
+    // Generate AI response in background thread
+    generateAiResponse(new ChatMessage("user", message));
+  }
+  
+  /**
+   * Processes and displays the user's message, adding it to conversation histories.
+   */
+  private void processUserMessage(String message) {
+    // Display user message
     txtaChat.appendText("User: " + message + "\n\n");
-    // Add user message to the current participant's history
+    
+    // Add to conversation histories
+    String userMessage = "User: " + message;
     conversationHistories
         .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
-        .add("User: " + message);
-    // Also add to shared conversation history so all participants know about it
-    sharedConversationHistory.add("User: " + message);
-    // Run GPT in a background thread
-    new Thread(
-            new Runnable() {
-              public void run() {
-                ChatMessage aiResponse = null;
-                try {
-                  aiResponse = runGpt(msg);
-                } catch (ApiProxyException e) {
-                  e.printStackTrace();
-                }
-                if (aiResponse != null) {
-                  // Set the role of the AI response to the participantRole for correct display name
-                  ChatMessage displayResponse =
-                      new ChatMessage(participantRole, aiResponse.getContent());
-                  javafx.application.Platform.runLater(
-                      () -> {
-                        appendChatMessage(displayResponse);
-                        // Add AI response to this participant's history
-                        String responseMessage = getDisplayName(participantRole) + ": " + displayResponse.getContent();
-                        conversationHistories
-                            .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
-                            .add(responseMessage);
-                        // Also add to shared conversation history so all participants know about it
-                        sharedConversationHistory.add(responseMessage);
-                      });
-                }
-              }
-            })
-        .start();
+        .add(userMessage);
+    sharedConversationHistory.add(userMessage);
+  }
+  
+  /**
+   * Generates AI response in a background thread and updates the UI.
+   */
+  private void generateAiResponse(ChatMessage userMessage) {
+    new Thread(() -> {
+      try {
+        ChatMessage aiResponse = runGpt(userMessage);
+        if (aiResponse != null) {
+          javafx.application.Platform.runLater(() -> {
+            processAiResponse(aiResponse);
+          });
+        }
+      } catch (ApiProxyException e) {
+        e.printStackTrace();
+        javafx.application.Platform.runLater(() -> {
+          txtaChat.appendText("SYSTEM: Error generating response. Please try again.\n\n");
+        });
+      }
+    }).start();
+  }
+  
+  /**
+   * Processes and displays the AI response, adding it to conversation histories.
+   */
+  private void processAiResponse(ChatMessage aiResponse) {
+    // Create display response with correct role
+    ChatMessage displayResponse = new ChatMessage(participantRole, aiResponse.getContent());
+    appendChatMessage(displayResponse);
+    
+    // Add to conversation histories
+    String responseMessage = getDisplayName(participantRole) + ": " + aiResponse.getContent();
+    conversationHistories
+        .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
+        .add(responseMessage);
+    sharedConversationHistory.add(responseMessage);
   }
 
   @FXML
-  private void onGoBack(ActionEvent event) {
+  protected void onGoBack(ActionEvent event) {
     // Return to the previous scene if available, otherwise fallback to reloading
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     if (previousScene != null) {
@@ -204,102 +248,34 @@ public class ChatController {
     }
   }
 
-  // === Private helper methods ===
-  private String getSystemPrompt() {
+  // === Protected helper methods ===
+  protected String getSystemPrompt() {
     Map<String, String> map = new HashMap<>();
-    return PromptEngineering.getPrompt("chat.txt", map);
+    String basePrompt = PromptEngineering.getPrompt("chat.txt", map);
+    String suffix = getSystemPromptSuffix();
+    String additionalContext = getAdditionalContext();
+    
+    return basePrompt + suffix + (additionalContext.isEmpty() ? "" : " " + additionalContext);
   }
 
-  private void appendChatMessage(ChatMessage msg) {
+  protected void appendChatMessage(ChatMessage msg) {
     txtaChat.appendText(getDisplayName(msg.getRole()) + ": " + msg.getContent() + "\n\n");
   }
 
-  String getDisplayName(final String role) {
+  protected String getDisplayName(final String role) {
     return "user".equals(role) ? "User" : DISPLAY_NAME_MAP.getOrDefault(role, "User");
   }
 
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+  protected ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     // Create a fresh request for each message to include full conversation context
-    ApiProxyConfig config = ApiProxyConfig.readConfig();
-    ChatCompletionRequest freshRequest =
-        new ChatCompletionRequest(config)
-            .setN(1)
-            .setTemperature(0.2)
-            .setTopP(0.5)
-            .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
-            .setMaxTokens(100);
-
+    ChatCompletionRequest freshRequest = createFreshChatRequest();
+    
     // Add system prompt with participant role context
-    String systemPrompt = getSystemPrompt();
-    if (participantRole != null) {
-      switch (participantRole) {
-        case "aiDefendent":
-          systemPrompt += " You are the AI defendant MediSort-5.";
-          break;
-        case "humanWitness":
-          systemPrompt += " You are the human witness Dr. Payne Gaun.";
-          break;
-        case "aiWitness":
-          systemPrompt += " You are the AI witness PathoScan-7.";
-          break;
-        default:
-          break;
-      }
-    }
-    freshRequest.addMessage("system", systemPrompt);
-
-    // Add participant's own history (including their flashback) as context
-    java.util.List<String> currentHistory = conversationHistories.get(participantRole);
-    if (currentHistory != null) {
-      for (String historyMsg : currentHistory) {
-        // Parse the history message to extract role and content
-        String[] parts = historyMsg.split(": ", 2);
-        if (parts.length == 2) {
-          String speaker = parts[0];
-          String content = parts[1];
-          
-          // Map display names back to roles for the API
-          String role = "user"; // Default to user
-          if ("MediSort-5".equals(speaker)) {
-            role = "assistant";
-          } else if ("Dr. Payne Gaun".equals(speaker)) {
-            role = "assistant";
-          } else if ("PathoScan-7".equals(speaker)) {
-            role = "assistant";
-          }
-          
-          freshRequest.addMessage(role, content);
-        }
-      }
-    }
-
-    // Add shared conversation history (conversations with other participants) as context
-    for (String sharedMsg : sharedConversationHistory) {
-      // Skip if this message is already in the participant's own history
-      if (currentHistory != null && currentHistory.contains(sharedMsg)) {
-        continue;
-      }
-      
-      // Parse the shared message to extract role and content
-      String[] parts = sharedMsg.split(": ", 2);
-      if (parts.length == 2) {
-        String speaker = parts[0];
-        String content = parts[1];
-        
-        // Map display names back to roles for the API
-        String role = "user"; // Default to user
-        if ("MediSort-5".equals(speaker)) {
-          role = "assistant";
-        } else if ("Dr. Payne Gaun".equals(speaker)) {
-          role = "assistant";
-        } else if ("PathoScan-7".equals(speaker)) {
-          role = "assistant";
-        }
-        
-        freshRequest.addMessage(role, content);
-      }
-    }
-
+    freshRequest.addMessage("system", getSystemPrompt());
+    
+    // Add conversation history as context
+    addConversationHistoryToRequest(freshRequest);
+    
     // Add the current message
     freshRequest.addMessage(msg);
 
@@ -310,6 +286,74 @@ public class ChatController {
     } catch (ApiProxyException e) {
       e.printStackTrace();
       return null;
+    }
+  }
+  
+  /**
+   * Creates a fresh chat completion request with standard settings.
+   */
+  private ChatCompletionRequest createFreshChatRequest() throws ApiProxyException {
+    ApiProxyConfig config = ApiProxyConfig.readConfig();
+    return new ChatCompletionRequest(config)
+        .setN(1)
+        .setTemperature(0.2)
+        .setTopP(0.5)
+        .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
+        .setMaxTokens(100);
+  }
+  
+  /**
+   * Adds conversation history to the chat request for context.
+   */
+  private void addConversationHistoryToRequest(ChatCompletionRequest request) {
+    // Add participant's own history
+    addHistoryMessagesToRequest(request, conversationHistories.get(participantRole));
+    
+    // Add shared conversation history (excluding messages already in participant's history)
+    java.util.List<String> currentHistory = conversationHistories.get(participantRole);
+    for (String sharedMsg : sharedConversationHistory) {
+      if (currentHistory == null || !currentHistory.contains(sharedMsg)) {
+        addParsedMessageToRequest(request, sharedMsg);
+      }
+    }
+  }
+  
+  /**
+   * Adds a list of history messages to the chat request.
+   */
+  private void addHistoryMessagesToRequest(ChatCompletionRequest request, java.util.List<String> history) {
+    if (history != null) {
+      for (String historyMsg : history) {
+        addParsedMessageToRequest(request, historyMsg);
+      }
+    }
+  }
+  
+  /**
+   * Parses a history message and adds it to the chat request.
+   */
+  private void addParsedMessageToRequest(ChatCompletionRequest request, String historyMsg) {
+    String[] parts = historyMsg.split(": ", 2);
+    if (parts.length == 2) {
+      String speaker = parts[0];
+      String content = parts[1];
+      String role = mapSpeakerToRole(speaker);
+      request.addMessage(role, content);
+    }
+  }
+  
+  /**
+   * Maps display names back to API roles.
+   */
+  private String mapSpeakerToRole(String speaker) {
+    switch (speaker) {
+      case "MediSort-5":
+      case "Dr. Payne Gaun":
+      case "PathoScan-7":
+        return "assistant";
+      case "User":
+      default:
+        return "user";
     }
   }
 }

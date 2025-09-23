@@ -3,7 +3,6 @@ package nz.ac.auckland.se206.states;
 import java.io.IOException;
 
 import javafx.scene.input.MouseEvent;
-import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 
@@ -43,7 +42,7 @@ public class GameStarted implements GameState {
         TextToSpeech.speak("Hi, let me know when you are ready to order!");
         return;
     }
-    App.openChat(event, context.getProfession(rectangleId));
+    TextToSpeech.speak("Opening chat with " + context.getProfession(rectangleId));
   }
 
   /**
