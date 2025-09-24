@@ -209,7 +209,9 @@ public class FlashbackController {
             "Statistical evidence favoured containment."),
         new FlashbackSlide(
             "/images/doc.png",
-            "I observed the human-AI interaction escalate as disagreement persisted..."));
+            "During the review, I presented infection curves and probability intervals."+
+            "My testimony was impartial: MediSort-5’s decision aligned with epidemiological logic,"+
+            "even though it delayed Patient B's diagnosis."));
   }
 
   /** Gets the display name for a participant */
