@@ -187,8 +187,9 @@ public class FlashbackController {
             "I confronted MediSort-5 about the decision it had made. The AI insisted it made the correct call." +
                 " I informed MediSort-5 that I would be taking this to the review board."),
         new FlashbackSlide(
-            "/images/trialroom.png",
-            "By the time we realized the severity, it was too late to prevent the outcome..."));
+            "/images/humanWSlide3.png",
+            "At the review, I presented my case. It was deemed that we both had sound logic. " +
+            "A conclusion was not reached, so I decided to escalate the matter further."));
   }
 
   /** Gets the AI Witness's flashback slides (placeholder) */
