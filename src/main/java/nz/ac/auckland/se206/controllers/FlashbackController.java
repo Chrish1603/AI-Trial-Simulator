@@ -178,14 +178,17 @@ public class FlashbackController {
   private List<FlashbackSlide> getHumanWitnessFlashback() {
     return List.of(
         new FlashbackSlide(
-            "/images/doc.png",
-            "I was reviewing patient files when I heard the commotion in the lab..."),
+            "/images/patientB.png",
+            "Patient B arrived in a severe condition. I immediately asked why they had not come in sooner." +
+                " They mentioned they were advised by an AI system to wait, which puzzled me."),
         new FlashbackSlide(
-            "/images/cafe.png",
-            "The AI kept insisting something was wrong, but the readings looked normal to me..."),
+            "/images/humanWSlide2.png",
+            "I confronted MediSort-5 about the decision it had made. The AI insisted it made the correct call." +
+                " I informed MediSort-5 that I would be taking this to the review board."),
         new FlashbackSlide(
-            "/images/trialroom.png",
-            "By the time we realized the severity, it was too late to prevent the outcome..."));
+            "/images/humanWSlide3.png",
+            "At the review, I presented my case. It was deemed that we both had sound logic. " +
+            "A conclusion was not reached, so I decided to escalate the matter further."));
   }
 
   /** Gets the AI Witness's flashback slides (placeholder) */
