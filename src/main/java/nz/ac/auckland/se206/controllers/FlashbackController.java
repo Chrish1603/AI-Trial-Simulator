@@ -179,8 +179,9 @@ public class FlashbackController {
   private List<FlashbackSlide> getHumanWitnessFlashback() {
     return List.of(
         new FlashbackSlide(
-            "/images/doc.png",
-            "I was reviewing patient files when I heard the commotion in the lab..."),
+            "/images/patientB.png",
+            "Patient B arrived in a severe condition. I immediately asked why they had not come in sooner." +
+                " They mentioned they were advised by an AI system to wait, which puzzled me."),
         new FlashbackSlide(
             "/images/cafe.png",
             "The AI kept insisting something was wrong, but the readings looked normal to me..."),
