@@ -199,7 +199,7 @@ public class FlashbackController {
   private List<FlashbackSlide> getAiWitnessFlashback() {
     return List.of(
         new FlashbackSlide(
-            "/images/pathoscan-7.png",
+            "/images/vitals-detections.png",
             "I ingested Patient A’s vitals. Elevated fever and cough aligned with my contagion models." +
             "Outbreak simulation predicted a 73% probability of facility-wide infection within 48 hours if left untreated."),
         new FlashbackSlide(
