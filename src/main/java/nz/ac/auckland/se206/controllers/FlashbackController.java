@@ -203,7 +203,7 @@ public class FlashbackController {
             "I ingested Patient A’s vitals. Elevated fever and cough aligned with my contagion models." +
             "Outbreak simulation predicted a 73% probability of facility-wide infection within 48 hours if left untreated."),
         new FlashbackSlide(
-            "/images/medisort-5-graph.png",
+            "/images/graph-charts.png",
             "I generated 1,024 outbreak scenarios across the care-facility network. "+
             "In 94.7% of outcomes, prioritising Patient A reduced projected fatalities by one-third or more. "+
             "Statistical evidence favoured containment."),
