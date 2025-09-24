@@ -208,7 +208,7 @@ public class FlashbackController {
             "In 94.7% of outcomes, prioritising Patient A reduced projected fatalities by one-third or more. "+
             "Statistical evidence favoured containment."),
         new FlashbackSlide(
-            "/images/doc.png",
+            "/images/ai-witness-testimony.png",
             "During the review, I presented infection curves and probability intervals."+
             "My testimony was impartial: MediSort-5’s decision aligned with epidemiological logic,"+
             "even though it delayed Patient B's diagnosis."));
