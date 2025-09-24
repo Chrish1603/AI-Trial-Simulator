@@ -88,6 +88,12 @@ public class GameTimer {
 
   private void updateTimerText() {
     String label = inVerdictPhase ? "Final Verdict: " : "Time Left: ";
-    timerText.set(label + timeLeft + "s");
+      int minutes = timeLeft / 60;
+      int seconds = timeLeft % 60;
+
+      // Format seconds as two digits (e.g. 5:07 instead of 5:7)
+      String timeFormatted = String.format("%d:%02d", minutes, seconds);
+
+      timerText.set(label + timeFormatted);
   }
 }
