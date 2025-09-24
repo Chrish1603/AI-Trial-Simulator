@@ -18,7 +18,7 @@
                </font>
             </Label>
             <ImageView fx:id="imgFlashback" fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" />
-            <Text fx:id="txtFlashbackContent" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600.0">
+            <Text fx:id="txtFlashbackContent" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="666.2262573242188">
                <font>
                   <Font size="16.0" />
                </font>

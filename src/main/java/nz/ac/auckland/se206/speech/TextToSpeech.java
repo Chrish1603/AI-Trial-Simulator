@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import javafx.concurrent.Task;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -34,8 +35,8 @@ public class TextToSpeech {
           protected Void call() {
             try {
               ApiProxyConfig config = ApiProxyConfig.readConfig();
-              Provider provider = Provider.OPENAI;
-              Voice voice = Voice.OPENAI_NOVA; // or another OpenAI voice, e.g., Voice.OPENAI_ALLOY
+              Provider provider = Provider.GOOGLE;
+              Voice voice = Voice.GOOGLE_EN_US_STANDARD_I; // Google's default voice
 
               TextToSpeechRequest ttsRequest = new TextToSpeechRequest(config);
               ttsRequest.setText(text).setProvider(provider).setVoice(voice);
