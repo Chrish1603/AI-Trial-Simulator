@@ -15,9 +15,9 @@
       <TextField fx:id="txtInput" layoutX="29.0" layoutY="342.0" prefHeight="26.0" prefWidth="435.0" />
       <Button fx:id="btnSend" layoutX="483.0" layoutY="343.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
       <Button layoutX="530.0" layoutY="343.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
-      <Label fx:id="lblTimer" alignment="CENTER" layoutX="605.0" layoutY="27.0" prefHeight="17.0" prefWidth="138.0" text="Time Left">
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="569.0" layoutY="15.0" prefHeight="39.0" prefWidth="208.0" text="Time Left">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Black" size="18.0" />
          </font>
       </Label>
       <ImageView fitHeight="182.0" fitWidth="222.0" layoutX="567.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
