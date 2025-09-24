@@ -204,7 +204,9 @@ public class FlashbackController {
             "Outbreak simulation predicted a 73% probability of facility-wide infection within 48 hours if left untreated."),
         new FlashbackSlide(
             "/images/medisort-5-graph.png",
-            "The data patterns showed clear deviation from normal parameters..."),
+            "I generated 1,024 outbreak scenarios across the care-facility network. "+
+            "In 94.7% of outcomes, prioritising Patient A reduced projected fatalities by one-third or more. "+
+            "Statistical evidence favoured containment."),
         new FlashbackSlide(
             "/images/doc.png",
             "I observed the human-AI interaction escalate as disagreement persisted..."));
