@@ -200,7 +200,8 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide(
             "/images/pathoscan-7.png",
-            "My sensors detected unusual electromagnetic activity in the laboratory..."),
+            "I ingested Patient A’s vitals. Elevated fever and cough aligned with my contagion models." +
+            "Outbreak simulation predicted a 73% probability of facility-wide infection within 48 hours if left untreated."),
         new FlashbackSlide(
             "/images/medisort-5-graph.png",
             "The data patterns showed clear deviation from normal parameters..."),
