@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 /**
  * Controller for the flashback slideshow functionality. Displays a series of images and text
  * representing past events.
@@ -25,6 +26,7 @@ public class FlashbackController {
   @FXML private Text txtFlashbackContent;
   @FXML private Label lblSlideIndicator;
   @FXML private Button btnNext;
+  @FXML private Label lblTimer;
 
   private List<FlashbackSlide> slides;
   private int currentSlideIndex = 0;
@@ -55,6 +57,10 @@ public class FlashbackController {
     this.participantId = participantId;
     this.returnFxml = returnFxml;
     this.slides = getFlashbackSlides(participantId);
+
+    if (lblTimer != null) {
+      lblTimer.textProperty().bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+    }
 
     // Set the title based on participant
     String participantName = getParticipantDisplayName(participantId);

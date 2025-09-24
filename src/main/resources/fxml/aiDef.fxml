@@ -16,9 +16,9 @@
     <Button fx:id="btnSend" layoutX="469.0" layoutY="329.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
     <Button fx:id="btnBack" layoutX="516.0" layoutY="329.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
    <Button fx:id="btnShowGraph" layoutX="633.0" layoutY="329.0" mnemonicParsing="false" onAction="#onShowGraph" text="Show Graph" />
-      <Label fx:id="lblTimer" alignment="CENTER" layoutX="626.0" layoutY="18.0" prefHeight="17.0" prefWidth="138.0" text="Time Left">
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Black" size="20.0" />
          </font></Label>
       <ImageView fitHeight="206.0" fitWidth="228.0" layoutX="561.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
          <image>
