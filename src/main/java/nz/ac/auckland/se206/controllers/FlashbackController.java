@@ -155,24 +155,30 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide(
             "/images/medisort-5.png",
-            "09:45 — New intake detected: Patient A, middle-aged male, elevated temperature and"
-                + " persistent cough. Care-facility worker: high transmission risk. Outbreak model"
-                + " predicts dozens of secondary infections within 48 hours.\n"
-                + //
-                "Decision matrix aligns—containment overrides individual urgency.\n"
-                + //
-                "I elevate Patient A to the front of the queue, my logic clear, my process"
-              + " complete."),
+            """
+            New intake detected: Patient A, middle-aged male, elevated temperature and persistent cough.
+            Care-facility worker: high transmission risk. Outbreak model predicts dozens of secondary infections within 48 hours.
+            Decision matrix aligns—containment overrides individual urgency.
+            I elevate Patient A to the front of the queue.
+            """),
         new FlashbackSlide(
             "/images/medisort-5-graph.png",
-            "The error occurred at 14:32:15. My decision algorithm flagged a sample as contaminated"
-                + " based on anomalous readings. I followed my programming to alert the medical"
-                + " staff immediately."),
+            """
+            New intake detected: Patient B, young female, presenting rare neurological symptoms with potential rapid progression.
+            Non-contagious profile: low community risk. Severity high but transmission negligible.
+            Decision matrix calculates: outbreak containment remains priority.
+            I assign standard triage status.
+            """),
+
         new FlashbackSlide(
             "/images/doc.png",
-            "Dr. Payne Gaun dismissed my alert, claiming it was a false positive. I maintained my"
-                + " assessment was correct. The patient's condition deteriorated shortly after. Was"
-                + " I wrong to trust my analysis over human judgment?"));
+            """
+            Decision node reached: Two critical cases in queue.
+            Patient A: contagious influenza, high spread probability, Patient B: acute neurological decline, non-contagious.
+            Risk models from Pathoscan-7 show dozens protected if outbreak is contained. Ethical directive engages: maximize lives saved.
+            I elevate Patient A, logic finalized, action executed.
+            """)
+    );
   }
 
   /** Gets the Human Witness's flashback slides (placeholder) */
