@@ -212,7 +212,11 @@ public class ChatController {
   /**
    * Generates AI response in a background thread and updates the UI.
    */
-  private void generateAiResponse(ChatMessage userMessage) {
+/**
+ * Generates AI response in a background thread and updates the UI.
+ */
+private void generateAiResponse(ChatMessage userMessage) {
+
   javafx.application.Platform.runLater(() -> {
     loadingBaseText = getDisplayName(participantRole) + ": Loading";
     txtaChat.appendText(loadingBaseText + " .\n\n");
@@ -234,6 +238,14 @@ public class ChatController {
           txtInput.setDisable(false);
           btnSend.setDisable(false);
         });
+      } else {
+        javafx.application.Platform.runLater(() -> {
+          stopLoadingAnimation();
+          removeLoadingText();
+          txtaChat.appendText("SYSTEM: No response received from AI. Please try again.\n\n");
+          txtInput.setDisable(false);
+          btnSend.setDisable(false);
+        });
       }
     } catch (ApiProxyException e) {
       e.printStackTrace();
@@ -246,7 +258,8 @@ public class ChatController {
       });
     }
   }).start();
-  }
+}
+
   
   /**
    * Processes and displays the AI response, adding it to conversation histories.
