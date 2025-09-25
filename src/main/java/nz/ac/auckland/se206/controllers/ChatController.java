@@ -64,7 +64,7 @@ public class ChatController {
   
   protected String getSystemPromptSuffix() {
     // Default system prompt suffix - subclasses should override this
-    return " You are a helpful assistant in the trial room.";
+    return " You are a helpful assistant in the trial room. Keep your responses concise and to the point, limiting them to 3-4 sentences maximum.";
   }
   
   /**
@@ -144,7 +144,7 @@ public class ChatController {
               .setTemperature(0.2)
               .setTopP(0.5)
               .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
-              .setMaxTokens(100);
+              .setMaxTokens(150); // Limited to 150 tokens for concise responses
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
@@ -278,7 +278,8 @@ public class ChatController {
     ChatCompletionRequest freshRequest = createFreshChatRequest();
     
     // Add system prompt with participant role context
-    freshRequest.addMessage("system", getSystemPrompt());
+    String systemPrompt = getSystemPrompt();
+    freshRequest.addMessage("system", systemPrompt);
     
     // Add conversation history as context
     addConversationHistoryToRequest(freshRequest);
@@ -287,11 +288,36 @@ public class ChatController {
     freshRequest.addMessage(msg);
 
     try {
+      System.out.println("DEBUG: System prompt length: " + systemPrompt.length() + " characters");
+      System.out.println("DEBUG: User message: " + msg.getContent());
+      
       ChatCompletionResult chatCompletionResult = freshRequest.execute();
+      
+      if (chatCompletionResult == null || chatCompletionResult.getChoices() == null) {
+        System.err.println("ERROR: No response or choices returned from API");
+        return null;
+      }
+      
+      // Check if there are any choices
+      boolean hasChoices = false;
+      for (@SuppressWarnings("unused") Choice choice : chatCompletionResult.getChoices()) {
+        hasChoices = true;
+        break;
+      }
+      
+      if (!hasChoices) {
+        System.err.println("ERROR: No choices returned from API");
+        return null;
+      }
+      
       Choice result = chatCompletionResult.getChoices().iterator().next();
+      System.out.println("DEBUG: Received response: " + result.getChatMessage().getContent());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
-      e.printStackTrace();
+      System.err.println("ERROR: API call failed - " + e.getMessage());
+      return null;
+    } catch (Exception e) {
+      System.err.println("ERROR: Unexpected error - " + e.getMessage());
       return null;
     }
   }
@@ -306,19 +332,31 @@ public class ChatController {
         .setTemperature(0.2)
         .setTopP(0.5)
         .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
-        .setMaxTokens(100);
+        .setMaxTokens(150); // Limited to 150 tokens for concise responses
   }
   
   /**
    * Adds conversation history to the chat request for context.
+   * Limits history to prevent token overflow.
    */
   private void addConversationHistoryToRequest(ChatCompletionRequest request) {
-    // Add participant's own history
-    addHistoryMessagesToRequest(request, conversationHistories.get(participantRole));
+    // Limit conversation history to last 6 messages to prevent token overflow
+    final int MAX_HISTORY_MESSAGES = 6;
     
-    // Add shared conversation history (excluding messages already in participant's history)
+    // Add participant's own history (recent messages only)
+    java.util.List<String> participantHistory = conversationHistories.get(participantRole);
+    if (participantHistory != null) {
+      int startIndex = Math.max(0, participantHistory.size() - MAX_HISTORY_MESSAGES);
+      java.util.List<String> recentHistory = participantHistory.subList(startIndex, participantHistory.size());
+      addHistoryMessagesToRequest(request, recentHistory);
+    }
+    
+    // Add shared conversation history (recent messages only, excluding messages already in participant's history)
     java.util.List<String> currentHistory = conversationHistories.get(participantRole);
-    for (String sharedMsg : sharedConversationHistory) {
+    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAX_HISTORY_MESSAGES);
+    
+    for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
+      String sharedMsg = sharedConversationHistory.get(i);
       if (currentHistory == null || !currentHistory.contains(sharedMsg)) {
         addParsedMessageToRequest(request, sharedMsg);
       }
