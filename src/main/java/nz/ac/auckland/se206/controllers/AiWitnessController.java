@@ -1,5 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
+import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -34,6 +35,9 @@ public class AiWitnessController extends ChatController {
   private static final String SCAN_SUCCESS_IMAGE = "/images/scan_success.png";
   private static final String SCAN_FAIL_IMAGE = "/images/scan_fail.png";
   private static final String SCAN_DEFAULT_IMAGE = "/images/handscanner.png";
+
+  private static AiWitnessController memoryController;
+  private static javafx.scene.Scene memoryScene;
 
   @FXML
   @Override
@@ -133,5 +137,23 @@ public class AiWitnessController extends ChatController {
     return "Current statistical analysis: Patient A's condition had a 73% probability of causing "
         + "a facility-wide outbreak affecting 15-25 individuals within 48 hours. "
         + "MediSort-5's prioritization algorithm prevented this scenario with 94.7% confidence.";
+  }
+
+  public static javafx.scene.Scene getMemoryScene() throws IOException {
+    if (memoryScene == null) {
+      javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+        AiWitnessController.class.getResource("/fxml/aiWit.fxml"));
+      javafx.scene.Parent root = loader.load();
+      memoryController = loader.getController();
+      memoryScene = new javafx.scene.Scene(root);
+    }
+    return memoryScene;
+  }
+
+  public static AiWitnessController getMemoryController() throws IOException {
+    if (memoryController == null) {
+      getMemoryScene();
+    }
+    return memoryController;
   }
 }
