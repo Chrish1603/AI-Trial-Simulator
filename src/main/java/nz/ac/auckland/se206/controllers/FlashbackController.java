@@ -19,6 +19,7 @@ import javafx.stage.Stage;
  */
 public class FlashbackController {
 
+
   @FXML private Label lblTitle;
   @FXML private ImageView imgFlashback;
   @FXML private Text txtFlashbackContent;
