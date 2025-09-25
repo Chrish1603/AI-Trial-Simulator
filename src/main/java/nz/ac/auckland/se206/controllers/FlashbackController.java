@@ -21,9 +21,6 @@ import javafx.stage.Stage;
  */
 public class FlashbackController {
 
-    static Scene getAiWitnessFlashbackScene() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
   @FXML private Label lblTitle;
   @FXML private ImageView imgFlashback;

@@ -76,14 +76,6 @@ public class TrialRoomController {
       nz.ac.auckland.se206.GameTimer.getInstance().start(this::onRoundEnd, this::onVerdictEnd);
     }
     
-    aiWitness.setOnMouseClicked(event -> {
-        try {
-          Stage stage = (Stage) aiWitness.getScene().getWindow();
-          stage.setScene(AiWitnessController.getMemoryScene());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      });
   }
 
   // === Event Handlers ===
@@ -228,5 +220,11 @@ public class TrialRoomController {
    */
   public static Scene getTrialRoomScene() {
     return trialRoomScene;
+  }
+
+  @FXML
+  private void onAiWitnessClicked(MouseEvent event) throws IOException {
+    System.out.println("AI Witness clicked!");
+    // ...rest of your code...
   }
 }

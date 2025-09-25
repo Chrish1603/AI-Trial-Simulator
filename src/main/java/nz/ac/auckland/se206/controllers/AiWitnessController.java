@@ -21,6 +21,7 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
  * Handles specific functionality for chatting with the AI witness.
  */
 public class AiWitnessController extends ChatController {
+  static boolean flashbackShown = false;
 
   private static final String PARTICIPANT_ROLE = "aiWitness";
 
