@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Slider;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
@@ -20,7 +19,6 @@ public class HumanWitnessController extends ChatController {
   private static Boolean noteBSeen = false;
   @FXML private Pane notePane;
   @FXML private ImageView imgNotes;
-  @FXML private Slider agreementSlider; // Add this variable to match the main branch
 
   @FXML
   @Override
@@ -113,15 +111,5 @@ public class HumanWitnessController extends ChatController {
     prompt.append("Keep your responses concise and direct, limiting them to 3-4 sentences maximum.");
     
     return prompt.toString();
-  }
-  
-  @Override
-  protected String getAdditionalContext() {
-    if (agreementSlider != null) {
-      double agreementLevel = agreementSlider.getValue();
-      return "Current emotional state and agreement level with AI decisions: " + 
-             String.format("%.0f", agreementLevel) + "% (where 0% is strongly opposed, 100% is in full agreement).";
-    }
-    return "";
   }
 }
