@@ -39,7 +39,6 @@ public class ChatController {
       nz.ac.auckland.se206.controllers.TrialRoomController.sharedConversationHistory;
 
   @FXML protected ImageView imgDefendant;
-  @FXML protected ImageView imgGraph;
   @FXML protected javafx.scene.control.Label lblTimer;
   @FXML protected TextArea txtaChat;
   @FXML protected TextField txtInput;
@@ -152,13 +151,6 @@ public class ChatController {
 
   // === Event handler methods ===
   @FXML
-  protected void onShowGraph() {
-    if (imgGraph != null) {
-      imgGraph.setVisible(true);
-    }
-  }
-
-  @FXML
   protected void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
@@ -222,7 +214,7 @@ public class ChatController {
   /**
    * Processes and displays the AI response, adding it to conversation histories.
    */
-  private void processAiResponse(ChatMessage aiResponse) {
+  protected void processAiResponse(ChatMessage aiResponse) {
     // Create display response with correct role
     ChatMessage displayResponse = new ChatMessage(participantRole, aiResponse.getContent());
     appendChatMessage(displayResponse);
