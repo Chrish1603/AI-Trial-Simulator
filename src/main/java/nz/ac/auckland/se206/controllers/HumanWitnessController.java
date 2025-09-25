@@ -36,7 +36,8 @@ public class HumanWitnessController extends ChatController {
         + "You oversaw the post-incident review and believe AI over-relied on outbreak modelling "
         + "and undervalued individual acute cases. You argue that medical ethics require urgent "
         + "individual treatment when potential severe harm is present. You provide emotional "
-        + "testimony on Patient B's deterioration and family distress.";
+        + "testimony on Patient B's deterioration and family distress. "
+        + "Keep your responses concise and direct, limiting them to 3-4 sentences maximum.";
   }
   
   @Override
