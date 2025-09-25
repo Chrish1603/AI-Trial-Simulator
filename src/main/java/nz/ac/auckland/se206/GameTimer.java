@@ -21,7 +21,7 @@ public class GameTimer {
   }
 
   private static final int ROUND_SECONDS = 300;
-  private static final int VERDICT_SECONDS = 10;
+  private static final int VERDICT_SECONDS = 60;
 
   private int timeLeft;
   private Runnable onRoundEnd;
@@ -45,6 +45,34 @@ public class GameTimer {
     timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
+  }
+
+  /**
+   * Switches directly to the verdict phase with a 60-second timer.
+   * Used when navigating directly to the verdict screen.
+   */
+  public void switchToVerdictPhase() {
+    // Only switch if not already in verdict phase
+    if (!inVerdictPhase) {
+      inVerdictPhase = true;
+      timeLeft = VERDICT_SECONDS;
+      updateTimerText();
+      
+      // If timer is not running, start it
+      if (timeline == null || timeline.getStatus() != Timeline.Status.RUNNING) {
+        if (timeline != null) {
+          timeline.stop();
+        }
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+      }
+      
+      // Call onRoundEnd if it exists
+      if (onRoundEnd != null) {
+        Platform.runLater(onRoundEnd);
+      }
+    }
   }
 
   public void stop() {
