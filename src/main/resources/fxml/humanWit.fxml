@@ -35,7 +35,7 @@
             <Button fx:id="closeNotesButton" layoutX="11.0" layoutY="368.0" mnemonicParsing="false" onAction="#onCloseNotes" prefHeight="26.0" prefWidth="29.0" style="-fx-background-color: white;" text="←" />
             <MenuButton fx:id="notesSelector" layoutX="100.0" layoutY="368.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Patient Notes">
               <items>
-                <MenuItem fx:id="patientANotes" mnemonicParsing="false" onAction="#viewANotes" onMenuValidation="#viewANotes" text="Patient A" />
+                <MenuItem fx:id="patientANotes" mnemonicParsing="false" onAction="#viewANotes" text="Patient A" />
                 <MenuItem fx:id="patientBNotes" mnemonicParsing="false" onAction="#viewBNotes" text="Patient B" />
               </items>
             </MenuButton>
