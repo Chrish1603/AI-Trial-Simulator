@@ -1,6 +1,17 @@
 package nz.ac.auckland.se206.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
@@ -11,10 +22,86 @@ public class AiWitnessController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiWitness";
 
+  @FXML private ImageView imgHandScanner;
+  @FXML private ProgressBar progressScan;
+  @FXML private Label lblScanStatus;
+  @FXML private TextField txtInput;
+  @FXML private Button btnSend;
+
+  private Timeline scanTimeline;
+  private double scanProgress = 0.0;
+  private static final double SCAN_DURATION = 2.0; // seconds to unlock
+  private static final String SCAN_SUCCESS_IMAGE = "/images/scan_success.png";
+  private static final String SCAN_FAIL_IMAGE = "/images/scan_fail.png";
+  private static final String SCAN_DEFAULT_IMAGE = "/images/handscanner.png";
+
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
     super.initialize();
+    System.out.println("imgHandScanner: " + imgHandScanner);
+    System.out.println("progressScan: " + progressScan);
+    System.out.println("lblScanStatus: " + lblScanStatus);
+    setupHandScanner();
+    txtInput.setDisable(true);
+    btnSend.setDisable(true);
+  }
+
+  private void setupHandScanner() {
+    progressScan.setProgress(0.0);
+    lblScanStatus.setText("Hold to Authenticate");
+
+    imgHandScanner.setOnMousePressed(this::onScanStart);
+    imgHandScanner.setOnMouseReleased(this::onScanEnd);
+  }
+
+  private void onScanStart(MouseEvent event) {
+    System.out.println("Scan started");
+    scanProgress = 0.0;
+    progressScan.setProgress(0.0);
+    lblScanStatus.setText("Scanning...");
+    imgHandScanner.setEffect(new Glow(0.7));
+    imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_DEFAULT_IMAGE)));
+
+    scanTimeline = new Timeline(new KeyFrame(Duration.millis(50), e -> {
+      scanProgress += 0.05 / SCAN_DURATION;
+      progressScan.setProgress(scanProgress);
+      // Animate glow pulsing
+      double glowLevel = 0.7 + 0.3 * Math.sin(scanProgress * Math.PI * 4);
+      imgHandScanner.setEffect(new Glow(glowLevel));
+      if (scanProgress >= 1.0) {
+        scanTimeline.stop();
+        onScanComplete();
+      }
+    }));
+    scanTimeline.setCycleCount(Timeline.INDEFINITE);
+    scanTimeline.play();
+  }
+
+  private void onScanEnd(MouseEvent event) {
+    System.out.println("Scan ended");
+    if (scanProgress < 1.0) {
+      // Released too soon
+      if (scanTimeline != null) scanTimeline.stop();
+      progressScan.setProgress(0.0);
+      lblScanStatus.setText("Scan Incomplete. Please retry.");
+      imgHandScanner.setEffect(null);
+      imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_FAIL_IMAGE)));
+    } else {
+      // If scan was successful, do nothing here (handled in onScanComplete)
+    }
+  }
+
+  private void onScanComplete() {
+    lblScanStatus.setText("Authentication Successful. Welcome, Investigator.");
+    imgHandScanner.setEffect(null);
+    progressScan.setProgress(1.0);
+    txtInput.setDisable(false);
+    btnSend.setDisable(false);
+    imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_SUCCESS_IMAGE)));
+    // Disable further scanning
+    imgHandScanner.setOnMousePressed(null);
+    imgHandScanner.setOnMouseReleased(null);
   }
 
   @Override
