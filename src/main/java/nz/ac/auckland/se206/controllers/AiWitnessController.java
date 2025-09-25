@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
  * Controller for the AI Witness (PathoScan-7) chat interface.
@@ -133,6 +136,12 @@ public class AiWitnessController extends ChatController {
   @Override
   protected String getParticipantRole() {
     return PARTICIPANT_ROLE;
+  }
+
+  @Override
+  protected String getSystemPrompt() {
+    Map<String, String> map = new HashMap<>();
+    return PromptEngineering.getPrompt("aiwitness.txt", map);
   }
 
   @Override
