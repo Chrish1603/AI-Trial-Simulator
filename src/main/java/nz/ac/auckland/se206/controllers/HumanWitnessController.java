@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.image.ImageView;
 import nz.ac.auckland.se206.controllers.ChatController;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
@@ -17,15 +18,48 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 public class HumanWitnessController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "humanWitness";
-
-  @FXML private Slider agreementSlider;
+  private Boolean noteASeen = false;
+  private Boolean noteBSeen = false;
+  @FXML private Pane notePane;
+  @FXML private ImageView imgNotes;
 
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
     super.initialize();
     // Initialize any human witness specific UI components
+    if (notePane != null) {
+      notePane.setVisible(false);
+    }
   }
+
+  @FXML
+  private void handleNotepadClick(MouseEvent event) throws IOException {
+    if (notePane != null) {
+      notePane.setVisible(true);
+    }
+  }
+
+  @FXML
+  private void onCloseNotes() {
+    if (notePane != null) {
+      notePane.setVisible(false);
+    }
+  }
+
+  @FXML
+  private void viewANotes() {
+    imgNotes.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
+    noteASeen = true;
+  }
+
+  @FXML
+  private void viewBNotes() {
+    imgNotes.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
+    noteBSeen = true;
+  }
+
+
 
   @Override
   protected String getParticipantRole() {
@@ -40,55 +74,5 @@ public class HumanWitnessController extends ChatController {
         + "individual treatment when potential severe harm is present. You provide emotional "
         + "testimony on Patient B's deterioration and family distress.";
   }
-  
-  @FXML
-  private void handleRectClick(MouseEvent event) throws IOException {
-    Rectangle clickedRectangle = (Rectangle) event.getSource();
-    String participantId = clickedRectangle.getId();
 
-    // Ensure a conversation history exists for this participant
-    conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>());
-
-    // Check if flashback should be shown first
-    // if (!flashbackShown.contains(participantId)) {
-    //   showFlashback(participantId, event);
-    //   flashbackShown.add(participantId);
-    //   return;
-    // }
-
-    // // Otherwise, go directly to chat
-    // showChatInterface(participantId, event);
-  }
-
-  @Override
-  protected String getAdditionalContext() {
-    if (agreementSlider != null) {
-      double agreementLevel = agreementSlider.getValue();
-      return "Current emotional state and agreement level with AI decisions: " + 
-             String.format("%.0f", agreementLevel) + "% (where 0% is strongly opposed, 100% is in full agreement).";
-    }
-    return "";
-  }
-
-  /**
-   * Gets the current agreement level from the slider.
-   * This is specific to the human witness interface.
-   * 
-   * @return the agreement level as a percentage (0-100)
-   */
-  public double getAgreementLevel() {
-    return agreementSlider != null ? agreementSlider.getValue() : 50.0;
-  }
-  
-  /**
-   * Sets the agreement level programmatically.
-   * This can be used to update the slider based on conversation progress.
-   * 
-   * @param level the agreement level as a percentage (0-100)
-   */
-  public void setAgreementLevel(double level) {
-    if (agreementSlider != null) {
-      agreementSlider.setValue(Math.max(0, Math.min(100, level)));
-    }
-  }
 }
