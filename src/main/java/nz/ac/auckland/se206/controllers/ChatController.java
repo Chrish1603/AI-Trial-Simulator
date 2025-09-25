@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -55,6 +58,10 @@ public class ChatController {
   // === Instance fields ===
   protected String participantRole;
   protected ChatCompletionRequest chatCompletionRequest;
+
+  private Timeline loadingTimeline;
+  private int loadingDotCount = 1;
+  private String loadingBaseText;
 
   // === Methods that can be overridden by subclasses ===
   protected String getParticipantRole() {
@@ -206,21 +213,39 @@ public class ChatController {
    * Generates AI response in a background thread and updates the UI.
    */
   private void generateAiResponse(ChatMessage userMessage) {
-    new Thread(() -> {
-      try {
-        ChatMessage aiResponse = runGpt(userMessage);
-        if (aiResponse != null) {
-          javafx.application.Platform.runLater(() -> {
-            processAiResponse(aiResponse);
-          });
-        }
-      } catch (ApiProxyException e) {
-        e.printStackTrace();
+  javafx.application.Platform.runLater(() -> {
+    loadingBaseText = getDisplayName(participantRole) + ": Loading";
+    txtaChat.appendText(loadingBaseText + " .\n\n");
+    txtInput.setDisable(true);
+    btnSend.setDisable(true);
+
+    // Start loading animation
+    startLoadingAnimation();
+  });
+
+  new Thread(() -> {
+    try {
+      ChatMessage aiResponse = runGpt(userMessage);
+      if (aiResponse != null) {
         javafx.application.Platform.runLater(() -> {
-          txtaChat.appendText("SYSTEM: Error generating response. Please try again.\n\n");
+          stopLoadingAnimation();
+          removeLoadingText();
+          processAiResponse(aiResponse);
+          txtInput.setDisable(false);
+          btnSend.setDisable(false);
         });
       }
-    }).start();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      javafx.application.Platform.runLater(() -> {
+        stopLoadingAnimation();
+        removeLoadingText();
+        txtaChat.appendText("SYSTEM: Error generating response. Please try again.\n\n");
+        txtInput.setDisable(false);
+        btnSend.setDisable(false);
+      });
+    }
+  }).start();
   }
   
   /**
@@ -366,4 +391,30 @@ public class ChatController {
         return "user";
     }
   }
+
+private void startLoadingAnimation() {
+  loadingDotCount = 1;
+  loadingTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
+    loadingDotCount = (loadingDotCount % 3) + 1;
+    String dots = " " + ".".repeat(loadingDotCount);
+    removeLoadingText();
+    txtaChat.appendText(loadingBaseText + dots + "\n\n");
+  }));
+  loadingTimeline.setCycleCount(Timeline.INDEFINITE);
+  loadingTimeline.play();
+}
+
+private void stopLoadingAnimation() {
+  if (loadingTimeline != null) {
+    loadingTimeline.stop();
+    loadingTimeline = null;
+  }
+}
+
+private void removeLoadingText() {
+  String chatText = txtaChat.getText();
+  // Remove any line that starts with the loading base text
+  chatText = chatText.replaceAll("(?m)^" + java.util.regex.Pattern.quote(loadingBaseText) + ".*\\n\\n", "");
+  txtaChat.setText(chatText);
+}
 }
