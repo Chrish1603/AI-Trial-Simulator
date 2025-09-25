@@ -23,7 +23,5 @@
             <Font name="Arial Black" size="22.0" />
          </font>
       </Label>
-   <Button fx:id="btnGuilty" layoutX="62.0" layoutY="72.0" mnemonicParsing="false" onAction="#onGuiltyPressed" text="Guilty" visible="false" />
-   <Button fx:id="btnNotGuilty" layoutX="460.0" layoutY="72.0" mnemonicParsing="false" onAction="#onNotGuiltyPressed" text="Not Guilty" visible="false" />
    </children>
 </Pane>
