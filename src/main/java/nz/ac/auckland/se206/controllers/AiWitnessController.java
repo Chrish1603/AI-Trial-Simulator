@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -103,6 +104,7 @@ public class AiWitnessController extends ChatController {
     txtInput.setDisable(false);
     btnSend.setDisable(false);
     imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_SUCCESS_IMAGE)));
+    txtaChat.appendText("PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak within 48 hours, infecting 15–25 others and risking up to six deaths. By deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically saving more lives overall.\n\n");
     // Disable further scanning
     imgHandScanner.setOnMousePressed(null);
     imgHandScanner.setOnMouseReleased(null);
