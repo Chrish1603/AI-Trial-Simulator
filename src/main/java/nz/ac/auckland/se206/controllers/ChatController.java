@@ -124,7 +124,16 @@ public class ChatController {
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
     }
+     if (txtInput != null) {
+    txtInput.setOnAction(event -> {
+      try {
+        onSendMessage(null); // null is fine since ActionEvent is not used
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
   }
+}
 
   // === Public instance methods ===
   public void setParticipant(String participantId) {
