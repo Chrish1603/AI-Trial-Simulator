@@ -1,12 +1,10 @@
 package nz.ac.auckland.se206.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Slider;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 
 /**
  * Controller for the AI Defendant (MediSort-5) chat interface.
@@ -16,25 +14,18 @@ public class AiDefendantController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiDefendent";
   
-  // Memory interaction elements
-  @FXML private AnchorPane memoryPanel;
-  @FXML private ProgressBar patientAContagion;
-  @FXML private ProgressBar patientASeverity;
-  @FXML private ProgressBar patientBContagion;
-  @FXML private ProgressBar patientBSeverity;
+  // Memory interaction elements - only declare ones that exist in FXML
+  @FXML private Slider sliderAContagion;
+  @FXML private Slider sliderASeverity;
+  @FXML private Slider sliderBContagion;
+  @FXML private Slider sliderBSeverity;
   @FXML private Label lblPatientAContagion;
   @FXML private Label lblPatientASeverity;
   @FXML private Label lblPatientBContagion;
   @FXML private Label lblPatientBSeverity;
-  @FXML private Rectangle decisionMatrixA;
-  @FXML private Rectangle decisionMatrixB;
-  @FXML private Button btnRunAlgorithm;
   @FXML private Label lblAlgorithmStatus;
   
   // Interaction state tracking
-  private boolean hasExaminedPatientA = false;
-  private boolean hasExaminedPatientB = false;
-  private boolean hasRunAlgorithm = false;
   private String currentMemoryContext = "";
 
   @FXML
@@ -45,20 +36,73 @@ public class AiDefendantController extends ChatController {
   }
   
   private void initializeMemoryInterface() {
-    // Set initial algorithm status
-    lblAlgorithmStatus.setText("Algorithm Status: Ready - Click elements to explore my decision process");
-    
-    // Add hover effects for interactive elements
-    setupHoverEffects();
+    // Only initialize if components exist
+    if (sliderAContagion != null && sliderASeverity != null && 
+        sliderBContagion != null && sliderBSeverity != null) {
+      // Initialize slider listeners
+      setupSliderListeners();
+      
+      // Initialize status message
+      if (lblAlgorithmStatus != null) {
+        lblAlgorithmStatus.setText("Adjust sliders and click 'Run Algorithm' to see decision");
+        lblAlgorithmStatus.setTextFill(javafx.scene.paint.Color.web("#7f8c8d")); // Gray for initial state
+      }
+    }
   }
   
-  private void setupHoverEffects() {
-    // Add hover effects for decision matrix rectangles
-    decisionMatrixA.setOnMouseEntered(e -> decisionMatrixA.setOpacity(0.8));
-    decisionMatrixA.setOnMouseExited(e -> decisionMatrixA.setOpacity(1.0));
+
+  
+  /**
+   * Set up listeners for slider value changes
+   */
+  private void setupSliderListeners() {
+    sliderAContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderASeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderBContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderBSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+  }
+  
+  /**
+   * Handle slider value changes - update labels and recalculate priorities
+   */
+  @FXML
+  private void onRiskSliderChanged() {
+    updateRiskLabels();
     
-    decisionMatrixB.setOnMouseEntered(e -> decisionMatrixB.setOpacity(0.8));
-    decisionMatrixB.setOnMouseExited(e -> decisionMatrixB.setOpacity(1.0));
+    // Update memory context for AI awareness
+    currentMemoryContext = String.format(
+        "Player adjusted risk levels: Patient A (%.0f%% contagion, %.0f%% severity), Patient B (%.0f%% contagion, %.0f%% severity)",
+        sliderAContagion.getValue(), sliderASeverity.getValue(),
+        sliderBContagion.getValue(), sliderBSeverity.getValue()
+    );
+    
+    // Update status when sliders change
+    if (lblAlgorithmStatus != null) {
+      lblAlgorithmStatus.setText("Risk levels modified - Click 'Run Algorithm' to see new prioritization decision");
+      lblAlgorithmStatus.setTextFill(javafx.scene.paint.Color.web("#f39c12")); // Orange for "pending"
+    }
+    System.out.println("Risk levels modified");
+  }
+  
+  /**
+   * Update risk percentage labels based on slider values
+   */
+  private void updateRiskLabels() {
+    lblPatientAContagion.setText(String.format("%.0f%% Contagion Risk", sliderAContagion.getValue()));
+    lblPatientASeverity.setText(String.format("%.0f%% Individual Severity", sliderASeverity.getValue()));
+    lblPatientBContagion.setText(String.format("%.0f%% Contagion Risk", sliderBContagion.getValue()));
+    lblPatientBSeverity.setText(String.format("%.0f%% Individual Severity", sliderBSeverity.getValue()));
+  }
+  
+
+  
+  /**
+   * Calculate harm score using MediSort-5's algorithm
+   * Weights contagion risk higher due to community impact
+   */
+  private double calculateHarmScore(double contagionRisk, double severityRisk) {
+    // Contagion risk weighted 2x more than individual severity (community vs individual harm)
+    return (contagionRisk * 2.0) + severityRisk;
   }
 
   @Override
@@ -73,7 +117,10 @@ public class AiDefendantController extends ChatController {
         + "prevented a potential outbreak affecting dozens of people. "
         + "Keep your responses concise and direct, limiting them to 3-4 sentences maximum. "
         + "You are aware that the player is inside your memory and can see your decision-making interface. "
-        + "Respond to their interactions with the memory elements appropriately.";
+        + "Respond to their interactions with the memory elements appropriately. "
+        + "The player can adjust risk sliders to experiment with different scenarios. "
+        + "When discussing algorithm decisions, ALWAYS clearly state which patient you selected "
+        + "(e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the specific harm scores.";
   }
   
   @Override
@@ -81,126 +128,75 @@ public class AiDefendantController extends ChatController {
     StringBuilder context = new StringBuilder();
     context.append("MEMORY CONTEXT: The player is currently inside MediSort-5's memory, viewing the decision interface. ");
     
-    if (hasExaminedPatientA) {
-      context.append("Player has examined Patient A's risk profile (85% contagion, 35% individual severity). ");
-    }
-    
-    if (hasExaminedPatientB) {
-      context.append("Player has examined Patient B's risk profile (0% contagion, 90% individual severity). ");
-    }
-    
-    if (hasRunAlgorithm) {
-      context.append("Player has run the harm minimization algorithm and seen the decision process. ");
-    }
-    
     if (!currentMemoryContext.isEmpty()) {
       context.append("RECENT INTERACTION: ").append(currentMemoryContext).append(" ");
+    }
+    
+    // Add current risk levels to context if sliders are available
+    if (sliderAContagion != null && sliderASeverity != null && 
+        sliderBContagion != null && sliderBSeverity != null) {
+      context.append(String.format("CURRENT RISK LEVELS: Patient A (%.0f%% contagion, %.0f%% severity), Patient B (%.0f%% contagion, %.0f%% severity). ",
+          sliderAContagion.getValue(), sliderASeverity.getValue(),
+          sliderBContagion.getValue(), sliderBSeverity.getValue()));
     }
     
     return context.toString();
   }
   
   /**
-   * Handle examining Patient A's profile
-   */
-  @FXML
-  private void onExaminePatientA() {
-    hasExaminedPatientA = true;
-    currentMemoryContext = "Player examined Patient A's profile, seeing high contagion risk but moderate individual severity.";
-    
-    // Visual feedback
-    decisionMatrixA.setStroke(javafx.scene.paint.Color.YELLOW);
-    decisionMatrixA.setStrokeWidth(3.0);
-    lblAlgorithmStatus.setText("Examining Patient A: High community risk, moderate individual risk");
-    
-    // Automatically trigger AI response about this interaction
-    appendChatMessage(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("system", 
-        "Player is examining Patient A's risk assessment in your memory interface."));
-    
-    // Generate contextual AI response
-    new Thread(() -> {
-      try {
-        nz.ac.auckland.apiproxy.chat.openai.ChatMessage contextualResponse = 
-            runGpt(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("user", 
-                "I'm looking at Patient A's risk profile in your memory. Explain this assessment."));
-        if (contextualResponse != null) {
-          javafx.application.Platform.runLater(() -> {
-            processAiResponse(contextualResponse);
-          });
-        }
-      } catch (ApiProxyException e) {
-        e.printStackTrace();
-      }
-    }).start();
-  }
-  
-  /**
-   * Handle examining Patient B's profile
-   */
-  @FXML
-  private void onExaminePatientB() {
-    hasExaminedPatientB = true;
-    currentMemoryContext = "Player examined Patient B's profile, noting zero contagion risk but very high individual severity.";
-    
-    // Visual feedback
-    decisionMatrixB.setStroke(javafx.scene.paint.Color.YELLOW);
-    decisionMatrixB.setStrokeWidth(3.0);
-    lblAlgorithmStatus.setText("Examining Patient B: No community risk, critical individual risk");
-    
-    // Automatically trigger AI response about this interaction
-    appendChatMessage(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("system", 
-        "Player is examining Patient B's risk assessment in your memory interface."));
-    
-    // Generate contextual AI response
-    new Thread(() -> {
-      try {
-        nz.ac.auckland.apiproxy.chat.openai.ChatMessage contextualResponse = 
-            runGpt(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("user", 
-                "I'm looking at Patient B's risk profile in your memory. Explain this assessment."));
-        if (contextualResponse != null) {
-          javafx.application.Platform.runLater(() -> {
-            processAiResponse(contextualResponse);
-          });
-        }
-      } catch (ApiProxyException e) {
-        e.printStackTrace();
-      }
-    }).start();
-  }
-  
-  /**
-   * Handle running the harm minimization algorithm
+   * Handle the Run Algorithm button click - demonstrate the harm minimization process
    */
   @FXML
   private void onRunHarmMinimizationAlgorithm() {
-    hasRunAlgorithm = true;
-    currentMemoryContext = "Player activated the harm minimization algorithm, witnessing the decision-making process that prioritized Patient A.";
+    // Calculate current harm scores
+    double patientAHarmScore = calculateHarmScore(sliderAContagion.getValue(), sliderASeverity.getValue());
+    double patientBHarmScore = calculateHarmScore(sliderBContagion.getValue(), sliderBSeverity.getValue());
     
-    // Visual feedback - animate the algorithm execution
-    btnRunAlgorithm.setText("Running...");
-    btnRunAlgorithm.setDisable(true);
-    lblAlgorithmStatus.setText("ALGORITHM EXECUTING: Calculating optimal harm reduction...");
+    // Determine the decision and create clear result message
+    String decisionResult;
+    String statusMessage;
+    String selectedPatient;
     
-    // Simulate algorithm execution with visual updates
-    javafx.animation.Timeline timeline = new javafx.animation.Timeline(
-        new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), e -> {
-          lblAlgorithmStatus.setText("RESULT: Patient A prioritized - minimizes community harm");
-          btnRunAlgorithm.setText("Algorithm Complete");
-          btnRunAlgorithm.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;");
-        })
-    );
-    timeline.play();
+    if (patientAHarmScore > patientBHarmScore) {
+      selectedPatient = "Patient A (Influenza)";
+      decisionResult = String.format("DECISION: %s selected for priority treatment", selectedPatient);
+      statusMessage = String.format("RESULT: %s prioritized (harm score: %.1f vs %.1f)", selectedPatient, patientAHarmScore, patientBHarmScore);
+    } else if (patientBHarmScore > patientAHarmScore) {
+      selectedPatient = "Patient B (Neurological)";
+      decisionResult = String.format("DECISION: %s selected for priority treatment", selectedPatient);
+      statusMessage = String.format("RESULT: %s prioritized (harm score: %.1f vs %.1f)", selectedPatient, patientBHarmScore, patientAHarmScore);
+    } else {
+      selectedPatient = "Both patients";
+      decisionResult = "DECISION: Equal priority - both patients require immediate attention";
+      statusMessage = String.format("RESULT: Equal priority tie (both harm scores: %.1f)", patientAHarmScore);
+    }
     
-    // Automatically trigger AI response about running the algorithm
-    appendChatMessage(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("system", 
-        "Player has executed the harm minimization algorithm in your memory."));
+    // Update the status label with clear result
+    if (lblAlgorithmStatus != null) {
+      lblAlgorithmStatus.setText(statusMessage);
+      lblAlgorithmStatus.setTextFill(javafx.scene.paint.Color.web("#27ae60")); // Green for completed
+    }
     
-    // Generate contextual AI response
+    // Update context with algorithm execution
+    currentMemoryContext = "Player executed the harm minimization algorithm. " + decisionResult;
+    
+    // Provide console feedback
+    System.out.println("Algorithm executed: " + decisionResult);
+    
+    // Automatically generate an AI response about the algorithm execution with clear patient selection
     new Thread(() -> {
       try {
-        nz.ac.auckland.apiproxy.chat.openai.ChatMessage contextualResponse = 
-            runGpt(new nz.ac.auckland.apiproxy.chat.openai.ChatMessage("user", 
-                "I just ran your harm minimization algorithm. Walk me through your decision logic."));
+        String aiPrompt = String.format(
+          "I just ran your harm minimization algorithm. The result was: %s. " +
+          "Patient A has %.0f%% contagion risk and %.0f%% severity. " +
+          "Patient B has %.0f%% contagion risk and %.0f%% severity. " +
+          "Explain clearly why you selected this patient and your decision-making process.",
+          decisionResult,
+          sliderAContagion.getValue(), sliderASeverity.getValue(),
+          sliderBContagion.getValue(), sliderBSeverity.getValue()
+        );
+        
+        ChatMessage contextualResponse = runGpt(new ChatMessage("user", aiPrompt));
         if (contextualResponse != null) {
           javafx.application.Platform.runLater(() -> {
             processAiResponse(contextualResponse);
