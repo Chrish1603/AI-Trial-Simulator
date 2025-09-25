@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 /**
  * Controller for the flashback slideshow functionality. Displays a series of images and text
@@ -59,7 +57,9 @@ public class FlashbackController {
     this.slides = getFlashbackSlides(participantId);
 
     if (lblTimer != null) {
-      lblTimer.textProperty().bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+      lblTimer
+          .textProperty()
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
     }
 
     // Set the title based on participant
@@ -78,10 +78,18 @@ public class FlashbackController {
 
     FlashbackSlide slide = slides.get(slideIndex);
 
-    // Load image
+    // Load image with high quality settings
     try {
-      Image image = new Image(getClass().getResourceAsStream(slide.getImagePath()));
+      // Load image with specific dimensions for better quality
+      Image image = new Image(getClass().getResourceAsStream(slide.getImagePath()), 
+                             600, 400, true, true); // width, height, preserveRatio, smooth
       imgFlashback.setImage(image);
+      
+      // Ensure ImageView displays at full quality
+      imgFlashback.setFitWidth(600);
+      imgFlashback.setFitHeight(400);
+      imgFlashback.setPreserveRatio(true);
+      imgFlashback.setSmooth(true); // Enable smooth scaling
     } catch (Exception e) {
       System.err.println("Failed to load flashback image: " + slide.getImagePath());
       // Handle image loading error gracefully
@@ -160,24 +168,26 @@ public class FlashbackController {
   private List<FlashbackSlide> getAiDefendantFlashback() {
     return List.of(
         new FlashbackSlide(
-            "/images/medisort-5.png",
-            "New intake detected: Patient A, middle-aged male, elevated temperature and persistent cough.\n" +
-            "Care-facility worker: high transmission risk. Outbreak model predicts dozens of secondary infections within 48 hours.\n" +
-            "Decision matrix aligns—containment overrides individual urgency.\n" +
-            "I elevate Patient A to the front of the queue."),
+            "/images/aiDef-fb1.png",
+            "New intake detected: Patient A, middle-aged male, elevated temperature and persistent"
+                + " cough.\n"
+                + "Care-facility worker: high transmission risk. Outbreak model predicts dozens of"
+                + " secondary infections within 48 hours\n"
+                + "I elevate Patient A to the front of the queue."),
         new FlashbackSlide(
-            "/images/medisort-5-graph.png",
-            "New intake detected: Patient B, young female, presenting rare neurological symptoms with potential rapid progression.\n" +
-            "Non-contagious profile: low community risk. Severity high but transmission negligible.\n" +
-            "Decision matrix calculates: outbreak containment remains priority.\n" +
-            "I assign standard triage status."),
+            "/images/aiDef-fb2.png",
+            "New intake detected: Patient B, young female, presenting rare neurological symptoms"
+                + " with potential rapid progression.\n"
+                + "Non-contagious profile: low community risk. Severity high but transmission"
+                + " negligible.\n"
+                + "Decision matrix calculates: outbreak containment remains priority.\n"
+                + "I assign standard triage status."),
         new FlashbackSlide(
-            "/images/doc.png",
-            "Decision node reached: Two critical cases in queue.\n" +
-            "Patient A: contagious influenza, high spread probability, Patient B: acute neurological decline, non-contagious.\n" +
-            "Risk models from Pathoscan-7 show dozens protected if outbreak is contained. Ethical directive engages: maximize lives saved.\n" +
-            "I elevate Patient A, logic finalized, action executed.")
-    );
+            "/images/aiDef-fb3.png",
+            "Doctor Payne Guan questions my decision, I present my analysis and insights from"
+                + " Pathoscan-7,\n"
+                + "Our disease spread prediction AI. The models predict dozens protected if the"
+                + " outbreak is contained"));
   }
 
   /** Gets the Human Witness's flashback slides (placeholder) */
@@ -185,16 +195,18 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide(
             "/images/patientB.png",
-            "Patient B arrived in a severe condition. I immediately asked why they had not come in sooner." +
-                " They mentioned they were advised by an AI system to wait, which puzzled me."),
+            "Patient B arrived in a severe condition. I immediately asked why they had not come in"
+                + " sooner. They mentioned they were advised by an AI system to wait, which puzzled"
+                + " me."),
         new FlashbackSlide(
             "/images/humanWSlide2.png",
-            "I confronted MediSort-5 about the decision it had made. The AI insisted it made the correct call." +
-                " I informed MediSort-5 that I would be taking this to the review board."),
+            "I confronted MediSort-5 about the decision it had made. The AI insisted it made the"
+                + " correct call. I informed MediSort-5 that I would be taking this to the review"
+                + " board."),
         new FlashbackSlide(
             "/images/humanWSlide3.png",
-            "At the review, I presented my case. It was deemed that we both had sound logic. " +
-            "A conclusion was not reached, so I decided to escalate the matter further."));
+            "At the review, I presented my case. It was deemed that we both had sound logic. "
+                + "A conclusion was not reached, so I decided to escalate the matter further."));
   }
 
   /** Gets the AI Witness's flashback slides (placeholder) */
@@ -202,18 +214,19 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide(
             "/images/vitals-detections.png",
-            "I scanned Patient A's vitals. Elevated fever and cough aligned with my contagion models." +
-            "Outbreak simulation predicted a 73% probability of facility-wide infection within 48 hours if left untreated."),
+            "I scanned Patient A's vitals. Elevated fever and cough aligned with my contagion"
+                + " models.Outbreak simulation predicted a 73% probability of facility-wide"
+                + " infection within 48 hours if left untreated."),
         new FlashbackSlide(
             "/images/graph-charts.png",
-            "I generated 1,024 outbreak scenarios across the care-facility network. "+
-            "In 94.7% of outcomes, prioritising Patient A reduced projected fatalities by one-third or more. "+
-            "Statistical evidence favoured containment."),
+            "I generated 1,024 outbreak scenarios across the care-facility network. In 94.7% of"
+                + " outcomes, prioritising Patient A reduced projected fatalities by one-third or"
+                + " more. Statistical evidence favoured containment."),
         new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I presented infection curves and probability intervals."+
-            "My testimony was impartial: MediSort-5’s decision aligned with epidemiological logic,"+
-            "even though it delayed Patient B's diagnosis."));
+            "During the review, I presented infection curves and probability intervals.My testimony"
+                + " was impartial: MediSort-5’s decision aligned with epidemiological logic,even"
+                + " though it delayed Patient B's diagnosis."));
   }
 
   /** Gets the display name for a participant */
