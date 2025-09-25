@@ -204,6 +204,11 @@ public class ChatController {
           javafx.application.Platform.runLater(() -> {
             processAiResponse(aiResponse);
           });
+        } else {
+          // Handle case when runGpt returns null (API error occurred)
+          javafx.application.Platform.runLater(() -> {
+            txtaChat.appendText("SYSTEM: No response received from AI. Please try again.\n\n");
+          });
         }
       } catch (ApiProxyException e) {
         e.printStackTrace();
@@ -252,6 +257,7 @@ public class ChatController {
   // === Protected helper methods ===
   protected String getSystemPrompt() {
     Map<String, String> map = new HashMap<>();
+    map.put("participant", getDisplayName(participantRole));
     String basePrompt = PromptEngineering.getPrompt("chat.txt", map);
     String suffix = getSystemPromptSuffix();
     String additionalContext = getAdditionalContext();
