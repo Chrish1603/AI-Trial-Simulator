@@ -27,7 +27,7 @@ public class TrialRoomController {
   @FXML private javafx.scene.control.Label lblTimer;
   @FXML private Rectangle aiDefendent;
   @FXML private Rectangle humanWitness;
-  @FXML private Rectangle aiWitness;
+  @FXML private Rectangle aiWitness; // or whatever your character node is
 
   private static final String AI_DEFENDANT = "aiDefendent";
   private static final String HUMAN_WITNESS = "humanWitness";
@@ -75,6 +75,7 @@ public class TrialRoomController {
     if (!nz.ac.auckland.se206.GameTimer.getInstance().isRunning()) {
       nz.ac.auckland.se206.GameTimer.getInstance().start(this::onRoundEnd, this::onVerdictEnd);
     }
+    
   }
 
   // === Event Handlers ===
@@ -219,5 +220,11 @@ public class TrialRoomController {
    */
   public static Scene getTrialRoomScene() {
     return trialRoomScene;
+  }
+
+  @FXML
+  private void onAiWitnessClicked(MouseEvent event) throws IOException {
+    System.out.println("AI Witness clicked!");
+    // ...rest of your code...
   }
 }

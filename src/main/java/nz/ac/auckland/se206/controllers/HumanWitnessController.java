@@ -77,6 +77,7 @@ public class HumanWitnessController extends ChatController {
 
   @Override
   protected String getSystemPromptSuffix() {
+
     StringBuilder prompt = new StringBuilder();
     prompt.append(" You are the human witness Dr. Payne Gaun, a Senior Clinic Physician. ");
     
