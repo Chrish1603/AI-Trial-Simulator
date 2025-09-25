@@ -21,7 +21,6 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
  * Handles specific functionality for chatting with the AI witness.
  */
 public class AiWitnessController extends ChatController {
-  static boolean flashbackShown = false;
 
   private static final String PARTICIPANT_ROLE = "aiWitness";
 
@@ -41,6 +40,9 @@ public class AiWitnessController extends ChatController {
   private static AiWitnessController memoryController;
   private static javafx.scene.Scene memoryScene;
 
+  // Add static flag for scanner state
+  private static boolean isUnlocked = false;
+
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
@@ -48,9 +50,21 @@ public class AiWitnessController extends ChatController {
     System.out.println("imgHandScanner: " + imgHandScanner);
     System.out.println("progressScan: " + progressScan);
     System.out.println("lblScanStatus: " + lblScanStatus);
-    setupHandScanner();
-    txtInput.setDisable(true);
-    btnSend.setDisable(true);
+    if (isUnlocked) {
+      // Already unlocked, restore success state
+      lblScanStatus.setText("Authentication Successful.\nWelcome, Investigator.");
+      imgHandScanner.setEffect(null);
+      progressScan.setProgress(1.0);
+      txtInput.setDisable(false);
+      btnSend.setDisable(false);
+      imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_SUCCESS_IMAGE)));
+      imgHandScanner.setOnMousePressed(null);
+      imgHandScanner.setOnMouseReleased(null);
+    } else {
+      setupHandScanner();
+      txtInput.setDisable(true);
+      btnSend.setDisable(true);
+    }
   }
 
   private void setupHandScanner() {
@@ -99,12 +113,15 @@ public class AiWitnessController extends ChatController {
   }
 
   private void onScanComplete() {
-    lblScanStatus.setText("Authentication Successful. Welcome, Investigator.");
+    isUnlocked = true; // Set static flag
+    lblScanStatus.setText("Authentication Successful.\nWelcome, Investigator.");
     imgHandScanner.setEffect(null);
     progressScan.setProgress(1.0);
     txtInput.setDisable(false);
     btnSend.setDisable(false);
     imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_SUCCESS_IMAGE)));
+    imgHandScanner.setOnMousePressed(null);
+    imgHandScanner.setOnMouseReleased(null);
     txtaChat.appendText("PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak within 48 hours, infecting 15–25 others and risking up to six deaths. By deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically saving more lives overall.\n\n");
     imgGraph.setImage(new Image(getClass().getResourceAsStream("/images/ai-witness-graph.png")));
     imgGraph.setVisible(true);
