@@ -1,7 +1,13 @@
 package nz.ac.auckland.se206.controllers;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
+import nz.ac.auckland.se206.controllers.ChatController;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
@@ -19,10 +25,6 @@ public class HumanWitnessController extends ChatController {
   public void initialize() throws ApiProxyException {
     super.initialize();
     // Initialize any human witness specific UI components
-    if (agreementSlider != null) {
-      // Set default value for the agreement slider
-      agreementSlider.setValue(50.0);
-    }
   }
 
   @Override
@@ -39,6 +41,25 @@ public class HumanWitnessController extends ChatController {
         + "testimony on Patient B's deterioration and family distress.";
   }
   
+  @FXML
+  private void handleRectClick(MouseEvent event) throws IOException {
+    Rectangle clickedRectangle = (Rectangle) event.getSource();
+    String participantId = clickedRectangle.getId();
+
+    // Ensure a conversation history exists for this participant
+    conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>());
+
+    // Check if flashback should be shown first
+    // if (!flashbackShown.contains(participantId)) {
+    //   showFlashback(participantId, event);
+    //   flashbackShown.add(participantId);
+    //   return;
+    // }
+
+    // // Otherwise, go directly to chat
+    // showChatInterface(participantId, event);
+  }
+
   @Override
   protected String getAdditionalContext() {
     if (agreementSlider != null) {
