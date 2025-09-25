@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Slider;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
@@ -19,6 +20,7 @@ public class HumanWitnessController extends ChatController {
   private static Boolean noteBSeen = false;
   @FXML private Pane notePane;
   @FXML private ImageView imgNotes;
+  @FXML private Slider agreementSlider; // Add this variable to match the main branch
 
   @FXML
   @Override
@@ -76,13 +78,13 @@ public class HumanWitnessController extends ChatController {
   @Override
   protected String getSystemPromptSuffix() {
     StringBuilder prompt = new StringBuilder();
-    prompt.append(" You are the human witness of a trial game named Dr. Payne Gaun, a Senior Clinic Physician. ");
+    prompt.append(" You are the human witness Dr. Payne Gaun, a Senior Clinic Physician. ");
     
     prompt.append("You have a foggy memory and can't recall specific details about patients ");
     prompt.append("until the player has checked your notes. In your responses prompt the player to check your notes if they haven't already. ");
     
     if (!noteASeen && !noteBSeen) {
-      prompt.append("You haven't checked any of your patient notes yet. Neither has the player.");
+      prompt.append("You haven't checked any of your patient notes yet. Neither has the player. ");
       prompt.append("If asked about specific patient details, explain the player needs to check your notes first. ");
     } else {
       if (noteASeen) {
@@ -103,9 +105,22 @@ public class HumanWitnessController extends ChatController {
     prompt.append("individual treatment when potential severe harm is present. ");
     
     if (noteBSeen) {
-      prompt.append("You provide emotional testimony on Patient B's deterioration and family distress.");
+      prompt.append("You provide emotional testimony on Patient B's deterioration and family distress. ");
     }
     
+    // Keep responses concise (from main branch)
+    prompt.append("Keep your responses concise and direct, limiting them to 3-4 sentences maximum.");
+    
     return prompt.toString();
+  }
+  
+  @Override
+  protected String getAdditionalContext() {
+    if (agreementSlider != null) {
+      double agreementLevel = agreementSlider.getValue();
+      return "Current emotional state and agreement level with AI decisions: " + 
+             String.format("%.0f", agreementLevel) + "% (where 0% is strongly opposed, 100% is in full agreement).";
+    }
+    return "";
   }
 }
