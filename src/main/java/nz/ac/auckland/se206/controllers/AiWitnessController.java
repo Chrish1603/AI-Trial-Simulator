@@ -61,9 +61,9 @@ public class AiWitnessController extends ChatController {
       imgHandScanner.setOnMouseReleased(null);
 
       // Restore chat and graph if available
-      if (!memoryChatText.isEmpty()) {
+    if (!memoryChatText.isEmpty()) {
         txtaChat.setText(memoryChatText);
-      }
+    }
       if (memoryGraphImage != null) {
         imgGraph.setImage(memoryGraphImage);
         imgGraph.setVisible(true);
@@ -128,6 +128,11 @@ public class AiWitnessController extends ChatController {
     // Append AI witness text
     String aiText = "PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak within 48 hours, infecting 15–25 others and risking up to six deaths. By deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically saving more lives overall.\n\n";
     txtaChat.appendText(aiText);
+    
+    conversationHistories
+    .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
+    .add(aiText.trim());
+    sharedConversationHistory.add(aiText.trim());
 
     // Set and show graph
     Image graph = new Image(getClass().getResourceAsStream("/images/ai-witness-graph.png"));
