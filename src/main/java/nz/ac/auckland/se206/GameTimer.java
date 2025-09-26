@@ -1,11 +1,19 @@
 package nz.ac.auckland.se206;
 
+import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.controllers.TrialRoomController;
+import nz.ac.auckland.se206.controllers.VerdictController;
+import nz.ac.auckland.se206.speech.TextToSpeech;
 
 /**
  * Singleton timer manager for the game. Handles the main round timer and the final verdict timer.
@@ -20,8 +28,8 @@ public class GameTimer {
     return instance;
   }
 
-  private static final int ROUND_SECONDS = 300;
-  private static final int VERDICT_SECONDS = 10;
+  private static final int ROUND_SECONDS = 30;
+  private static final int VERDICT_SECONDS = 60;
 
   private int timeLeft;
   private Runnable onRoundEnd;
@@ -29,6 +37,7 @@ public class GameTimer {
   private final StringProperty timerText = new SimpleStringProperty();
   private Timeline timeline;
   private boolean inVerdictPhase = false;
+  private Stage currentStage;
 
   private GameTimer() {}
 
@@ -45,6 +54,33 @@ public class GameTimer {
     timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
+  }
+
+  public void setCurrentStage(Stage stage) {
+    this.currentStage = stage;
+  }
+
+  /**
+   * Switches directly to the verdict phase with a 60-second timer.
+   * Used when navigating directly to the verdict screen.
+   */
+  public void switchToVerdictPhase() {
+    // Only switch if not already in verdict phase
+    if (!inVerdictPhase) {
+      inVerdictPhase = true;
+      timeLeft = VERDICT_SECONDS;
+      updateTimerText();
+      
+      // If timer is not running, start it
+      if (timeline == null || timeline.getStatus() != Timeline.Status.RUNNING) {
+        if (timeline != null) {
+          timeline.stop();
+        }
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+      }
+    }
   }
 
   public void stop() {
@@ -74,26 +110,108 @@ public class GameTimer {
         inVerdictPhase = true;
         timeLeft = VERDICT_SECONDS;
         updateTimerText();
-        if (onRoundEnd != null) {
-          Platform.runLater(onRoundEnd);
-        }
+        handleRoundEnd();
       } else {
         timeline.stop();
-        if (onVerdictEnd != null) {
-          Platform.runLater(onVerdictEnd);
-        }
+        handleVerdictEnd();
       }
     }
   }
 
   private void updateTimerText() {
     String label = inVerdictPhase ? "Final Verdict: " : "Time Left: ";
-      int minutes = timeLeft / 60;
-      int seconds = timeLeft % 60;
+    int minutes = timeLeft / 60;
+    int seconds = timeLeft % 60;
 
-      // Format seconds as two digits (e.g. 5:07 instead of 5:7)
-      String timeFormatted = String.format("%d:%02d", minutes, seconds);
+    // Format seconds as two digits (e.g. 5:07 instead of 5:7)
+    String timeFormatted = String.format("%d:%02d", minutes, seconds);
 
-      timerText.set(label + timeFormatted);
+    timerText.set(label + timeFormatted);
+  }
+
+
+  private void handleRoundEnd() {
+    Platform.runLater(() -> {
+      System.out.println("Round timer ended!");
+      
+      boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
+      System.out.println("All chatboxes interacted: " + allInteracted);
+      
+      if (allInteracted) {
+        TextToSpeech.speak("Time is up! You've gathered enough evidence. Proceeding to verdict.");
+        transitionToVerdict();
+      } else {
+        TextToSpeech.speak("Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
+        transitionToGameOver();
+      }
+    });
+    
+    if (onRoundEnd != null) {
+      Platform.runLater(onRoundEnd);
+    }
+  }
+
+  private void handleVerdictEnd() {
+    if (onVerdictEnd != null) {
+      Platform.runLater(onVerdictEnd);
+    }
+  }
+
+  public void transitionToVerdict() {
+    Platform.runLater(() -> {
+      try {
+        if (currentStage == null) {
+          currentStage = getActiveStage();
+        }
+        
+        if (currentStage != null) {
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
+          Parent root = loader.load();
+          Scene scene = new Scene(root);
+          currentStage.setScene(scene);
+          currentStage.show();
+          
+          VerdictController controller = loader.getController();
+          controller.startVerdictTimer();
+        } else {
+          System.err.println("Error: Could not get a stage for scene transition");
+        }
+      } catch (IOException e) {
+        System.err.println("Error loading verdict scene: " + e.getMessage());
+        e.printStackTrace();
+      }
+    });
+  }
+
+  public void transitionToGameOver() {
+    Platform.runLater(() -> {
+      try {
+        if (currentStage == null) {
+          currentStage = getActiveStage();
+        }
+        
+        if (currentStage != null) {
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
+          Parent root = loader.load();
+          Scene scene = new Scene(root);
+          currentStage.setScene(scene);
+          currentStage.show();
+        } else {
+          System.err.println("Error: Could not get a stage for scene transition");
+        }
+      } catch (IOException e) {
+        System.err.println("Error loading game over scene: " + e.getMessage());
+        e.printStackTrace();
+      }
+    });
+  }
+
+  private Stage getActiveStage() {
+    for (javafx.stage.Window window : javafx.stage.Window.getWindows()) {
+      if (window instanceof Stage && window.isShowing()) {
+        return (Stage) window;
+      }
+    }
+    return null;
   }
 }

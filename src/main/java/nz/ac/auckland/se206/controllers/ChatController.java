@@ -129,6 +129,13 @@ public class ChatController {
       lblTimer
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+      
+      // Store current stage for timer transitions
+      javafx.application.Platform.runLater(() -> {
+        if (lblTimer != null && lblTimer.getScene() != null && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
+          nz.ac.auckland.se206.GameTimer.getInstance().setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
+        }
+      });
     }
      if (txtInput != null) {
     txtInput.setOnAction(event -> {
