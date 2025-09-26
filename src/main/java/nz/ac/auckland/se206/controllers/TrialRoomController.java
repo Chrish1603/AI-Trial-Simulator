@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -19,17 +20,17 @@ import nz.ac.auckland.se206.speech.TextToSpeech;
 public class TrialRoomController {
 
   private static final Set<String> flashbackShown = new HashSet<>();
+  private static final Set<String> chatboxesInteracted = new HashSet<>(); // Track interactions
   private static boolean isFirstTime = true;
   private static Scene trialRoomScene;
 
-  @FXML
-private javafx.scene.control.Button btnVerdict;
+  @FXML private Button btnVerdict;
   @FXML private javafx.scene.control.Button btnGuilty;
   @FXML private javafx.scene.control.Button btnNotGuilty;
   @FXML private javafx.scene.control.Label lblTimer;
   @FXML private Rectangle aiDefendent;
   @FXML private Rectangle humanWitness;
-  @FXML private Rectangle aiWitness; // or whatever your character node is
+  @FXML private Rectangle aiWitness;
 
   private static final String AI_DEFENDANT = "aiDefendent";
   private static final String HUMAN_WITNESS = "humanWitness";
@@ -47,8 +48,13 @@ private javafx.scene.control.Button btnVerdict;
   void initialize() {
     // Store reference to trial room scene
     javafx.application.Platform.runLater(() -> {
-      if (btnGuilty != null) {
-        trialRoomScene = btnGuilty.getScene();
+      if (btnVerdict != null) {
+        trialRoomScene = btnVerdict.getScene();
+        
+        // Store current stage for timer transitions
+        if (trialRoomScene != null && trialRoomScene.getWindow() instanceof javafx.stage.Stage) {
+          nz.ac.auckland.se206.GameTimer.getInstance().setCurrentStage((javafx.stage.Stage) trialRoomScene.getWindow());
+        }
       }
     });
     
@@ -61,38 +67,72 @@ private javafx.scene.control.Button btnVerdict;
       btnNotGuilty.setVisible(true);
       btnNotGuilty.setDisable(false);
     }
+    
+    // Initially disable verdict button until all chatboxes are interacted with
+    if (btnVerdict != null) {
+      btnVerdict.setDisable(true);
+    }
+    
     if (isFirstTime) {
       TextToSpeech.speak(
           "Welcome to the Trial Room. Interact with the AI and human characters, and determine if"
               + " the MediSort-5 AI is guilty or not.");
       isFirstTime = false;
     }
+    
     // Bind timer label to global timer
     if (lblTimer != null) {
       lblTimer
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
     }
+    
     // Start timer if not already running
     if (!nz.ac.auckland.se206.GameTimer.getInstance().isRunning()) {
       nz.ac.auckland.se206.GameTimer.getInstance().start(this::onRoundEnd, this::onVerdictEnd);
     }
     
+    // Check if we should enable the verdict button (if returning to this scene)
+    updateVerdictButtonState();
   }
 
   // === Event Handlers ===
 
   private void onRoundEnd() {
-    // Called when 2 minutes expires, force player to make a verdict (show UI, lock chat, etc)
-    TextToSpeech.speak("Time is up! Please make your verdict within 10 seconds.");
-    if (btnGuilty != null && btnNotGuilty != null) {
-      btnGuilty.setDisable(false);
-      btnNotGuilty.setDisable(false);
+    // Called when 5 minutes expires
+    System.out.println("Round timer ended. Chatboxes interacted: " + chatboxesInteracted.size());
+    
+    if (chatboxesInteracted.size() >= 3) {
+      // All three chatboxes interacted with - proceed to verdict
+      TextToSpeech.speak("Time is up! You've gathered enough evidence. Proceeding to verdict.");
+      
+      // Use Platform.runLater to ensure UI updates happen on JavaFX thread
+      javafx.application.Platform.runLater(() -> {
+        try {
+          switchToVerdict();
+        } catch (Exception e) {
+          System.err.println("Failed to switch to verdict scene:");
+          e.printStackTrace();
+        }
+      });
+    } else {
+      // Not all chatboxes interacted with - game over
+      TextToSpeech.speak("Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
+      
+      // Use Platform.runLater for UI updates
+      javafx.application.Platform.runLater(() -> {
+        try {
+          showGameOverScreen();
+        } catch (Exception e) {
+          System.err.println("Failed to show game over screen:");
+          e.printStackTrace();
+        }
+      });
     }
   }
 
   private void onVerdictEnd() {
-    // Called when 10 seconds verdict timer expires, auto-submit or lock input
+    // Called when verdict timer expires, auto-submit or lock input
     if (!verdictGiven) {
       TextToSpeech.speak("Final answer time is up! Submitting your verdict as Guilty.");
       handleVerdict(true);
@@ -100,6 +140,22 @@ private javafx.scene.control.Button btnVerdict;
     if (btnGuilty != null && btnNotGuilty != null) {
       btnGuilty.setDisable(true);
       btnNotGuilty.setDisable(true);
+    }
+  }
+
+  private void showGameOverScreen() {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
+      Parent root = loader.load();
+      
+      // Get the current stage
+      Stage stage = (Stage) lblTimer.getScene().getWindow();
+      
+      Scene scene = new Scene(root);
+      stage.setScene(scene);
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -139,6 +195,13 @@ private javafx.scene.control.Button btnVerdict;
     Rectangle clickedRectangle = (Rectangle) event.getSource();
     String participantId = clickedRectangle.getId();
 
+    // Mark this chatbox as interacted with
+    chatboxesInteracted.add(participantId);
+    System.out.println("Chatbox interacted: " + participantId + ". Total interactions: " + chatboxesInteracted.size());
+    
+    // Update verdict button state
+    updateVerdictButtonState();
+
     // Ensure a conversation history exists for this participant
     conversationHistories.computeIfAbsent(participantId, k -> new ArrayList<>());
 
@@ -153,22 +216,48 @@ private javafx.scene.control.Button btnVerdict;
     showChatInterface(participantId, event);
   }
 
-  @FXML
-private void switchToVerdict() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
-        Parent root = loader.load();
-
-        // Get the current stage
-        Stage stage = (Stage) btnVerdict.getScene().getWindow();
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
+  private void updateVerdictButtonState() {
+    if (btnVerdict != null) {
+      boolean allChatboxesInteracted = chatboxesInteracted.size() >= 3;
+      btnVerdict.setDisable(!allChatboxesInteracted);
+      
+      if (allChatboxesInteracted) {
+        btnVerdict.setStyle("-fx-background-color: #2ecc71;"); // Green when enabled
+      } else {
+        btnVerdict.setStyle("-fx-background-color: #95a5a6;"); // Gray when disabled
+      }
     }
-}
+  }
+
+  @FXML
+  private void switchToVerdict() {
+    // Only allow switching to verdict if all chatboxes have been interacted with
+    if (chatboxesInteracted.size() < 3) {
+      TextToSpeech.speak("You need to interview all witnesses first.");
+      return;
+    }
+    
+    try {
+      System.out.println("Switching to verdict scene...");
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
+      Parent root = loader.load();
+
+      // Get the current stage
+      Stage stage = (Stage) lblTimer.getScene().getWindow();
+      
+      Scene scene = new Scene(root);
+      stage.setScene(scene);
+      stage.show();
+      
+      // Access the controller to ensure verdict timer starts
+      VerdictController controller = loader.getController();
+      if (controller != null) {
+        controller.startVerdictTimer();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Shows the flashback for the given participant
@@ -232,8 +321,6 @@ private void switchToVerdict() {
     }
   }
 
-
-
   /**
    * Gets the trial room scene for returning from flashback
    */
@@ -241,9 +328,17 @@ private void switchToVerdict() {
     return trialRoomScene;
   }
 
-  @FXML
-  private void onAiWitnessClicked(MouseEvent event) throws IOException {
-    System.out.println("AI Witness clicked!");
-    // ...rest of your code...
+  // Public method to check if all chatboxes have been interacted with
+  public static boolean areAllChatboxesInteracted() {
+    return chatboxesInteracted.size() >= 3;
+  }
+
+  // Reset method for game restart
+  public static void resetInteractions() {
+    chatboxesInteracted.clear();
+    flashbackShown.clear();
+    conversationHistories.clear();
+    sharedConversationHistory.clear();
+    isFirstTime = true;
   }
 }
