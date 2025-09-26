@@ -20,7 +20,13 @@ public class GameOverController {
       // Reset game state
       TrialRoomController.resetInteractions();
       GameTimer.getInstance().stop();
-
+      
+      // Reset witness controller states
+      AiWitnessController.resetState();
+      
+      // Reset any other controllers that may need it
+      // Add more reset calls here as needed for other controllers
+      
       // Load trial room scene
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/trialroom.fxml"));
       Parent root = loader.load();
