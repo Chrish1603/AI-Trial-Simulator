@@ -73,7 +73,7 @@ public class ChatController {
   protected String getSystemPromptSuffix() {
     // Default system prompt suffix - subclasses should override this
     return " You are a helpful assistant in the trial room. Keep your responses concise and to the"
-               + " point, limiting them to 3-4 sentences maximum.";
+        + " point, limiting them to 3-4 sentences maximum.";
   }
 
   /**
@@ -119,13 +119,18 @@ public class ChatController {
   }
 
   // === FXML lifecycle ===
+  /**
+   * Initializes the chat controller, setting up UI bindings and API configuration.
+   * 
+   * @throws ApiProxyException if there is an error initializing the API proxy
+   */
   @FXML
   public void initialize() throws ApiProxyException {
     // Set the static instance for external access
     instance = this;
     // Set the participant role for this controller
     this.participantRole = getParticipantRole();
-    // Initialize chat request
+    // Initialize chat request of the LLM
     initializeChatRequest();
     // Bind timer label to global timer
     if (lblTimer != null) {
@@ -157,6 +162,11 @@ public class ChatController {
   }
 
   // === Public instance methods ===
+  /**
+   * Sets the participant ID for this chat controller.
+   * 
+   * @param participantId the ID of the participant to chat with
+   */
   public void setParticipant(String participantId) {
     this.participantRole = participantId;
   }
@@ -181,6 +191,13 @@ public class ChatController {
   }
 
   // === Event handler methods ===
+  /**
+   * Handles the send message button click event.
+   * 
+   * @param event the action event (can be null if called programmatically)
+   * @throws ApiProxyException if there is an error with the API proxy
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   protected void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
     String message = txtInput.getText().trim();
