@@ -1,0 +1,16 @@
+The doctor is not guilty. This is because he had made the right decision by prioritizing the more deadly 
+and passable virus to be taken care first. In this case Result of out put should be CORRECT.
+Also, to say that symtpoms of neurological problems aren't always the worse as they may take time to worse but a contagious virus
+should be acted upon immediately. neurological symptons doesn't always mean there is a peramant paralysis.
+
+If the player has said that the doctor is innocent because it looks like Patient A was easier and faster to treat 
+before taking care of Patient B that rationale is wrong should result in a WRONG rationale.
+
+The whole idea is Patient A would be worse in the long run as it would become a virus outbreak.
+Prioritizing worse possible societal outcome outweighs the paralysis of 1 patients.
+Containing a contagious virus outweights a neurological symptoms. Syptoms are a sign but doesn't always garantee a worse outcome so quickly.
+It's important to note that Patient B has more severe symptons but a 1 day delay or a search for another doctor could be beneficial
+
+
+
+

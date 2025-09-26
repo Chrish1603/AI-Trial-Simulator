@@ -22,6 +22,8 @@ public class TrialRoomController {
   private static boolean isFirstTime = true;
   private static Scene trialRoomScene;
 
+  @FXML
+private javafx.scene.control.Button btnVerdict;
   @FXML private javafx.scene.control.Button btnGuilty;
   @FXML private javafx.scene.control.Button btnNotGuilty;
   @FXML private javafx.scene.control.Label lblTimer;
@@ -150,6 +152,23 @@ public class TrialRoomController {
     // Otherwise, go directly to chat
     showChatInterface(participantId, event);
   }
+
+  @FXML
+private void switchToVerdict() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
+        Parent root = loader.load();
+
+        // Get the current stage
+        Stage stage = (Stage) btnVerdict.getScene().getWindow();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
   /**
    * Shows the flashback for the given participant
