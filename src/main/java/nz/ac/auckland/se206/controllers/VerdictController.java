@@ -259,6 +259,9 @@ public class VerdictController {
       TrialRoomController.resetInteractions();
       GameTimer.getInstance().stop();
 
+      AiWitnessController.resetState();
+      HumanWitnessController.resetState();
+
       // Load trial room scene
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/trialroom.fxml"));
       Parent root = loader.load();

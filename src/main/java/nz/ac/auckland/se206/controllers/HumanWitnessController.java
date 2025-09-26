@@ -208,4 +208,14 @@ public class HumanWitnessController extends ChatController {
 
     return prompt.toString();
   }
+
+  /**
+   * Resets the static state variables for the Human Witness controller.
+   * This should be called when restarting the game.
+   */
+  public static void resetState() {
+    noteASeen = false;
+    noteBSeen = false;
+    System.out.println("Human Witness state reset");
+  }
 }
