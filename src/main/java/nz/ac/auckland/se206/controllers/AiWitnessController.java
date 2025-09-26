@@ -49,6 +49,19 @@ public class AiWitnessController extends ChatController {
    * 
    * @throws ApiProxyException if there is an error initializing the API proxy
    */
+   * Resets the static state variables for the AI Witness controller.
+   * This should be called when restarting the game.
+   */
+  public static void resetState() {
+    isUnlocked = false;
+    memoryChatText = "";
+    memoryGraphImage = null;
+    memoryScene = null;
+    memoryController = null;
+    System.out.println("AI Witness state reset");
+  }
+
+
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
