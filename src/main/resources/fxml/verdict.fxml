@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.VerdictController">
    <children>
-      <ImageView fitHeight="590.0" fitWidth="781.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true">
+      <ImageView fitHeight="605.0" fitWidth="795.0" layoutX="-5.0" layoutY="-3.0" pickOnBounds="true">
          <image>
             <Image url="@../images/verdict-scene.png" />
          </image>
@@ -25,7 +25,8 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="117.0" layoutX="3.0" layoutY="482.0" stroke="TRANSPARENT" strokeType="INSIDE" width="251.0" />
-      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="94.0" layoutX="502.0" layoutY="490.0" stroke="TRANSPARENT" strokeType="INSIDE" width="251.0" />
+      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="87.0" layoutX="16.0" layoutY="505.0" stroke="TRANSPARENT" strokeType="INSIDE" width="215.0" />
+      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="515.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" width="234.0" />
+      <Button fx:id="btnReplay" layoutX="264.0" layoutY="527.0" mnemonicParsing="false" onAction="#onReplayGame" prefHeight="52.0" prefWidth="215.0" style="-fx-background-color: #3498db; -fx-font-size: 14px; -fx-font-weight: bold;" text="Replay Game" textFill="WHITE" visible="false" />
    </children>
 </AnchorPane>
