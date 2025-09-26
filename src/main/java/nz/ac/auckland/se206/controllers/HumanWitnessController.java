@@ -31,6 +31,13 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Handles clicking on the notepad to view patient notes.
+   * Opens the notes panel for the player to examine evidence.
+   * 
+   * @param event the mouse click event
+   * @throws IOException if there's an error loading the notes interface
+   */
   @FXML
   private void handleNotepadClick(MouseEvent event) throws IOException {
     if (notePane != null) {
@@ -38,6 +45,9 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Closes the notes panel when the player is done viewing patient notes.
+   */
   @FXML
   private void onCloseNotes() {
     if (notePane != null) {
@@ -45,6 +55,10 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Displays Patient A's medical notes when the corresponding button is clicked.
+   * Shows information about the contagious viral infection case.
+   */
   @FXML
   private void viewANotes() {
     imgNotes.setImage(
@@ -70,6 +84,10 @@ public class HumanWitnessController extends ChatController {
     noteASeen = true;
   }
 
+  /**
+   * Displays Patient B's medical notes when the corresponding button is clicked.
+   * Shows information about the neurological condition case.
+   */
   @FXML
   private void viewBNotes() {
     imgNotes.setImage(
@@ -97,6 +115,13 @@ public class HumanWitnessController extends ChatController {
     noteBSeen = true;
   }
 
+  /**
+   * Generates an AI response based on a system prompt.
+   * Used to create contextual responses when the player examines evidence.
+   * 
+   * @param systemPrompt the system message to prompt the AI with
+   * @throws ApiProxyException if there's an error communicating with the AI API
+   */
   private void generateSystemPromptedResponse(String systemPrompt) throws ApiProxyException {
     if (chatCompletionRequest == null) {
       super.initializeChatRequest();

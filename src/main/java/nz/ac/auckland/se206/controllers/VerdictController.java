@@ -34,6 +34,10 @@ public class VerdictController {
   private boolean verdictGiven = false;
   private String playerRationale = "";
 
+  /**
+   * Initializes the verdict controller.
+   * Sets up timer binding, verdict phase, conversation summary, and verdict button handlers.
+   */
   @FXML
   public void initialize() {
     System.out.println("VerdictController initialized");
@@ -48,13 +52,16 @@ public class VerdictController {
       startVerdictTimer();
     }
 
-    // Display conversation summary
+    // Display the conversation summary from the LLM
     displayConversationSummary();
 
     // Set up the click handlers for verdict buttons
     setupVerdictButtons();
   }
 
+  /**
+   * Sets up click handlers for the verdict buttons (GUILTY and INNOCENT).
+   */
   private void setupVerdictButtons() {
     if (btnGuilty != null) {
       btnGuilty.setOnMouseClicked(this::onGuiltyClicked);
@@ -65,6 +72,10 @@ public class VerdictController {
     }
   }
 
+  /**
+   * Displays a summary of the trial and instructions for the player.
+   * Shows that evidence has been gathered and prompts for final verdict.
+   */
   private void displayConversationSummary() {
     txtaChat.appendText("=== TRIAL SUMMARY ===\n");
     txtaChat.appendText("You have gathered evidence from all witnesses.\n");
@@ -72,11 +83,19 @@ public class VerdictController {
     txtaChat.appendText("Enter your rationale and select GUILTY or INNOCENT.\n\n");
   }
 
+  /**
+   * Starts the verdict timer phase.
+   * Switches the global timer to verdict phase countdown.
+   */
   public void startVerdictTimer() {
     System.out.println("Starting verdict timer phase");
     GameTimer.getInstance().switchToVerdictPhase();
   }
 
+  /**
+   * Handles the player submitting their rationale.
+   * Stores the rationale and updates the UI to prompt for verdict selection.
+   */
   @FXML
   private void onSendMessage() {
     String message = txtInput.getText().trim();
@@ -88,18 +107,34 @@ public class VerdictController {
     }
   }
 
+  /**
+   * Handles the player clicking the GUILTY verdict button.
+   * 
+   * @param event the mouse click event
+   */
   @FXML
   private void onGuiltyClicked(MouseEvent event) {
     System.out.println("Guilty verdict selected");
     handleVerdict(true);
   }
 
+  /**
+   * Handles the player clicking the INNOCENT verdict button.
+   * 
+   * @param event the mouse click event
+   */
   @FXML
   private void onInnocentClicked(MouseEvent event) {
     System.out.println("Innocent verdict selected");
     handleVerdict(false);
   }
 
+  /**
+   * Processes the player's verdict selection and initiates LLM feedback analysis.
+   * Runs the LLM analysis in a background thread to avoid UI freezing.
+   * 
+   * @param guilty true if the player selected GUILTY, false if INNOCENT
+   */
   private void handleVerdict(boolean guilty) {
     if (verdictGiven) return;
 
@@ -243,6 +278,10 @@ public class VerdictController {
     }
   }
 
+  /**
+   * Displays the final results and shows the replay button.
+   * Called after the LLM feedback has been displayed to the player.
+   */
   private void showResults() {
     txtaChat.appendText("\nThank you for participating in the AI Ethics Trial!\n");
 
@@ -252,6 +291,10 @@ public class VerdictController {
     }
   }
 
+  /**
+   * Handles the replay button click to restart the game.
+   * Resets game state, stops the timer, and loads the trial room scene.
+   */
   @FXML
   private void onReplayGame() {
     try {
@@ -270,7 +313,7 @@ public class VerdictController {
       stage.setScene(scene);
       stage.show();
     } catch (IOException e) {
-      e.printStackTrace();
+      System.err.println("Error loading trial room scene: " + e.getMessage());
     }
   }
 }

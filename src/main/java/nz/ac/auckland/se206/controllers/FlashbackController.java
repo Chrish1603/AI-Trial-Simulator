@@ -52,6 +52,12 @@ public class FlashbackController {
   }
 
   /** Initializes the flashback with the given participant data */
+  /**
+   * Initializes the flashback with participant-specific content.
+   * 
+   * @param participantId the ID of the participant whose flashback to show
+   * @param returnFxml the FXML file to return to after the flashback
+   */
   public void initializeFlashback(String participantId, String returnFxml) {
     this.participantId = participantId;
     this.returnFxml = returnFxml;
@@ -127,6 +133,9 @@ public class FlashbackController {
   }
 
   /** Handles the next button click */
+  /**
+   * Handles the next slide button click event.
+   */
   @FXML
   private void onNextSlide() {
     if (currentSlideIndex < slides.size() - 1) {

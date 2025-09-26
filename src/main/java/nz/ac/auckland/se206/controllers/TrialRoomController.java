@@ -44,6 +44,10 @@ public class TrialRoomController {
   private boolean verdictGiven = false;
 
   // === FXML lifecycle ===
+  /**
+   * Initializes the Trial Room scene, setting up UI components, timer bindings, and game state.
+   * This method is automatically called when the FXML is loaded.
+   */
   @FXML
   void initialize() {
     // Store reference to trial room scene
@@ -101,6 +105,10 @@ public class TrialRoomController {
 
   // === Event Handlers ===
 
+  /**
+   * Called when the 5-minute round timer expires. 
+   * Checks if all three chatboxes have been interacted with to determine next action.
+   */
   private void onRoundEnd() {
     // Called when 5 minutes expires
     System.out.println("Round timer ended. Chatboxes interacted: " + chatboxesInteracted.size());
@@ -137,6 +145,9 @@ public class TrialRoomController {
     }
   }
 
+  /**
+   * Called when the verdict timer expires. Auto-submits the verdict as guilty if no verdict was given.
+   */
   private void onVerdictEnd() {
     // Called when verdict timer expires, auto-submit or lock input
     if (!verdictGiven) {
@@ -149,6 +160,9 @@ public class TrialRoomController {
     }
   }
 
+  /**
+   * Displays the game over screen when the player fails to gather enough evidence.
+   */
   private void showGameOverScreen() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
@@ -165,16 +179,27 @@ public class TrialRoomController {
     }
   }
 
+  /**
+   * Handles the "Guilty" button press event.
+   */
   @FXML
   private void onGuiltyPressed() {
     handleVerdict(true);
   }
 
+  /**
+   * Handles the "Not Guilty" button press event.
+   */
   @FXML
   private void onNotGuiltyPressed() {
     handleVerdict(false);
   }
 
+  /**
+   * Handles the verdict logic after a button is pressed.
+   * 
+   * @param guilty true if the verdict is guilty, false if not guilty
+   */
   private void handleVerdict(boolean guilty) {
     verdictGiven = true;
     if (btnGuilty != null && btnNotGuilty != null) {
@@ -226,6 +251,9 @@ public class TrialRoomController {
     showChatInterface(participantId, event);
   }
 
+  /**
+   * Updates the verdict button's visual state and enabled status based on chatbox interactions.
+   */
   private void updateVerdictButtonState() {
     if (btnVerdict != null) {
       boolean allChatboxesInteracted = chatboxesInteracted.size() >= 3;
@@ -239,6 +267,9 @@ public class TrialRoomController {
     }
   }
 
+  /**
+   * Switches to the verdict scene if all chatboxes have been interacted with.
+   */
   @FXML
   private void switchToVerdict() {
     // Only allow switching to verdict if all chatboxes have been interacted with
@@ -269,7 +300,13 @@ public class TrialRoomController {
     }
   }
 
-  /** Shows the flashback for the given participant */
+  /**
+   * Shows the flashback for the given participant.
+   * 
+   * @param participantId the ID of the participant whose flashback to show
+   * @param event the mouse event that triggered this action
+   * @throws IOException if there is an error loading the flashback FXML
+   */
   private void showFlashback(String participantId, MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
     Parent root = loader.load();
@@ -284,7 +321,13 @@ public class TrialRoomController {
     stage.show();
   }
 
-  /** Shows the chat interface for the given participant */
+  /**
+   * Shows the chat interface for the given participant.
+   * 
+   * @param participantId the ID of the participant to chat with
+   * @param event the mouse event that triggered this action
+   * @throws IOException if there is an error loading the chat FXML
+   */
   private void showChatInterface(String participantId, MouseEvent event) throws IOException {
     String fxmlFile = getFxmlFileForParticipant(participantId);
     if (fxmlFile == null) {
@@ -314,6 +357,12 @@ public class TrialRoomController {
     }
   }
 
+  /**
+   * Gets the FXML file path for a given participant ID.
+   * 
+   * @param participantId the ID of the participant
+   * @return the FXML file path for the participant, or null if not found
+   */
   private String getFxmlFileForParticipant(String participantId) {
     switch (participantId) {
       case AI_DEFENDANT:
@@ -327,17 +376,28 @@ public class TrialRoomController {
     }
   }
 
-  /** Gets the trial room scene for returning from flashback */
+  /**
+   * Gets the trial room scene for returning from flashback.
+   * 
+   * @return the trial room scene
+   */
   public static Scene getTrialRoomScene() {
     return trialRoomScene;
   }
 
-  // Public method to check if all chatboxes have been interacted with
+  /**
+   * Checks if all chatboxes have been interacted with.
+   * 
+   * @return true if all three chatboxes have been interacted with, false otherwise
+   */
   public static boolean areAllChatboxesInteracted() {
     return chatboxesInteracted.size() >= 3;
   }
 
-  // Reset method for game restart
+  /**
+   * Resets all game interactions and state for a new game.
+   * Clears chatbox interactions, flashback history, and conversation data.
+   */
   public static void resetInteractions() {
     chatboxesInteracted.clear();
     flashbackShown.clear();
