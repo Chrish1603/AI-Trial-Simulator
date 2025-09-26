@@ -47,17 +47,20 @@ public class TrialRoomController {
   @FXML
   void initialize() {
     // Store reference to trial room scene
-    javafx.application.Platform.runLater(() -> {
-      if (btnVerdict != null) {
-        trialRoomScene = btnVerdict.getScene();
-        
-        // Store current stage for timer transitions
-        if (trialRoomScene != null && trialRoomScene.getWindow() instanceof javafx.stage.Stage) {
-          nz.ac.auckland.se206.GameTimer.getInstance().setCurrentStage((javafx.stage.Stage) trialRoomScene.getWindow());
-        }
-      }
-    });
-    
+    javafx.application.Platform.runLater(
+        () -> {
+          if (btnVerdict != null) {
+            trialRoomScene = btnVerdict.getScene();
+
+            // Store current stage for timer transitions
+            if (trialRoomScene != null
+                && trialRoomScene.getWindow() instanceof javafx.stage.Stage) {
+              nz.ac.auckland.se206.GameTimer.getInstance()
+                  .setCurrentStage((javafx.stage.Stage) trialRoomScene.getWindow());
+            }
+          }
+        });
+
     // Ensure verdict buttons are visible at start
     if (btnGuilty != null) {
       btnGuilty.setVisible(true);
@@ -67,31 +70,31 @@ public class TrialRoomController {
       btnNotGuilty.setVisible(true);
       btnNotGuilty.setDisable(false);
     }
-    
+
     // Initially disable verdict button until all chatboxes are interacted with
     if (btnVerdict != null) {
       btnVerdict.setDisable(true);
     }
-    
+
     if (isFirstTime) {
       TextToSpeech.speak(
           "Welcome to the Trial Room. Interact with the AI and human characters, and determine if"
               + " the MediSort-5 AI is guilty or not.");
       isFirstTime = false;
     }
-    
+
     // Bind timer label to global timer
     if (lblTimer != null) {
       lblTimer
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
     }
-    
+
     // Start timer if not already running
     if (!nz.ac.auckland.se206.GameTimer.getInstance().isRunning()) {
       nz.ac.auckland.se206.GameTimer.getInstance().start(this::onRoundEnd, this::onVerdictEnd);
     }
-    
+
     // Check if we should enable the verdict button (if returning to this scene)
     updateVerdictButtonState();
   }
@@ -101,33 +104,36 @@ public class TrialRoomController {
   private void onRoundEnd() {
     // Called when 5 minutes expires
     System.out.println("Round timer ended. Chatboxes interacted: " + chatboxesInteracted.size());
-    
+
     if (chatboxesInteracted.size() >= 3) {
       // All three chatboxes interacted with - proceed to verdict
       TextToSpeech.speak("Time is up! You've gathered enough evidence. Proceeding to verdict.");
-      
+
       // Use Platform.runLater to ensure UI updates happen on JavaFX thread
-      javafx.application.Platform.runLater(() -> {
-        try {
-          switchToVerdict();
-        } catch (Exception e) {
-          System.err.println("Failed to switch to verdict scene:");
-          e.printStackTrace();
-        }
-      });
+      javafx.application.Platform.runLater(
+          () -> {
+            try {
+              switchToVerdict();
+            } catch (Exception e) {
+              System.err.println("Failed to switch to verdict scene:");
+              e.printStackTrace();
+            }
+          });
     } else {
       // Not all chatboxes interacted with - game over
-      TextToSpeech.speak("Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
-      
+      TextToSpeech.speak(
+          "Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
+
       // Use Platform.runLater for UI updates
-      javafx.application.Platform.runLater(() -> {
-        try {
-          showGameOverScreen();
-        } catch (Exception e) {
-          System.err.println("Failed to show game over screen:");
-          e.printStackTrace();
-        }
-      });
+      javafx.application.Platform.runLater(
+          () -> {
+            try {
+              showGameOverScreen();
+            } catch (Exception e) {
+              System.err.println("Failed to show game over screen:");
+              e.printStackTrace();
+            }
+          });
     }
   }
 
@@ -147,10 +153,10 @@ public class TrialRoomController {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
       Parent root = loader.load();
-      
+
       // Get the current stage
       Stage stage = (Stage) lblTimer.getScene().getWindow();
-      
+
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.show();
@@ -197,8 +203,12 @@ public class TrialRoomController {
 
     // Mark this chatbox as interacted with
     chatboxesInteracted.add(participantId);
-    System.out.println("Chatbox interacted: " + participantId + ". Total interactions: " + chatboxesInteracted.size());
-    
+    System.out.println(
+        "Chatbox interacted: "
+            + participantId
+            + ". Total interactions: "
+            + chatboxesInteracted.size());
+
     // Update verdict button state
     updateVerdictButtonState();
 
@@ -220,7 +230,7 @@ public class TrialRoomController {
     if (btnVerdict != null) {
       boolean allChatboxesInteracted = chatboxesInteracted.size() >= 3;
       btnVerdict.setDisable(!allChatboxesInteracted);
-      
+
       if (allChatboxesInteracted) {
         btnVerdict.setStyle("-fx-background-color: #2ecc71;"); // Green when enabled
       } else {
@@ -236,7 +246,7 @@ public class TrialRoomController {
       TextToSpeech.speak("You need to interview all witnesses first.");
       return;
     }
-    
+
     try {
       System.out.println("Switching to verdict scene...");
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
@@ -244,11 +254,11 @@ public class TrialRoomController {
 
       // Get the current stage
       Stage stage = (Stage) lblTimer.getScene().getWindow();
-      
+
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.show();
-      
+
       // Access the controller to ensure verdict timer starts
       VerdictController controller = loader.getController();
       if (controller != null) {
@@ -259,36 +269,32 @@ public class TrialRoomController {
     }
   }
 
-  /**
-   * Shows the flashback for the given participant
-   */
+  /** Shows the flashback for the given participant */
   private void showFlashback(String participantId, MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
     Parent root = loader.load();
-    
+
     FlashbackController controller = loader.getController();
     String returnFxml = getFxmlFileForParticipant(participantId);
     controller.initializeFlashback(participantId, returnFxml);
-    
+
     Scene scene = new Scene(root);
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.setScene(scene);
     stage.show();
   }
 
-  /**
-   * Shows the chat interface for the given participant
-   */
+  /** Shows the chat interface for the given participant */
   private void showChatInterface(String participantId, MouseEvent event) throws IOException {
     String fxmlFile = getFxmlFileForParticipant(participantId);
     if (fxmlFile == null) {
       return;
     }
-    
+
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
       Parent root = loader.load();
-      
+
       // Set participant in ChatController if present and show conversation history
       Object controller = loader.getController();
       if (controller instanceof ChatController) {
@@ -298,7 +304,7 @@ public class TrialRoomController {
         // Set previous scene so chat can return
         ChatController.setPreviousScene(((Node) event.getSource()).getScene());
       }
-      
+
       Scene scene = new Scene(root);
       Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
       stage.setScene(scene);
@@ -321,9 +327,7 @@ public class TrialRoomController {
     }
   }
 
-  /**
-   * Gets the trial room scene for returning from flashback
-   */
+  /** Gets the trial room scene for returning from flashback */
   public static Scene getTrialRoomScene() {
     return trialRoomScene;
   }

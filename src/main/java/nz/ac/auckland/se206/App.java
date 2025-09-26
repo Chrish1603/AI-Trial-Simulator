@@ -51,8 +51,6 @@ public class App extends Application {
     return new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml")).load();
   }
 
-
-
   /**
    * This method is invoked when the application starts. It loads and shows the "room" scene.
    *

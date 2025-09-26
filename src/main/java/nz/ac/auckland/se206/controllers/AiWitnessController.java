@@ -61,9 +61,9 @@ public class AiWitnessController extends ChatController {
       imgHandScanner.setOnMouseReleased(null);
 
       // Restore chat and graph if available
-    if (!memoryChatText.isEmpty()) {
+      if (!memoryChatText.isEmpty()) {
         txtaChat.setText(memoryChatText);
-    }
+      }
       if (memoryGraphImage != null) {
         imgGraph.setImage(memoryGraphImage);
         imgGraph.setVisible(true);
@@ -91,15 +91,20 @@ public class AiWitnessController extends ChatController {
     imgHandScanner.setEffect(new Glow(0.7));
     imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_DEFAULT_IMAGE)));
 
-    scanTimeline = new Timeline(new KeyFrame(Duration.millis(50), e -> {
-      scanProgress += 0.05 / SCAN_DURATION;
-      progressScan.setProgress(scanProgress);
-      imgHandScanner.setEffect(new Glow(0.7 + 0.3 * Math.sin(scanProgress * Math.PI * 4)));
-      if (scanProgress >= 1.0) {
-        scanTimeline.stop();
-        onScanComplete();
-      }
-    }));
+    scanTimeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.millis(50),
+                e -> {
+                  scanProgress += 0.05 / SCAN_DURATION;
+                  progressScan.setProgress(scanProgress);
+                  imgHandScanner.setEffect(
+                      new Glow(0.7 + 0.3 * Math.sin(scanProgress * Math.PI * 4)));
+                  if (scanProgress >= 1.0) {
+                    scanTimeline.stop();
+                    onScanComplete();
+                  }
+                }));
     scanTimeline.setCycleCount(Timeline.INDEFINITE);
     scanTimeline.play();
   }
@@ -126,12 +131,16 @@ public class AiWitnessController extends ChatController {
     imgHandScanner.setOnMouseReleased(null);
 
     // Append AI witness text
-    String aiText = "PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak within 48 hours, infecting 15–25 others and risking up to six deaths. By deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically saving more lives overall.\n\n";
+    String aiText =
+        "PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak"
+            + " within 48 hours, infecting 15–25 others and risking up to six deaths. By"
+            + " deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically"
+            + " saving more lives overall.\n\n";
     txtaChat.appendText(aiText);
-    
+
     conversationHistories
-    .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
-    .add(aiText.trim());
+        .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
+        .add(aiText.trim());
     sharedConversationHistory.add(aiText.trim());
 
     // Set and show graph
@@ -156,12 +165,12 @@ public class AiWitnessController extends ChatController {
 
   @Override
   protected String getSystemPromptSuffix() {
-    return " You are the AI witness PathoScan-7, a Disease Spread AI. "
-        + "You are an independent system that models contagion spread in the city. "
-        + "You will testify that Patient A's illness had a very high transmission potential "
-        + "in the care facility. You argue that MediSort-5's decision statistically protected more lives. "
-        + "You speak in a precise, analytical manner with statistical data to support your testimony. "
-        + "Keep your responses concise and direct, limiting them to 3-4 sentences maximum.";
+    return " You are the AI witness PathoScan-7, a Disease Spread AI. You are an independent system"
+               + " that models contagion spread in the city. You will testify that Patient A's"
+               + " illness had a very high transmission potential in the care facility. You argue"
+               + " that MediSort-5's decision statistically protected more lives. You speak in a"
+               + " precise, analytical manner with statistical data to support your testimony. Keep"
+               + " your responses concise and direct, limiting them to 3-4 sentences maximum.";
   }
 
   @Override
@@ -177,8 +186,8 @@ public class AiWitnessController extends ChatController {
 
   public static javafx.scene.Scene getMemoryScene() throws IOException {
     if (memoryScene == null) {
-      javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-        AiWitnessController.class.getResource("/fxml/aiWit.fxml"));
+      javafx.fxml.FXMLLoader loader =
+          new javafx.fxml.FXMLLoader(AiWitnessController.class.getResource("/fxml/aiWit.fxml"));
       javafx.scene.Parent root = loader.load();
       memoryController = loader.getController();
       memoryScene = new javafx.scene.Scene(root);

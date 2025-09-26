@@ -27,8 +27,8 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
- * Base controller for all chat interfaces. Contains common functionality
- * for chatting with AI characters and managing conversation histories.
+ * Base controller for all chat interfaces. Contains common functionality for chatting with AI
+ * characters and managing conversation histories.
  */
 public class ChatController {
   protected static Scene previousScene;
@@ -67,16 +67,17 @@ public class ChatController {
     // Use the dynamically set participant role if available, otherwise use default
     return participantRole != null ? participantRole : "genericChat";
   }
-  
+
   protected String getSystemPromptSuffix() {
     // Default system prompt suffix - subclasses should override this
-    return " You are a helpful assistant in the trial room. Keep your responses concise and to the point, limiting them to 3-4 sentences maximum.";
+    return " You are a helpful assistant in the trial room. Keep your responses concise and to the"
+               + " point, limiting them to 3-4 sentences maximum.";
   }
-  
+
   /**
-   * Provides additional context that can be added to the system prompt.
-   * Subclasses can override this to provide dynamic context based on UI state.
-   * 
+   * Provides additional context that can be added to the system prompt. Subclasses can override
+   * this to provide dynamic context based on UI state.
+   *
    * @return additional context string, or empty string if no additional context
    */
   protected String getAdditionalContext() {
@@ -129,24 +130,29 @@ public class ChatController {
       lblTimer
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
-      
+
       // Store current stage for timer transitions
-      javafx.application.Platform.runLater(() -> {
-        if (lblTimer != null && lblTimer.getScene() != null && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
-          nz.ac.auckland.se206.GameTimer.getInstance().setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
-        }
-      });
+      javafx.application.Platform.runLater(
+          () -> {
+            if (lblTimer != null
+                && lblTimer.getScene() != null
+                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
+              nz.ac.auckland.se206.GameTimer.getInstance()
+                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
+            }
+          });
     }
-     if (txtInput != null) {
-    txtInput.setOnAction(event -> {
-      try {
-        onSendMessage(null); // null is fine since ActionEvent is not used
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    });
+    if (txtInput != null) {
+      txtInput.setOnAction(
+          event -> {
+            try {
+              onSendMessage(null); // null is fine since ActionEvent is not used
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          });
+    }
   }
-}
 
   // === Public instance methods ===
   public void setParticipant(String participantId) {
@@ -154,8 +160,8 @@ public class ChatController {
   }
 
   /**
-   * Initializes the chat completion request with default settings.
-   * This method is called automatically during initialization.
+   * Initializes the chat completion request with default settings. This method is called
+   * automatically during initialization.
    */
   protected void initializeChatRequest() {
     try {
@@ -180,26 +186,24 @@ public class ChatController {
       return;
     }
     txtInput.clear();
-    
+
     // Ensure chatCompletionRequest is initialized
     if (chatCompletionRequest == null) {
       initializeChatRequest();
     }
-    
+
     // Process user message
     processUserMessage(message);
-    
+
     // Generate AI response in background thread
     generateAiResponse(new ChatMessage("user", message));
   }
-  
-  /**
-   * Processes and displays the user's message, adding it to conversation histories.
-   */
+
+  /** Processes and displays the user's message, adding it to conversation histories. */
   private void processUserMessage(String message) {
     // Display user message
     txtaChat.appendText("User: " + message + "\n\n");
-    
+
     // Add to conversation histories
     String userMessage = "User: " + message;
     conversationHistories
@@ -207,66 +211,67 @@ public class ChatController {
         .add(userMessage);
     sharedConversationHistory.add(userMessage);
   }
-  
 
-/**
- * Generates AI response in a background thread and updates the UI.
- */
-private void generateAiResponse(ChatMessage userMessage) {
+  /** Generates AI response in a background thread and updates the UI. */
+  private void generateAiResponse(ChatMessage userMessage) {
 
-  javafx.application.Platform.runLater(() -> {
-    loadingBaseText = getDisplayName(participantRole) + ": Loading";
-    txtaChat.appendText(loadingBaseText + " .\n\n");
-    txtInput.setDisable(true);
-    btnSend.setDisable(true);
+    javafx.application.Platform.runLater(
+        () -> {
+          loadingBaseText = getDisplayName(participantRole) + ": Loading";
+          txtaChat.appendText(loadingBaseText + " .\n\n");
+          txtInput.setDisable(true);
+          btnSend.setDisable(true);
 
-    // Start loading animation
-    startLoadingAnimation();
-  });
-
-  new Thread(() -> {
-    try {
-      ChatMessage aiResponse = runGpt(userMessage);
-      if (aiResponse != null) {
-        javafx.application.Platform.runLater(() -> {
-          stopLoadingAnimation();
-          removeLoadingText();
-          processAiResponse(aiResponse);
-          txtInput.setDisable(false);
-          btnSend.setDisable(false);
+          // Start loading animation
+          startLoadingAnimation();
         });
-      } else {
-        javafx.application.Platform.runLater(() -> {
-          stopLoadingAnimation();
-          removeLoadingText();
-          txtaChat.appendText("SYSTEM: No response received from AI. Please try again.\n\n");
-          txtInput.setDisable(false);
-          btnSend.setDisable(false);
-        });
-      }
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-      javafx.application.Platform.runLater(() -> {
-        stopLoadingAnimation();
-        removeLoadingText();
-        txtaChat.appendText("SYSTEM: Error generating response. Please try again.\n\n");
-        txtInput.setDisable(false);
-        btnSend.setDisable(false);
-      });
-    }
-  }).start();
-}
 
+    new Thread(
+            () -> {
+              try {
+                ChatMessage aiResponse = runGpt(userMessage);
+                if (aiResponse != null) {
+                  javafx.application.Platform.runLater(
+                      () -> {
+                        stopLoadingAnimation();
+                        removeLoadingText();
+                        processAiResponse(aiResponse);
+                        txtInput.setDisable(false);
+                        btnSend.setDisable(false);
+                      });
+                } else {
+                  javafx.application.Platform.runLater(
+                      () -> {
+                        stopLoadingAnimation();
+                        removeLoadingText();
+                        txtaChat.appendText(
+                            "SYSTEM: No response received from AI. Please try again.\n\n");
+                        txtInput.setDisable(false);
+                        btnSend.setDisable(false);
+                      });
+                }
+              } catch (ApiProxyException e) {
+                e.printStackTrace();
+                javafx.application.Platform.runLater(
+                    () -> {
+                      stopLoadingAnimation();
+                      removeLoadingText();
+                      txtaChat.appendText(
+                          "SYSTEM: Error generating response. Please try again.\n\n");
+                      txtInput.setDisable(false);
+                      btnSend.setDisable(false);
+                    });
+              }
+            })
+        .start();
+  }
 
-  
-  /**
-   * Processes and displays the AI response, adding it to conversation histories.
-   */
+  /** Processes and displays the AI response, adding it to conversation histories. */
   protected void processAiResponse(ChatMessage aiResponse) {
     // Create display response with correct role
     ChatMessage displayResponse = new ChatMessage(participantRole, aiResponse.getContent());
     appendChatMessage(displayResponse);
-    
+
     // Add to conversation histories
     String responseMessage = getDisplayName(participantRole) + ": " + aiResponse.getContent();
     conversationHistories
@@ -301,7 +306,7 @@ private void generateAiResponse(ChatMessage userMessage) {
     String basePrompt = PromptEngineering.getPrompt("chat.txt", map);
     String suffix = getSystemPromptSuffix();
     String additionalContext = getAdditionalContext();
-    
+
     return basePrompt + suffix + (additionalContext.isEmpty() ? "" : " " + additionalContext);
   }
 
@@ -316,40 +321,40 @@ private void generateAiResponse(ChatMessage userMessage) {
   protected ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     // Create a fresh request for each message to include full conversation context
     ChatCompletionRequest freshRequest = createFreshChatRequest();
-    
+
     // Add system prompt with participant role context
     String systemPrompt = getSystemPrompt();
     freshRequest.addMessage("system", systemPrompt);
-    
+
     // Add conversation history as context
     addConversationHistoryToRequest(freshRequest);
-    
+
     // Add the current message
     freshRequest.addMessage(msg);
 
     try {
       System.out.println("DEBUG: System prompt length: " + systemPrompt.length() + " characters");
       System.out.println("DEBUG: User message: " + msg.getContent());
-      
+
       ChatCompletionResult chatCompletionResult = freshRequest.execute();
-      
+
       if (chatCompletionResult == null || chatCompletionResult.getChoices() == null) {
         System.err.println("ERROR: No response or choices returned from API");
         return null;
       }
-      
+
       // Check if there are any choices
       boolean hasChoices = false;
       for (@SuppressWarnings("unused") Choice choice : chatCompletionResult.getChoices()) {
         hasChoices = true;
         break;
       }
-      
+
       if (!hasChoices) {
         System.err.println("ERROR: No choices returned from API");
         return null;
       }
-      
+
       Choice result = chatCompletionResult.getChoices().iterator().next();
       System.out.println("DEBUG: Received response: " + result.getChatMessage().getContent());
       return result.getChatMessage();
@@ -361,10 +366,8 @@ private void generateAiResponse(ChatMessage userMessage) {
       return null;
     }
   }
-  
-  /**
-   * Creates a fresh chat completion request with standard settings.
-   */
+
+  /** Creates a fresh chat completion request with standard settings. */
   private ChatCompletionRequest createFreshChatRequest() throws ApiProxyException {
     ApiProxyConfig config = ApiProxyConfig.readConfig();
     return new ChatCompletionRequest(config)
@@ -374,27 +377,29 @@ private void generateAiResponse(ChatMessage userMessage) {
         .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
         .setMaxTokens(150); // Limited to 150 tokens for concise responses
   }
-  
+
   /**
-   * Adds conversation history to the chat request for context.
-   * Limits history to prevent token overflow.
+   * Adds conversation history to the chat request for context. Limits history to prevent token
+   * overflow.
    */
   private void addConversationHistoryToRequest(ChatCompletionRequest request) {
     // Limit conversation history to last 6 messages to prevent token overflow
     final int MAX_HISTORY_MESSAGES = 6;
-    
+
     // Add participant's own history (recent messages only)
     java.util.List<String> participantHistory = conversationHistories.get(participantRole);
     if (participantHistory != null) {
       int startIndex = Math.max(0, participantHistory.size() - MAX_HISTORY_MESSAGES);
-      java.util.List<String> recentHistory = participantHistory.subList(startIndex, participantHistory.size());
+      java.util.List<String> recentHistory =
+          participantHistory.subList(startIndex, participantHistory.size());
       addHistoryMessagesToRequest(request, recentHistory);
     }
-    
-    // Add shared conversation history (recent messages only, excluding messages already in participant's history)
+
+    // Add shared conversation history (recent messages only, excluding messages already in
+    // participant's history)
     java.util.List<String> currentHistory = conversationHistories.get(participantRole);
     int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAX_HISTORY_MESSAGES);
-    
+
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
       if (currentHistory == null || !currentHistory.contains(sharedMsg)) {
@@ -402,21 +407,18 @@ private void generateAiResponse(ChatMessage userMessage) {
       }
     }
   }
-  
-  /**
-   * Adds a list of history messages to the chat request.
-   */
-  private void addHistoryMessagesToRequest(ChatCompletionRequest request, java.util.List<String> history) {
+
+  /** Adds a list of history messages to the chat request. */
+  private void addHistoryMessagesToRequest(
+      ChatCompletionRequest request, java.util.List<String> history) {
     if (history != null) {
       for (String historyMsg : history) {
         addParsedMessageToRequest(request, historyMsg);
       }
     }
   }
-  
-  /**
-   * Parses a history message and adds it to the chat request.
-   */
+
+  /** Parses a history message and adds it to the chat request. */
   private void addParsedMessageToRequest(ChatCompletionRequest request, String historyMsg) {
     String[] parts = historyMsg.split(": ", 2);
     if (parts.length == 2) {
@@ -426,10 +428,8 @@ private void generateAiResponse(ChatMessage userMessage) {
       request.addMessage(role, content);
     }
   }
-  
-  /**
-   * Maps display names back to API roles.
-   */
+
+  /** Maps display names back to API roles. */
   private String mapSpeakerToRole(String speaker) {
     switch (speaker) {
       case "MediSort-5":
@@ -442,29 +442,35 @@ private void generateAiResponse(ChatMessage userMessage) {
     }
   }
 
-private void startLoadingAnimation() {
-  loadingDotCount = 1;
-  loadingTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
-    loadingDotCount = (loadingDotCount % 3) + 1;
-    String dots = " " + ".".repeat(loadingDotCount);
-    removeLoadingText();
-    txtaChat.appendText(loadingBaseText + dots + "\n\n");
-  }));
-  loadingTimeline.setCycleCount(Timeline.INDEFINITE);
-  loadingTimeline.play();
-}
-
-private void stopLoadingAnimation() {
-  if (loadingTimeline != null) {
-    loadingTimeline.stop();
-    loadingTimeline = null;
+  private void startLoadingAnimation() {
+    loadingDotCount = 1;
+    loadingTimeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0.5),
+                event -> {
+                  loadingDotCount = (loadingDotCount % 3) + 1;
+                  String dots = " " + ".".repeat(loadingDotCount);
+                  removeLoadingText();
+                  txtaChat.appendText(loadingBaseText + dots + "\n\n");
+                }));
+    loadingTimeline.setCycleCount(Timeline.INDEFINITE);
+    loadingTimeline.play();
   }
-}
 
-private void removeLoadingText() {
-  String chatText = txtaChat.getText();
-  // Remove any line that starts with the loading base text
-  chatText = chatText.replaceAll("(?m)^" + java.util.regex.Pattern.quote(loadingBaseText) + ".*\\n\\n", "");
-  txtaChat.setText(chatText);
-}
+  private void stopLoadingAnimation() {
+    if (loadingTimeline != null) {
+      loadingTimeline.stop();
+      loadingTimeline = null;
+    }
+  }
+
+  private void removeLoadingText() {
+    String chatText = txtaChat.getText();
+    // Remove any line that starts with the loading base text
+    chatText =
+        chatText.replaceAll(
+            "(?m)^" + java.util.regex.Pattern.quote(loadingBaseText) + ".*\\n\\n", "");
+    txtaChat.setText(chatText);
+  }
 }
