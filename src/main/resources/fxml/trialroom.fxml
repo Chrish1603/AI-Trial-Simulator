@@ -23,7 +23,7 @@
             <Font name="Arial Black" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="btnVerdict" layoutX="565.0" layoutY="114.0" mnemonicParsing="false" onAction="#switchToVerdict" prefHeight="38.0" prefWidth="217.0" text="Make A Verdict">
+      <Button fx:id="btnVerdict" layoutX="565.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleVerdictButton" prefHeight="38.0" prefWidth="217.0" text="Make A Verdict">
          <font>
             <Font name="Arial Black" size="17.0" />
          </font>

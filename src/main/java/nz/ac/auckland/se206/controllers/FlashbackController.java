@@ -13,10 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import nz.ac.auckland.se206.GameTimer;
 
 /**
- * Controller for the flashback slideshow functionality. Displays a series of images and text
- * representing past events.
+ * Controller for the flashback slideshow functionality.
  */
 public class FlashbackController {
 
@@ -52,26 +53,27 @@ public class FlashbackController {
   }
 
   /** Initializes the flashback with the given participant data */
+  /**
+   * Initializes the flashback with participant-specific content.
+   * 
+   * @param participantId the ID of the participant whose flashback to show
+   * @param returnFxml the FXML file to return to after the flashback
+   */
   public void initializeFlashback(String participantId, String returnFxml) {
     this.participantId = participantId;
     this.returnFxml = returnFxml;
     this.slides = getFlashbackSlides(participantId);
 
     if (lblTimer != null) {
-      lblTimer
-          .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+      lblTimer.textProperty().bind(GameTimer.getInstance().timerTextProperty());
 
       // Store current stage for timer transitions
-      javafx.application.Platform.runLater(
-          () -> {
-            if (lblTimer != null
-                && lblTimer.getScene() != null
-                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
-              nz.ac.auckland.se206.GameTimer.getInstance()
-                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
-            }
-          });
+      Platform.runLater(() -> {
+        if (lblTimer != null && lblTimer.getScene() != null 
+            && lblTimer.getScene().getWindow() instanceof Stage) {
+          GameTimer.getInstance().setCurrentStage((Stage) lblTimer.getScene().getWindow());
+        }
+      });
     }
 
     // Set the title based on participant
@@ -127,6 +129,9 @@ public class FlashbackController {
   }
 
   /** Handles the next button click */
+  /**
+   * Handles the next slide button click event.
+   */
   @FXML
   private void onNextSlide() {
     if (currentSlideIndex < slides.size() - 1) {

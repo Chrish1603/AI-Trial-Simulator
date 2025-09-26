@@ -14,6 +14,9 @@ public class GameOverController {
 
   @FXML private Button btnReplay;
 
+  /**
+   * Handles the replay game button click event, resetting game state and returning to trial room.
+   */
   @FXML
   private void onReplayGame() {
     try {

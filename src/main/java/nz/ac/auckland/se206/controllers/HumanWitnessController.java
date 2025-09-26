@@ -3,15 +3,16 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
- * Controller for the Human Witness (Dr. Payne Gaun) chat interface. Handles specific functionality
- * for chatting with the human witness.
+ * Controller for the Human Witness (Dr. Payne Gaun) chat interface.
  */
 public class HumanWitnessController extends ChatController {
 
@@ -31,6 +32,13 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Handles clicking on the notepad to view patient notes.
+   * Opens the notes panel for the player to examine evidence.
+   * 
+   * @param event the mouse click event
+   * @throws IOException if there's an error loading the notes interface
+   */
   @FXML
   private void handleNotepadClick(MouseEvent event) throws IOException {
     if (notePane != null) {
@@ -38,6 +46,9 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Closes the notes panel when the player is done viewing patient notes.
+   */
   @FXML
   private void onCloseNotes() {
     if (notePane != null) {
@@ -45,8 +56,12 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
+  /**
+   * Displays Patient A's medical notes when the corresponding button is clicked.
+   * Shows information about the contagious viral infection case.
+   */
   @FXML
-  private void viewANotes() {
+  private void viewPatientANotes() {
     imgNotes.setImage(
         new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
@@ -70,8 +85,12 @@ public class HumanWitnessController extends ChatController {
     noteASeen = true;
   }
 
+  /**
+   * Displays Patient B's medical notes when the corresponding button is clicked.
+   * Shows information about the neurological condition case.
+   */
   @FXML
-  private void viewBNotes() {
+  private void viewPatientBNotes() {
     imgNotes.setImage(
         new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
@@ -97,6 +116,13 @@ public class HumanWitnessController extends ChatController {
     noteBSeen = true;
   }
 
+  /**
+   * Generates an AI response based on a system prompt.
+   * Used to create contextual responses when the player examines evidence.
+   * 
+   * @param systemPrompt the system message to prompt the AI with
+   * @throws ApiProxyException if there's an error communicating with the AI API
+   */
   private void generateSystemPromptedResponse(String systemPrompt) throws ApiProxyException {
     if (chatCompletionRequest == null) {
       super.initializeChatRequest();

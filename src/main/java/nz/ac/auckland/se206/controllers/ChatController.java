@@ -2,7 +2,9 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,12 +20,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -35,11 +39,9 @@ public class ChatController {
   protected static ChatController instance;
 
   // Reference to per-participant conversation histories in TrialRoomController
-  protected static Map<String, java.util.List<String>> conversationHistories =
-      nz.ac.auckland.se206.controllers.TrialRoomController.conversationHistories;
+  protected static Map<String, List<String>> conversationHistories = TrialRoomController.conversationHistories;
   // Reference to shared conversation history (excluding flashbacks)
-  protected static java.util.List<String> sharedConversationHistory =
-      nz.ac.auckland.se206.controllers.TrialRoomController.sharedConversationHistory;
+  protected static List<String> sharedConversationHistory = TrialRoomController.sharedConversationHistory;
 
   @FXML protected ImageView imgDefendant;
   @FXML protected javafx.scene.control.Label lblTimer;
@@ -71,7 +73,7 @@ public class ChatController {
   protected String getSystemPromptSuffix() {
     // Default system prompt suffix - subclasses should override this
     return " You are a helpful assistant in the trial room. Keep your responses concise and to the"
-               + " point, limiting them to 3-4 sentences maximum.";
+        + " point, limiting them to 3-4 sentences maximum.";
   }
 
   /**
@@ -117,13 +119,18 @@ public class ChatController {
   }
 
   // === FXML lifecycle ===
+  /**
+   * Initializes the chat controller, setting up UI bindings and API configuration.
+   * 
+   * @throws ApiProxyException if there is an error initializing the API proxy
+   */
   @FXML
   public void initialize() throws ApiProxyException {
     // Set the static instance for external access
     instance = this;
     // Set the participant role for this controller
     this.participantRole = getParticipantRole();
-    // Initialize chat request
+    // Initialize chat request of the LLM
     initializeChatRequest();
     // Bind timer label to global timer
     if (lblTimer != null) {
@@ -155,6 +162,11 @@ public class ChatController {
   }
 
   // === Public instance methods ===
+  /**
+   * Sets the participant ID for this chat controller.
+   * 
+   * @param participantId the ID of the participant to chat with
+   */
   public void setParticipant(String participantId) {
     this.participantRole = participantId;
   }
@@ -179,6 +191,13 @@ public class ChatController {
   }
 
   // === Event handler methods ===
+  /**
+   * Handles the send message button click event.
+   * 
+   * @param event the action event (can be null if called programmatically)
+   * @throws ApiProxyException if there is an error with the API proxy
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   protected void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
     String message = txtInput.getText().trim();
