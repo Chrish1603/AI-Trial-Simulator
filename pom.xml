@@ -2,7 +2,7 @@
   xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>SOFTENG206-2025</groupId>
-  <artifactId>trial-ai-alpha</artifactId>
+  <artifactId>trial-ai-beta-and-final</artifactId>
   <name>trial-ai</name>
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
