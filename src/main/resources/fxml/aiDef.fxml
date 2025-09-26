@@ -12,18 +12,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiDefendantController">
   <children>
-    <TextArea fx:id="txtaChat" editable="false" layoutX="23.0" layoutY="18.0" prefHeight="299.0" prefWidth="538.0" wrapText="true" />
-    <TextField fx:id="txtInput" layoutX="23.0" layoutY="328.0" onAction="#onSendMessage" prefHeight="26.0" prefWidth="435.0" />
-    <Button fx:id="btnSend" layoutX="469.0" layoutY="329.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
-    <Button fx:id="btnBack" layoutX="516.0" layoutY="329.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
+    <!-- Background Image -->
+    <ImageView fitHeight="599.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="false" smooth="true">
+      <image>
+        <Image url="@../images/aiDef-background.png" smooth="true" backgroundLoading="false" />
+      </image>
+    </ImageView>
+    <TextArea fx:id="txtaChat" editable="false" layoutX="10.0" layoutY="14.0" prefHeight="299.0" prefWidth="522.0" wrapText="true" />
+    <TextField fx:id="txtInput" layoutX="10.0" layoutY="319.0" onAction="#onSendMessage" prefHeight="26.0" prefWidth="402.0" />
+    <Button fx:id="btnSend" layoutX="421.0" layoutY="319.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
+    <Button fx:id="btnBack" layoutX="468.0" layoutY="319.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font></Label>
-      <ImageView fitHeight="206.0" fitWidth="228.0" layoutX="561.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/medisort-5.png" />
-         </image></ImageView>
    <ImageView fx:id="imgGraph" fitHeight="240.0" fitWidth="247.0" layoutX="279.0" layoutY="359.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/medisort-5-graph.png" />
@@ -31,9 +33,9 @@
    </ImageView>
    
    <!-- Memory Interaction Panel - Decision Making Algorithm -->
-   <AnchorPane fx:id="memoryPanel" layoutX="23.0" layoutY="369.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: #2c3e50; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;" visible="true">
+   <AnchorPane fx:id="memoryPanel" layoutX="53.0" layoutY="359.0" prefHeight="220.0" prefWidth="442.0" style="-fx-background-color: #2c3e50; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;" visible="true">
       <children>
-         <Label layoutX="114.0" layoutY="13.0" text="MediSort-5 Memory: Decision Algorithm Interface" textFill="WHITE">
+         <Label layoutX="71.0" layoutY="14.0" text="MediSort-5 Memory: Decision Algorithm Interface" textFill="WHITE">
             <font>
                <Font name="Arial Bold" size="14.0" />
             </font>
@@ -63,7 +65,7 @@
 
          
          <!-- Harm Minimization Algorithm Button -->
-         <Button fx:id="btnRunAlgorithm" layoutX="371.0" layoutY="99.0" mnemonicParsing="false" onAction="#onRunHarmMinimizationAlgorithm" prefHeight="33.0" prefWidth="99.0" style="-fx-background-color: #28a82f; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Algorithm" />
+         <Button fx:id="btnRunAlgorithm" layoutX="322.0" layoutY="99.0" mnemonicParsing="false" onAction="#onRunHarmMinimizationAlgorithm" prefHeight="33.0" prefWidth="99.0" style="-fx-background-color: #28a82f; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Algorithm" />
          
          <!-- Algorithm Status -->
          <Label fx:id="lblAlgorithmStatus" layoutX="28.0" layoutY="187.0" text="Algorithm Status: Ready" textFill="#27ae60">
