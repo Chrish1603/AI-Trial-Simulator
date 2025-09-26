@@ -199,21 +199,8 @@ public class VerdictController {
     txtaChat.appendText("\n=== ANALYSIS COMPLETE ===\n");
     txtaChat.appendText(feedback + "\n");
 
-    // Extract verdict correctness for TTS
     boolean isCorrect = feedback.toUpperCase().contains("VERDICT: CORRECT");
-    String ttsMessage;
 
-    if (isCorrect) {
-      ttsMessage =
-          "Excellent work! Your analysis shows a good understanding of AI ethics and harm"
-              + " minimization principles.";
-    } else {
-      ttsMessage =
-          "Your verdict needs reconsideration. The key is understanding how AI systems should"
-              + " minimize overall societal harm.";
-    }
-
-    TextToSpeech.speak(ttsMessage);
   }
 
   /** Displays basic feedback as fallback when LLM fails. */

@@ -29,7 +29,7 @@ public class GameTimer {
     return instance;
   }
 
-  private static final int ROUND_SECONDS = 30;
+  private static final int ROUND_SECONDS = 300;
   private static final int VERDICT_SECONDS = 60;
 
   private int timeLeft;
@@ -137,16 +137,6 @@ public class GameTimer {
 
           boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
           System.out.println("All chatboxes interacted: " + allInteracted);
-
-          if (allInteracted) {
-            TextToSpeech.speak(
-                "Time is up! You've gathered enough evidence. Proceeding to verdict.");
-            transitionToVerdict();
-          } else {
-            TextToSpeech.speak(
-                "Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
-            transitionToGameOver();
-          }
         });
 
     if (onRoundEnd != null) {

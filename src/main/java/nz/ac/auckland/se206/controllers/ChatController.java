@@ -2,7 +2,9 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,12 +20,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -35,11 +39,9 @@ public class ChatController {
   protected static ChatController instance;
 
   // Reference to per-participant conversation histories in TrialRoomController
-  protected static Map<String, java.util.List<String>> conversationHistories =
-      nz.ac.auckland.se206.controllers.TrialRoomController.conversationHistories;
+  protected static Map<String, List<String>> conversationHistories = TrialRoomController.conversationHistories;
   // Reference to shared conversation history (excluding flashbacks)
-  protected static java.util.List<String> sharedConversationHistory =
-      nz.ac.auckland.se206.controllers.TrialRoomController.sharedConversationHistory;
+  protected static List<String> sharedConversationHistory = TrialRoomController.sharedConversationHistory;
 
   @FXML protected ImageView imgDefendant;
   @FXML protected javafx.scene.control.Label lblTimer;

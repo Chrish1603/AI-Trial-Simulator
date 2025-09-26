@@ -3,15 +3,16 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
- * Controller for the Human Witness (Dr. Payne Gaun) chat interface. Handles specific functionality
- * for chatting with the human witness.
+ * Controller for the Human Witness (Dr. Payne Gaun) chat interface.
  */
 public class HumanWitnessController extends ChatController {
 

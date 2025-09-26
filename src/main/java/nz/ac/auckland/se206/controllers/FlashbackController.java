@@ -13,10 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import nz.ac.auckland.se206.GameTimer;
 
 /**
- * Controller for the flashback slideshow functionality. Displays a series of images and text
- * representing past events.
+ * Controller for the flashback slideshow functionality.
  */
 public class FlashbackController {
 
@@ -58,20 +59,15 @@ public class FlashbackController {
     this.slides = getFlashbackSlides(participantId);
 
     if (lblTimer != null) {
-      lblTimer
-          .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+      lblTimer.textProperty().bind(GameTimer.getInstance().timerTextProperty());
 
       // Store current stage for timer transitions
-      javafx.application.Platform.runLater(
-          () -> {
-            if (lblTimer != null
-                && lblTimer.getScene() != null
-                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
-              nz.ac.auckland.se206.GameTimer.getInstance()
-                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
-            }
-          });
+      Platform.runLater(() -> {
+        if (lblTimer != null && lblTimer.getScene() != null 
+            && lblTimer.getScene().getWindow() instanceof Stage) {
+          GameTimer.getInstance().setCurrentStage((Stage) lblTimer.getScene().getWindow());
+        }
+      });
     }
 
     // Set the title based on participant

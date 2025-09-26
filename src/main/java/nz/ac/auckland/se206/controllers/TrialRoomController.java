@@ -25,8 +25,8 @@ public class TrialRoomController {
   private static Scene trialRoomScene;
 
   @FXML private Button btnVerdict;
-  @FXML private javafx.scene.control.Button btnGuilty;
-  @FXML private javafx.scene.control.Button btnNotGuilty;
+  @FXML private Button btnGuilty;
+  @FXML private Button btnNotGuilty;
   @FXML private javafx.scene.control.Label lblTimer;
   @FXML private Rectangle aiDefendent;
   @FXML private Rectangle humanWitness;
@@ -54,9 +54,9 @@ public class TrialRoomController {
 
             // Store current stage for timer transitions
             if (trialRoomScene != null
-                && trialRoomScene.getWindow() instanceof javafx.stage.Stage) {
+                && trialRoomScene.getWindow() instanceof Stage) {
               nz.ac.auckland.se206.GameTimer.getInstance()
-                  .setCurrentStage((javafx.stage.Stage) trialRoomScene.getWindow());
+                  .setCurrentStage((Stage) trialRoomScene.getWindow());
             }
           }
         });

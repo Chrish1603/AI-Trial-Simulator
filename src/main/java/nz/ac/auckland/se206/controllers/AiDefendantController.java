@@ -7,8 +7,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
 /**
- * Controller for the AI Defendant (MediSort-5) chat interface. Handles specific functionality for
- * chatting with the AI defendant and memory interactions.
+ * Controller for the AI Defendant (MediSort-5) chat interface.
  */
 public class AiDefendantController extends ChatController {
 
