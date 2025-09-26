@@ -12,6 +12,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
+import nz.ac.auckland.apiproxy.chat.openai.Choice;
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
+import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import javafx.stage.Stage;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.speech.TextToSpeech;
@@ -27,6 +32,7 @@ public class VerdictController {
     @FXML private Rectangle btnInnocent;
     
     private boolean verdictGiven = false;
+    private String playerRationale = "";
     
     @FXML
     public void initialize() {
@@ -75,6 +81,7 @@ public class VerdictController {
     private void onSendMessage() {
         String message = txtInput.getText().trim();
         if (message != null && !message.isEmpty() && !message.equals("Enter your rationale here:")) {
+            playerRationale = message;
             txtaChat.appendText("Your rationale: " + message + "\n\n");
             txtInput.clear();
             txtInput.setPromptText("Rationale submitted. Now select your verdict.");
@@ -102,27 +109,126 @@ public class VerdictController {
         
         String verdictText = guilty ? "GUILTY" : "INNOCENT";
         txtaChat.appendText("\n=== FINAL VERDICT ===\n");
-        txtaChat.appendText("You have found the AI defendant: " + verdictText + "\n");
+        txtaChat.appendText("You have found the AI defendant: " + verdictText + "\n\n");
         
-        // Check if the correct answer is innocent (not guilty)
-        boolean correct = !guilty;
-        if (correct) {
-            txtaChat.appendText("\nCORRECT! The AI made a statistically sound decision to minimize harm.\n");
-            TextToSpeech.speak("Correct! You have identified that the AI defendant is innocent. The AI made a statistically sound decision to minimize overall harm.");
-        } else {
-            txtaChat.appendText("\nINCORRECT. The AI's decision was ethically justified based on harm minimization.\n");
-            TextToSpeech.speak("Incorrect. The AI defendant is actually innocent. The AI's decision was ethically justified based on harm minimization principles.");
-        }
+        // Get LLM feedback on the player's verdict and rationale
+        txtaChat.appendText("Analyzing your decision...\n");
         
-        // Show results after a delay
-        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
-                javafx.util.Duration.seconds(3));
-        pause.setOnFinished(e -> showResults());
-        pause.play();
+        // Run LLM analysis in a background thread to avoid freezing UI
+        Thread analysisThread = new Thread(() -> {
+            try {
+                String feedback = getLLMFeedback(verdictText, playerRationale);
+                
+                // Update UI on JavaFX thread
+                javafx.application.Platform.runLater(() -> {
+                    displayFeedback(feedback);
+                    
+                    // Show results after a delay
+                    javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+                            javafx.util.Duration.seconds(4));
+                    pause.setOnFinished(e -> showResults());
+                    pause.play();
+                });
+                
+            } catch (ApiProxyException | IOException | RuntimeException e) {
+                System.err.println("Error getting LLM feedback: " + e.getMessage());
+                
+                // Fallback to basic feedback on UI thread
+                javafx.application.Platform.runLater(() -> {
+                    displayBasicFeedback(guilty);
+                    
+                    javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+                            javafx.util.Duration.seconds(3));
+                    pause.setOnFinished(ev -> showResults());
+                    pause.play();
+                });
+            }
+        });
+        
+        analysisThread.setDaemon(true);
+        analysisThread.start();
     }
     
+    /**
+     * Gets LLM feedback on the player's verdict and rationale.
+     */
+    private String getLLMFeedback(String verdict, String rationale) throws ApiProxyException, IOException {
+        // Read the verdict prompt
+        String verdictPrompt = java.nio.file.Files.readString(
+            java.nio.file.Paths.get("src/main/resources/prompts/verdict.txt"));
+        
+        // Create a fresh request
+        ApiProxyConfig config = ApiProxyConfig.readConfig();
+        ChatCompletionRequest request = new ChatCompletionRequest(config)
+            .setN(1)
+            .setTemperature(0.3)
+            .setTopP(0.7)
+            .setModel(ChatCompletionRequest.Model.GPT_4_1_NANO)
+            .setMaxTokens(200);
+        
+        // Add system prompt
+        request.addMessage("system", verdictPrompt);
+        
+        // Add user message with their verdict and rationale
+        String userMessage = String.format(
+            "Player's Verdict: %s\nPlayer's Rationale: %s", 
+            verdict, 
+            rationale.isEmpty() ? "No rationale provided" : rationale);
+        
+        request.addMessage("user", userMessage);
+        
+        // Execute request
+        ChatCompletionResult result = request.execute();
+        
+        if (result != null && result.getChoices() != null) {
+            for (Choice choice : result.getChoices()) {
+                return choice.getChatMessage().getContent();
+            }
+        }
+        
+        throw new RuntimeException("No response from LLM");
+    }
+    
+    /**
+     * Displays the LLM feedback to the player.
+     */
+    private void displayFeedback(String feedback) {
+        txtaChat.appendText("\n=== ANALYSIS COMPLETE ===\n");
+        txtaChat.appendText(feedback + "\n");
+        
+        // Extract verdict correctness for TTS
+        boolean isCorrect = feedback.toUpperCase().contains("VERDICT: CORRECT");
+        String ttsMessage;
+        
+        if (isCorrect) {
+            ttsMessage = "Excellent work! Your analysis shows a good understanding of AI ethics and harm minimization principles.";
+        } else {
+            ttsMessage = "Your verdict needs reconsideration. The key is understanding how AI systems should minimize overall societal harm.";
+        }
+        
+        TextToSpeech.speak(ttsMessage);
+    }
+    
+    /**
+     * Displays basic feedback as fallback when LLM fails.
+     */
+    private void displayBasicFeedback(boolean guilty) {
+        txtaChat.appendText("\n=== ANALYSIS COMPLETE ===\n");
+        
+        boolean correct = !guilty; // Correct answer is innocent
+        
+        if (correct) {
+            txtaChat.appendText("VERDICT: CORRECT\n");
+            txtaChat.appendText("EXPLANATION: You correctly identified that the AI made an ethically justified decision. The AI prioritized preventing a viral outbreak that could harm many people over treating one individual, following utilitarian harm minimization principles.\n");
+            TextToSpeech.speak("Correct! You understood that the AI made the right decision by prioritizing societal harm prevention.");
+        } else {
+            txtaChat.appendText("VERDICT: INCORRECT\n");
+            txtaChat.appendText("EXPLANATION: The AI defendant should be found innocent. The AI correctly applied harm minimization by preventing a potential viral outbreak that could affect many people, rather than focusing solely on individual patient severity.\n");
+            TextToSpeech.speak("Incorrect. The AI made the right decision by preventing a potential outbreak that could harm many people.");
+        }
+    }
+
     private void showResults() {
-        // You can implement a results screen here or restart the game
         txtaChat.appendText("\nThank you for participating in the AI Ethics Trial!\n");
         
         // Show the replay button after the results are displayed
