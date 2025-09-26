@@ -49,6 +49,8 @@ public class AiWitnessController extends ChatController {
    * 
    * @throws ApiProxyException if there is an error initializing the API proxy
    */
+
+  /**
    * Resets the static state variables for the AI Witness controller.
    * This should be called when restarting the game.
    */
