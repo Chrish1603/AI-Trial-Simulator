@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206;
 
 import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -61,8 +62,8 @@ public class GameTimer {
   }
 
   /**
-   * Switches directly to the verdict phase with a 60-second timer.
-   * Used when navigating directly to the verdict screen.
+   * Switches directly to the verdict phase with a 60-second timer. Used when navigating directly to
+   * the verdict screen.
    */
   public void switchToVerdictPhase() {
     // Only switch if not already in verdict phase
@@ -70,7 +71,7 @@ public class GameTimer {
       inVerdictPhase = true;
       timeLeft = VERDICT_SECONDS;
       updateTimerText();
-      
+
       // If timer is not running, start it
       if (timeline == null || timeline.getStatus() != Timeline.Status.RUNNING) {
         if (timeline != null) {
@@ -129,23 +130,25 @@ public class GameTimer {
     timerText.set(label + timeFormatted);
   }
 
-
   private void handleRoundEnd() {
-    Platform.runLater(() -> {
-      System.out.println("Round timer ended!");
-      
-      boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
-      System.out.println("All chatboxes interacted: " + allInteracted);
-      
-      if (allInteracted) {
-        TextToSpeech.speak("Time is up! You've gathered enough evidence. Proceeding to verdict.");
-        transitionToVerdict();
-      } else {
-        TextToSpeech.speak("Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
-        transitionToGameOver();
-      }
-    });
-    
+    Platform.runLater(
+        () -> {
+          System.out.println("Round timer ended!");
+
+          boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
+          System.out.println("All chatboxes interacted: " + allInteracted);
+
+          if (allInteracted) {
+            TextToSpeech.speak(
+                "Time is up! You've gathered enough evidence. Proceeding to verdict.");
+            transitionToVerdict();
+          } else {
+            TextToSpeech.speak(
+                "Time is up! You didn't gather enough evidence from all witnesses. Game Over.");
+            transitionToGameOver();
+          }
+        });
+
     if (onRoundEnd != null) {
       Platform.runLater(onRoundEnd);
     }
@@ -158,52 +161,54 @@ public class GameTimer {
   }
 
   public void transitionToVerdict() {
-    Platform.runLater(() -> {
-      try {
-        if (currentStage == null) {
-          currentStage = getActiveStage();
-        }
-        
-        if (currentStage != null) {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
-          Parent root = loader.load();
-          Scene scene = new Scene(root);
-          currentStage.setScene(scene);
-          currentStage.show();
-          
-          VerdictController controller = loader.getController();
-          controller.startVerdictTimer();
-        } else {
-          System.err.println("Error: Could not get a stage for scene transition");
-        }
-      } catch (IOException e) {
-        System.err.println("Error loading verdict scene: " + e.getMessage());
-        e.printStackTrace();
-      }
-    });
+    Platform.runLater(
+        () -> {
+          try {
+            if (currentStage == null) {
+              currentStage = getActiveStage();
+            }
+
+            if (currentStage != null) {
+              FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
+              Parent root = loader.load();
+              Scene scene = new Scene(root);
+              currentStage.setScene(scene);
+              currentStage.show();
+
+              VerdictController controller = loader.getController();
+              controller.startVerdictTimer();
+            } else {
+              System.err.println("Error: Could not get a stage for scene transition");
+            }
+          } catch (IOException e) {
+            System.err.println("Error loading verdict scene: " + e.getMessage());
+            e.printStackTrace();
+          }
+        });
   }
 
   public void transitionToGameOver() {
-    Platform.runLater(() -> {
-      try {
-        if (currentStage == null) {
-          currentStage = getActiveStage();
-        }
-        
-        if (currentStage != null) {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
-          Parent root = loader.load();
-          Scene scene = new Scene(root);
-          currentStage.setScene(scene);
-          currentStage.show();
-        } else {
-          System.err.println("Error: Could not get a stage for scene transition");
-        }
-      } catch (IOException e) {
-        System.err.println("Error loading game over scene: " + e.getMessage());
-        e.printStackTrace();
-      }
-    });
+    Platform.runLater(
+        () -> {
+          try {
+            if (currentStage == null) {
+              currentStage = getActiveStage();
+            }
+
+            if (currentStage != null) {
+              FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
+              Parent root = loader.load();
+              Scene scene = new Scene(root);
+              currentStage.setScene(scene);
+              currentStage.show();
+            } else {
+              System.err.println("Error: Could not get a stage for scene transition");
+            }
+          } catch (IOException e) {
+            System.err.println("Error loading game over scene: " + e.getMessage());
+            e.printStackTrace();
+          }
+        });
   }
 
   private Stage getActiveStage() {

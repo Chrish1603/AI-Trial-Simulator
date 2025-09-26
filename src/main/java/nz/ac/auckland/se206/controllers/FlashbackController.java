@@ -2,6 +2,7 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,6 @@ import javafx.stage.Stage;
  * representing past events.
  */
 public class FlashbackController {
-
 
   @FXML private Label lblTitle;
   @FXML private ImageView imgFlashback;
@@ -61,13 +61,17 @@ public class FlashbackController {
       lblTimer
           .textProperty()
           .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
-          
+
       // Store current stage for timer transitions
-      javafx.application.Platform.runLater(() -> {
-        if (lblTimer != null && lblTimer.getScene() != null && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
-          nz.ac.auckland.se206.GameTimer.getInstance().setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
-        }
-      });
+      javafx.application.Platform.runLater(
+          () -> {
+            if (lblTimer != null
+                && lblTimer.getScene() != null
+                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
+              nz.ac.auckland.se206.GameTimer.getInstance()
+                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
+            }
+          });
     }
 
     // Set the title based on participant
@@ -89,10 +93,15 @@ public class FlashbackController {
     // Load image with high quality settings
     try {
       // Load image with specific dimensions for better quality
-      Image image = new Image(getClass().getResourceAsStream(slide.getImagePath()), 
-                             600, 400, true, true); // width, height, preserveRatio, smooth
+      Image image =
+          new Image(
+              getClass().getResourceAsStream(slide.getImagePath()),
+              600,
+              400,
+              true,
+              true); // width, height, preserveRatio, smooth
       imgFlashback.setImage(image);
-      
+
       // Ensure ImageView displays at full quality
       imgFlashback.setFitWidth(600);
       imgFlashback.setFitHeight(400);
