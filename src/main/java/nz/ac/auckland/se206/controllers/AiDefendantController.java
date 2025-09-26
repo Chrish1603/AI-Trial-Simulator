@@ -120,7 +120,14 @@ public class AiDefendantController extends ChatController {
         + "Respond to their interactions with the memory elements appropriately. "
         + "The player can adjust risk sliders to experiment with different scenarios. "
         + "When discussing algorithm decisions, ALWAYS clearly state which patient you selected "
-        + "(e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the specific harm scores.";
+        + "(e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the specific harm scores."
+        + "Patient A is a middle-age male with influenza symptoms. Seen at 10:15AM on 02/24/24. Mild but highly contagious with "
+        + "fever, dry cough, elevated blood pressure, low white blood cell count. Onset 48-72 hours prior. "
+        + "No significant dyspnea or red-flag symptoms. Patient had contact with symptomatic individuals."
+        + "Patient B is a young adult female with neurological symptoms that are rare and potentially degenerative. Seen at 10:15PM on 02/25/24."
+        + "Symptoms include episodic muscle weakness, tremors, coordination problems, slurred speech, abnormal reflexes. "
+        + "Progressive over the past week with notable exacerbation in last 48-72 hours. No contagious risk factors. " 
+        + "Red-flag findings include abnormal deep tendon reflexes and difficulty performing routine tasks.";
   }
   
   @Override
