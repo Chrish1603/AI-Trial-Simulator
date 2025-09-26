@@ -3,6 +3,9 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -14,6 +17,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import javafx.stage.Stage;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 
@@ -22,6 +26,7 @@ public class VerdictController {
     @FXML private TextArea txtaChat;
     @FXML private TextField txtInput;
     @FXML private Button btnSend;
+    @FXML private Button btnReplay;
     @FXML private Label lblVerdictTimer;
     @FXML private Rectangle btnGuilty;
     @FXML private Rectangle btnInnocent;
@@ -225,5 +230,32 @@ public class VerdictController {
 
     private void showResults() {
         txtaChat.appendText("\nThank you for participating in the AI Ethics Trial!\n");
+        
+        // Show the replay button after the results are displayed
+        if (btnReplay != null) {
+            btnReplay.setVisible(true);
+        }
+    }
+    
+    @FXML
+    private void onReplayGame() {
+        try {
+            // Reset game state
+            TrialRoomController.resetInteractions();
+            GameTimer.getInstance().stop();
+            
+            // Load trial room scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/trialroom.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) btnReplay.getScene().getWindow();
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
