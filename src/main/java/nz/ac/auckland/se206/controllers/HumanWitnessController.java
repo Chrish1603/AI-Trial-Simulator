@@ -60,7 +60,7 @@ public class HumanWitnessController extends ChatController {
    * Shows information about the contagious viral infection case.
    */
   @FXML
-  private void viewANotes() {
+  private void viewPatientANotes() {
     imgNotes.setImage(
         new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
@@ -89,7 +89,7 @@ public class HumanWitnessController extends ChatController {
    * Shows information about the neurological condition case.
    */
   @FXML
-  private void viewBNotes() {
+  private void viewPatientBNotes() {
     imgNotes.setImage(
         new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
