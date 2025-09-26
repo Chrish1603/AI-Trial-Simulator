@@ -7,6 +7,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.VerdictController">
@@ -16,13 +17,15 @@
             <Image url="@../images/verdict-scene.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="txtaChat" editable="false" layoutX="512.0" layoutY="274.0" prefHeight="109.0" prefWidth="263.0" wrapText="true" />
-      <TextField fx:id="txtInput" layoutX="490.0" layoutY="98.0" onAction="#onSendMessage" prefHeight="179.0" prefWidth="241.0" />
-      <Button fx:id="btnSend" layoutX="469.0" layoutY="329.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
+      <TextArea fx:id="txtaChat" editable="false" layoutX="14.0" layoutY="73.0" prefHeight="109.0" prefWidth="263.0" wrapText="true" />
+      <TextField fx:id="txtInput" layoutX="503.0" layoutY="64.0" onAction="#onSendMessage" prefHeight="179.0" prefWidth="263.0" promptText="Enter your rationale here:" />
+      <Button fx:id="btnSend" layoutX="502.0" layoutY="252.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="25.0" prefWidth="263.0" text="Submit" />
       <Label fx:id="lblVerdictTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
+      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="117.0" layoutX="3.0" layoutY="482.0" stroke="TRANSPARENT" strokeType="INSIDE" width="251.0" />
+      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="94.0" layoutX="502.0" layoutY="490.0" stroke="TRANSPARENT" strokeType="INSIDE" width="251.0" />
    </children>
 </AnchorPane>
