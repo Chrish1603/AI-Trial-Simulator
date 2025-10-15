@@ -3,7 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextAr<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -20,7 +21,6 @@
          <TextArea fx:id="txtInput" disable="true" layoutX="9.0" layoutY="299.0" prefHeight="33.0" prefWidth="395.0" promptText="Type your message here..." wrapText="true" />
      <Button fx:id="btnSend" layoutX="425.0" layoutY="306.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
     <Button fx:id="btnBack" layoutX="474.0" layoutY="306.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
-="#onGoBack" text="Go Back" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="20.0" />
