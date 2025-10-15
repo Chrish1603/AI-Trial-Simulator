@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +25,7 @@ public class AiWitnessController extends ChatController {
   @FXML private ImageView imgHandScanner;
   @FXML private ProgressBar progressScan;
   @FXML private Label lblScanStatus;
-  @FXML private TextField txtInput;
+  @FXML private TextArea txtInput;
   @FXML private Button btnSend;
   @FXML private ImageView imgGraph;
 
@@ -94,6 +94,19 @@ public class AiWitnessController extends ChatController {
       txtInput.setDisable(true);
       btnSend.setDisable(true);
     }
+    txtInput.setOnKeyPressed(event -> {
+  switch (event.getCode()) {
+    case ENTER:
+      if (!event.isShiftDown()) {
+        event.consume(); // prevent newline
+        btnSend.fire(); // simulate send button
+      }
+      break;
+    default:
+      break;
+  }
+});
+
   }
 
   private void setupHandScanner() {

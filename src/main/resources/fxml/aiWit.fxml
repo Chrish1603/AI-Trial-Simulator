@@ -18,9 +18,28 @@
          </image>
       </ImageView>
       <TextArea fx:id="txtaChat" editable="false" layoutX="282.0" prefHeight="189.0" prefWidth="506.0" wrapText="true" />
-      <TextField fx:id="txtInput" disable="true" layoutX="282.0" layoutY="190.0" prefHeight="26.0" prefWidth="385.0" />
-      <Button fx:id="btnSend" disable="true" layoutX="668.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="25.0" prefWidth="59.0" text="Send" />
-      <Button layoutX="727.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
+      <TextArea
+    fx:id="txtInput"
+    disable="true"
+    layoutX="282.0"
+    layoutY="185.0"
+    prefHeight="60.0"
+    prefWidth="385.0"
+    wrapText="true"
+    promptText="Type your message here..."
+/>
+<Button
+    fx:id="btnSend"
+    disable="true"
+    layoutX="668.0"
+    layoutY="220.0"
+    mnemonicParsing="false"
+    onAction="#onSendMessage"
+    prefHeight="25.0"
+    prefWidth="59.0"
+    text="Send"
+/>
+<Button layoutX="727.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="39.0" prefWidth="208.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="21.0" />

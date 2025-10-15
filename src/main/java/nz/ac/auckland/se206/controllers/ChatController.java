@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,18 +15,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
-import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -46,7 +44,7 @@ public class ChatController {
   @FXML protected ImageView imgDefendant;
   @FXML protected javafx.scene.control.Label lblTimer;
   @FXML protected TextArea txtaChat;
-  @FXML protected TextField txtInput;
+  @FXML protected TextArea txtInput;
   @FXML protected Button btnSend;
   @FXML protected Button btnBack;
 
@@ -150,14 +148,16 @@ public class ChatController {
           });
     }
     if (txtInput != null) {
-      txtInput.setOnAction(
-          event -> {
-            try {
-              onSendMessage(null); // null is fine since ActionEvent is not used
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          });
+      txtInput.addEventFilter(KEY_PRESSED, event -> {
+        if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
+          event.consume(); // prevent inserting newline
+          try {
+            onSendMessage(null); // send
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
     }
   }
 
