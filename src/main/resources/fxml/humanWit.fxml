@@ -5,7 +5,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,7 +20,7 @@
          </image>
       </ImageView>
     <TextArea fx:id="txtaChat" editable="false" layoutX="20.0" layoutY="21.0" opacity="0.9" prefHeight="415.0" prefWidth="342.0" wrapText="true" />
-    <TextField fx:id="txtInput" layoutX="14.0" layoutY="512.0" onAction="#onSendMessage" prefHeight="26.0" prefWidth="730.0" />
+   <TextArea fx:id="txtInput" disable="true" layoutX="8.0" layoutY="436.0" prefHeight="33.0" prefWidth="395.0" promptText="Type your message here..." wrapText="true" />
     <Button fx:id="btnSend" layoutX="14.0" layoutY="546.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
     <Button layoutX="688.0" layoutY="565.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="565.0" layoutY="14.0" prefHeight="27.0" prefWidth="221.0" text="Time Left">
