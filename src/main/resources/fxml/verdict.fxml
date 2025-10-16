@@ -18,7 +18,7 @@
          </image>
       </ImageView>
       <TextArea fx:id="txtaChat" editable="false" layoutX="-3.0" prefHeight="204.0" prefWidth="269.0" wrapText="true" />
-      <TextField fx:id="txtInput" layoutX="503.0" layoutY="64.0" onAction="#onSendMessage" prefHeight="179.0" prefWidth="263.0" promptText="Enter your rationale here:" />
+      <TextField fx:id="txtInput" layoutX="503.0" layoutY="64.0" onAction="#onSendMessage" prefHeight="179.0" prefWidth="263.0" promptText="Select your verdict first" />
       <Button fx:id="btnSend" layoutX="502.0" layoutY="252.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="25.0" prefWidth="263.0" text="Submit" />
       <Label fx:id="lblVerdictTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left" textFill="WHITE">
          <font>
@@ -28,7 +28,7 @@
       <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="87.0" layoutX="16.0" layoutY="505.0" stroke="TRANSPARENT" strokeType="INSIDE" width="215.0" />
       <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="515.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" width="234.0" />
       <Button fx:id="btnReplay" layoutX="264.0" layoutY="527.0" mnemonicParsing="false" onAction="#onReplayGame" prefHeight="52.0" prefWidth="215.0" style="-fx-background-color: #3498db; -fx-font-size: 14px; -fx-font-weight: bold;" text="Replay Game" textFill="WHITE" visible="false" />
-      <Label layoutX="514.0" layoutY="282.0" prefHeight="19.0" prefWidth="241.0" style="-fx-background-color: white; -fx-border-color: black;" text="Type your rationale first, then choose below">
+      <Label layoutX="514.0" layoutY="282.0" prefHeight="19.0" prefWidth="241.0" style="-fx-background-color: white; -fx-border-color: black;" text="Choose your verdict below first">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
