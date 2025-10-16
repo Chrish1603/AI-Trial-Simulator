@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiDefendantController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" stylesheets="@../css/aiDefendant.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiDefendantController">
   <children>
     <!-- Background Image -->
     <ImageView fitHeight="599.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="false" smooth="true">
@@ -17,10 +17,10 @@
         <Image backgroundLoading="false" smooth="true" url="@../images/aiDef-background.png" />
       </image>
     </ImageView>
-    <TextArea fx:id="txtaChat" editable="false" layoutX="9.0" layoutY="-2.0" prefHeight="301.0" prefWidth="577.0" wrapText="true" />
-         <TextArea fx:id="txtInput" disable="false" layoutX="9.0" layoutY="299.0" prefHeight="33.0" prefWidth="395.0" promptText="Type your message here..." wrapText="true" />
-     <Button fx:id="btnSend" layoutX="425.0" layoutY="306.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
-    <Button fx:id="btnBack" layoutX="474.0" layoutY="306.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
+    <TextArea fx:id="txtaChat" editable="false" layoutX="8.0" layoutY="7.0" prefHeight="301.0" prefWidth="577.0" wrapText="true" />
+         <TextArea fx:id="txtInput" disable="false" layoutX="8.0" layoutY="314.0" prefHeight="57.0" prefWidth="410.0" promptText="Type your message here..." wrapText="true" />
+     <Button fx:id="btnSend" layoutX="423.0" layoutY="314.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="57.0" prefWidth="78.0" text="Send" />
+    <Button fx:id="btnBack" layoutX="507.0" layoutY="314.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="57.0" prefWidth="78.0" text="Go Back" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="20.0" />
@@ -32,7 +32,7 @@
    </ImageView>
    
    <!-- Memory Interaction Panel - Decision Making Algorithm -->
-   <AnchorPane fx:id="memoryPanel" layoutX="53.0" layoutY="359.0" prefHeight="220.0" prefWidth="442.0" style="-fx-background-color: #2c3e50; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;" visible="true">
+   <AnchorPane fx:id="memoryPanel" layoutX="94.0" layoutY="379.0" prefHeight="220.0" prefWidth="442.0" style="-fx-background-color: #1e293b; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;" visible="true">
       <children>
          <Label layoutX="71.0" layoutY="14.0" text="MediSort-5 Memory: Decision Algorithm Interface" textFill="WHITE">
             <font>
@@ -64,7 +64,7 @@
 
          
          <!-- Harm Minimization Algorithm Button -->
-         <Button fx:id="btnRunAlgorithm" layoutX="322.0" layoutY="99.0" mnemonicParsing="false" onAction="#onRunHarmMinimizationAlgorithm" prefHeight="33.0" prefWidth="99.0" style="-fx-background-color: #28a82f; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Algorithm" />
+         <Button fx:id="btnRunAlgorithm" layoutX="314.0" layoutY="99.0" mnemonicParsing="false" onAction="#onRunHarmMinimizationAlgorithm" prefHeight="33.0" prefWidth="107.0" style="-fx-background-color: #28a82f; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Algorithm" />
          
          <!-- Algorithm Status -->
          <Label fx:id="lblAlgorithmStatus" layoutX="28.0" layoutY="187.0" text="Algorithm Status: Ready" textFill="#27ae60">
