@@ -128,12 +128,6 @@ public class HumanWitnessController extends ChatController {
       super.initializeChatRequest();
     }
 
-    javafx.application.Platform.runLater(
-        () -> {
-          txtInput.setDisable(true);
-          btnSend.setDisable(true);
-        });
-
     new Thread(
             () -> {
               try {
@@ -144,17 +138,10 @@ public class HumanWitnessController extends ChatController {
                   javafx.application.Platform.runLater(
                       () -> {
                         processAiResponse(aiResponse);
-                        txtInput.setDisable(false);
-                        btnSend.setDisable(false);
                       });
                 }
               } catch (Exception e) {
                 e.printStackTrace();
-                javafx.application.Platform.runLater(
-                    () -> {
-                      txtInput.setDisable(false);
-                      btnSend.setDisable(false);
-                    });
               }
             })
         .start();
