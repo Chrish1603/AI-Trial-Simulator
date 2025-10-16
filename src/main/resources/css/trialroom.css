@@ -1,10 +1,30 @@
-/* Timer label styling */
+@import "common-timer.css";
+
 #lblTimer {
-    -fx-background-color: rgba(0,0,0,0.5);
-    -fx-background-radius: 8;
-    -fx-padding: 5 10;
+    -fx-background-color: #004d40;
+    -fx-background-radius: 6;
+    -fx-padding: 8 15;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 3, 0, 0, 1);
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 18px;
     -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-border-color: #00695c;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+
+/* Button styling for verdict button */
+#btnVerdict {
+    -fx-background-color: #004d40;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 0, 1);
+}
+
+#btnVerdict:hover {
+    -fx-background-color: #00695c;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
 }
