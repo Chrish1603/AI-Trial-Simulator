@@ -8,38 +8,38 @@
 
 /* Chat area */
 #txtaChat {
-    -fx-background-color: #0f1419;
-    -fx-text-fill: #e2e8f0;
-    -fx-control-inner-background: #0f1419;
+    -fx-background-color: #f8fafc;
+    -fx-text-fill: #000000;
+    -fx-control-inner-background: #f8fafc;
     -fx-font-size: 13px;
     -fx-font-family: "Consolas", "Monaco", monospace;
-    -fx-border-color: #3b82f6;
+    -fx-border-color: #334155;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-padding: 8;
-    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 5, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(51,65,85,0.3), 5, 0, 0, 0);
 }
 
-/* Fix white corners in chat area */
+/* Fix corners in chat area to match light theme */
 #txtaChat .scroll-pane {
-    -fx-background-color: #0f1419;
+    -fx-background-color: #f8fafc;
     -fx-background-radius: 8;
 }
 
 #txtaChat .scroll-pane .viewport {
-    -fx-background-color: #0f1419;
+    -fx-background-color: #f8fafc;
     -fx-background-radius: 8;
 }
 
 #txtaChat .scroll-pane .content {
-    -fx-background-color: #0f1419;
+    -fx-background-color: #f8fafc;
     -fx-background-radius: 8;
 }
 
 /* Input field */
 #txtInput {
-    -fx-background-color: #1e293b;
-    -fx-text-fill: #e2e8f0;
+    -fx-background-color: #f8fafc;
+    -fx-text-fill: #000000;
     -fx-font-size: 13px;
     -fx-font-family: "Consolas", "Monaco", monospace;
     -fx-border-color: #334155;
@@ -51,8 +51,8 @@
 
 #txtInput:focused {
     -fx-border-color: #3b82f6;
-    -fx-background-color: #0f1419;
-    -fx-text-fill: #e2e8f0;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
     -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.2), 3, 0, 0, 0);
 }
 
@@ -64,12 +64,10 @@
     -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-font-family: "Arial", sans-serif;
-    -fx-effect: dropshadow(gaussian, rgba(30,64,175,0.4), 4, 0, 0, 2);
 }
 
 #btnSend:hover, #btnBack:hover {
     -fx-background-color: #2563eb;
-    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.6), 6, 0, 0, 3);
 }
 
 #btnSend:pressed, #btnBack:pressed {
@@ -92,6 +90,13 @@
 #memoryPanel .label {
     -fx-font-family: "Arial", sans-serif;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0, 0, 1);
+    -fx-font-size: 12px;
+}
+
+/* Fix header text size on hover - prevent text size changes */
+#memoryPanel .label:hover {
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial", sans-serif;
 }
 
 /* Sliders in Memory Panel */
@@ -133,7 +138,6 @@
     -fx-border-color: #16a34a;
     -fx-border-width: 1;
     -fx-border-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.6), 6, 0, 0, 3);
     -fx-font-family: "Arial", sans-serif;
 }
 
@@ -209,14 +213,14 @@
     -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.5), 12, 0, 0, 6);
 }
 
-/* Enhanced styling for tech theme */
+/* Enhanced styling for light theme */
 #txtaChat .scroll-pane .scroll-bar:vertical .track {
-    -fx-background-color: #1e293b;
+    -fx-background-color: #e2e8f0;
     -fx-background-radius: 5;
 }
 
 #txtaChat .scroll-pane .scroll-bar:vertical .thumb {
-    -fx-background-color: #64748b;
+    -fx-background-color: #94a3b8;
     -fx-background-radius: 5;
 }
 
