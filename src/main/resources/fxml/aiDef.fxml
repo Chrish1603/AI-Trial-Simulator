@@ -17,11 +17,11 @@
         <Image backgroundLoading="false" smooth="true" url="@../images/aiDef-background.png" />
       </image>
     </ImageView>
-    <TextArea fx:id="txtaChat" editable="false" layoutX="8.0" layoutY="7.0" prefHeight="301.0" prefWidth="577.0" wrapText="true" />
-         <TextArea fx:id="txtInput" disable="false" layoutX="8.0" layoutY="314.0" prefHeight="57.0" prefWidth="410.0" promptText="Type your message here..." wrapText="true" />
-     <Button fx:id="btnSend" layoutX="423.0" layoutY="314.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="57.0" prefWidth="78.0" text="Send" />
-    <Button fx:id="btnBack" layoutX="507.0" layoutY="314.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="57.0" prefWidth="78.0" text="Go Back" />
-      <Label fx:id="lblTimer" alignment="CENTER" layoutX="568.0" layoutY="18.0" prefHeight="29.0" prefWidth="215.0" text="Time Left">
+    <TextArea fx:id="txtaChat" editable="false" layoutX="8.0" layoutY="7.0" prefHeight="301.0" prefWidth="569.0" wrapText="true" />
+         <TextArea fx:id="txtInput" disable="false" layoutX="8.0" layoutY="314.0" prefHeight="59.0" prefWidth="406.0" promptText="Type your message here..." wrapText="true" />
+     <Button fx:id="btnSend" layoutX="423.0" layoutY="314.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="57.0" prefWidth="72.0" text="Send" />
+    <Button fx:id="btnBack" layoutX="507.0" layoutY="314.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="57.0" prefWidth="72.0" text="Go Back" />
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="579.0" layoutY="7.0" prefHeight="34.0" prefWidth="208.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font></Label>
