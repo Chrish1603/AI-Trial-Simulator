@@ -17,21 +17,17 @@
    <children>
       <ImageView fitHeight="475.0" fitWidth="712.0" layoutX="14.0" layoutY="110.0" pickOnBounds="true">
          <image>
-            <Image url="@/images/ai-witness-memory.png" />
+            <Image url="@../images/ai-witness-memory.png" />
          </image>
       </ImageView>
 
-      <TextArea fx:id="txtaChat" editable="false" layoutX="282.0" layoutY="120.0" prefHeight="150.0" prefWidth="506.0" wrapText="true" />
+      <TextArea fx:id="txtaChat" editable="false" layoutX="227.0" layoutY="14.0" prefHeight="150.0" prefWidth="537.0" wrapText="true" />
 
-      <TextArea fx:id="txtInput" disable="true" layoutX="282.0" layoutY="280.0"
-                prefHeight="60.0" prefWidth="385.0" wrapText="true"
-                promptText="Type your message here..." />
+      <TextArea fx:id="txtInput" disable="true" layoutX="222.0" layoutY="164.0" prefHeight="60.0" prefWidth="396.0" promptText="Type your message here..." wrapText="true" />
 
-      <Button fx:id="btnSend" disable="true" layoutX="675.0" layoutY="280.0" mnemonicParsing="false"
-              onAction="#onSendMessage" prefHeight="30.0" prefWidth="59.0" text="Send" />
+      <Button fx:id="btnSend" disable="true" layoutX="621.0" layoutY="164.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="60.0" prefWidth="68.0" text="Send" />
 
-      <Button fx:id="btnGoBack" layoutX="675.0" layoutY="315.0" mnemonicParsing="false" onAction="#onGoBack"
-              prefHeight="30.0" prefWidth="59.0" text="Go Back" />
+      <Button fx:id="btnGoBack" layoutX="695.0" layoutY="164.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="60.0" prefWidth="68.0" text="Go Back" />
 
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="39.0" prefWidth="208.0" text="Time Left">
          <font>
@@ -41,7 +37,7 @@
 
       <ImageView fx:id="imgHandScanner" fitHeight="137.0" fitWidth="92.0" layoutX="559.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/images/handscanner.png" />
+            <Image url="@../images/handscanner.png" />
          </image>
       </ImageView>
 
