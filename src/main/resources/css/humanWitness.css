@@ -1,0 +1,102 @@
+/* Background color of the scene */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #2c3e50, #4a6572);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Chat area */
+#txtaChat {
+    -fx-background-color: #e8eaed;
+    -fx-text-fill: #2c3e50;
+    -fx-control-inner-background: #f5f7fa;
+    -fx-font-size: 14px;
+    -fx-border-color: #c39bd3;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 8;
+}
+
+/* Input field */
+#txtInput {
+    -fx-background-color: #f5f7fa;
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+    -fx-border-color: #c39bd3;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 8;
+}
+
+#txtInput:focused {
+    -fx-border-color: #9b59b6;
+    -fx-background-color: #ffffff;
+}
+
+/* Send and Go Back buttons */
+#btnSend, #btnGoBack {
+    -fx-background-color: #8e44ad;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 2);
+}
+
+#btnSend:hover, #btnGoBack:hover {
+    -fx-background-color: #9b59b6;
+}
+
+#btnSend:pressed, #btnGoBack:pressed {
+    -fx-background-color: #7d3c98;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #f9fafb;
+}
+
+/* Notes panel styling */
+#notePane {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #c39bd3;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
+
+/* Close notes button */
+#closeNotesButton {
+    -fx-background-color: #f1c40f;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-cursor: hand;
+}
+
+#closeNotesButton:hover {
+    -fx-background-color: #f39c12;
+}
+
+/* Notes selector menu button */
+#notesSelector {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+#notesSelector:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Timer label */
+#lblTimer {
+    -fx-background-color: rgba(0,0,0,0.3);
+    -fx-background-radius: 10;
+    -fx-padding: 5;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 3, 0, 0, 1);
+}
