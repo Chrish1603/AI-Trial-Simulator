@@ -153,6 +153,13 @@ public class VerdictController {
     verdictSelected = true;
     selectedVerdict = verdict;
 
+    // Add visual styling to selected verdict button
+    if ("GUILTY".equals(verdict)) {
+      btnGuilty.getStyleClass().add("selected");
+    } else if ("INNOCENT".equals(verdict)) {
+      btnInnocent.getStyleClass().add("selected");
+    }
+
     // Display verdict selection
     txtaChat.appendText("\n=== VERDICT SELECTED ===\n");
     txtaChat.appendText("You have chosen: " + verdict + "\n");
