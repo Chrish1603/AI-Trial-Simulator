@@ -15,9 +15,9 @@
             <Image url="@../images/trialroom.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="aiDefendent" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="309.0" layoutX="39.0" layoutY="226.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="151.0" />
+      <Rectangle fx:id="aiDefendent" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="320.0" layoutX="15.0" layoutY="215.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="175.0" />
       <Rectangle fx:id="humanWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="335.0" layoutX="252.0" layoutY="200.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="263.0" />
-      <Rectangle fx:id="aiWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="298.0" layoutX="554.0" layoutY="230.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="217.0" />
+      <Rectangle fx:id="aiWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="226.0" layoutX="554.0" layoutY="318.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="210.0" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="565.0" layoutY="34.0" prefHeight="32.0" prefWidth="187.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="22.0" />
