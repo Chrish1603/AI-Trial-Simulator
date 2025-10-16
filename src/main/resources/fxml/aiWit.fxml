@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiWitnessController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" stylesheets="@../css/aiWitness.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiWitnessController">
    <children>
       <ImageView fitHeight="475.0" fitWidth="712.0" layoutX="14.0" layoutY="110.0" pickOnBounds="true">
          <image>
@@ -40,21 +40,25 @@
     text="Send"
 />
 <Button layoutX="727.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" text="Go Back" />
+      <TextArea fx:id="txtaChat" editable="false" layoutX="231.0" prefHeight="205.0" prefWidth="557.0" wrapText="true" />
+      <TextField fx:id="txtInput" disable="true" layoutX="232.0" layoutY="206.0" prefHeight="53.0" prefWidth="371.0" />
+      <Button fx:id="btnSend" disable="true" layoutX="606.0" layoutY="206.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="53.0" prefWidth="92.0" text="Send" />
+      <Button fx:id="btnGoBack" alignment="CENTER" layoutX="698.0" layoutY="206.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="53.0" prefWidth="92.0" text="Go Back" textAlignment="CENTER" textOverrun="CLIP" />
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="39.0" prefWidth="208.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="21.0" />
          </font>
       </Label>
-      <ImageView fx:id="imgHandScanner" fitHeight="137.0" fitWidth="92.0" layoutX="584.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgHandScanner" fitHeight="137.0" fitWidth="92.0" layoutX="559.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/handscanner.png" />
          </image>
       </ImageView>
-      <ProgressBar fx:id="progressScan" layoutX="573.0" layoutY="383.0" prefHeight="18.0" prefWidth="125.0" progress="0.0" />
-      <Label fx:id="lblScanStatus" alignment="CENTER" contentDisplay="TOP" layoutX="553.0" layoutY="412.0" prefHeight="78.0" prefWidth="167.0" text="Hold to Authenticate" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <ProgressBar fx:id="progressScan" layoutX="548.0" layoutY="516.0" prefHeight="18.0" prefWidth="125.0" progress="0.0" />
+      <Label fx:id="lblScanStatus" alignment="CENTER" contentDisplay="TOP" layoutX="542.0" layoutY="326.0" prefHeight="67.0" prefWidth="125.0" text="Hold to Authenticate" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font></Label>
-      <ImageView fx:id="imgGraph" fitHeight="163.0" fitWidth="269.0" layoutX="287.0" layoutY="252.0" visible="false" />
+      <ImageView fx:id="imgGraph" fitHeight="183.0" fitWidth="319.0" layoutX="72.0" layoutY="277.0" visible="false" />
    </children>
 </AnchorPane>

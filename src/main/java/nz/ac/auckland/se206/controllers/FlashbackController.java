@@ -3,6 +3,7 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 import nz.ac.auckland.se206.GameTimer;
 
 /**
@@ -246,7 +246,7 @@ public class FlashbackController {
                 + " more. Statistical evidence favoured containment."),
         new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I presented infection curves and probability intervals.My testimony"
+            "During the review, I presented infection curves and probability intervals. My testimony"
                 + " was impartial: MediSort-5’s decision aligned with epidemiological logic,even"
                 + " though it delayed Patient B's diagnosis."));
   }
