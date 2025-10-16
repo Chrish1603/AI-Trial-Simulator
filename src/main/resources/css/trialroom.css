@@ -1,0 +1,10 @@
+/* Timer label styling */
+#lblTimer {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 8;
+    -fx-padding: 5 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 3, 0, 0, 1);
+    -fx-alignment: center;
+}

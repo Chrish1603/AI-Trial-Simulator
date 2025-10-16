@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="trailRoom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TrialRoomController">
+<Pane fx:id="trailRoom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/trialroom.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TrialRoomController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true">
          <image>
@@ -18,7 +18,7 @@
       <Rectangle fx:id="aiDefendent" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="320.0" layoutX="15.0" layoutY="215.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="175.0" />
       <Rectangle fx:id="humanWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="335.0" layoutX="252.0" layoutY="200.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="263.0" />
       <Rectangle fx:id="aiWitness" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="226.0" layoutX="554.0" layoutY="318.0" onMouseClicked="#handleRectClick" stroke="TRANSPARENT" strokeType="INSIDE" width="210.0" />
-      <Label fx:id="lblTimer" alignment="CENTER" layoutX="565.0" layoutY="34.0" prefHeight="32.0" prefWidth="187.0" text="Time Left">
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="565.0" layoutY="34.0" prefHeight="42.0" prefWidth="217.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="22.0" />
          </font>
