@@ -13,23 +13,24 @@
     -fx-border-color: #3b82f6;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-padding: 8;
+    -fx-padding: 7;
 }
 
-/* Input field */
+/* Input field - now matches txtaChat styling */
 #txtInput {
-    -fx-background-color: #aeadad;
-    -fx-text-fill: white;
+    -fx-background-color: #767676;
+    -fx-text-fill: #e5e7eb;
+    -fx-control-inner-background: #111827;
     -fx-font-size: 14px;
     -fx-border-color: #3b82f6;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-padding: 8;
+    -fx-padding: 5;
 }
 
 #txtInput:focused {
     -fx-border-color: #60a5fa;
-    -fx-background-color: #111827;
+    -fx-control-inner-background: #111827;
 }
 
 /* Send and Go Back buttons */

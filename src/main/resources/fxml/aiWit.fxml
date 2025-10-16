@@ -9,11 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="599.0" prefWidth="789.0"
-            stylesheets="@/css/aiWitness.css"
-            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="nz.ac.auckland.se206.controllers.AiWitnessController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" stylesheets="@/css/aiWitness.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.AiWitnessController">
    <children>
       <ImageView fitHeight="475.0" fitWidth="712.0" layoutX="14.0" layoutY="110.0" pickOnBounds="true">
          <image>
@@ -21,13 +17,13 @@
          </image>
       </ImageView>
 
-      <TextArea fx:id="txtaChat" editable="false" layoutX="227.0" layoutY="14.0" prefHeight="150.0" prefWidth="537.0" wrapText="true" />
+      <TextArea fx:id="txtaChat" editable="false" layoutX="223.0" layoutY="14.0" prefHeight="176.0" prefWidth="541.0" wrapText="true" />
 
-      <TextArea fx:id="txtInput" disable="true" layoutX="222.0" layoutY="164.0" prefHeight="60.0" prefWidth="396.0" promptText="Type your message here..." wrapText="true" />
+      <TextArea fx:id="txtInput" disable="true" layoutX="224.0" layoutY="190.0" prefHeight="60.0" prefWidth="404.0" promptText="Type your message here..." wrapText="true" />
 
-      <Button fx:id="btnSend" disable="true" layoutX="621.0" layoutY="164.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="60.0" prefWidth="68.0" text="Send" />
+      <Button fx:id="btnSend" disable="true" layoutX="628.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="60.0" prefWidth="68.0" text="Send" />
 
-      <Button fx:id="btnGoBack" layoutX="695.0" layoutY="164.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="60.0" prefWidth="68.0" text="Go Back" />
+      <Button fx:id="btnGoBack" layoutX="696.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="60.0" prefWidth="68.0" text="Go Back" />
 
       <Label fx:id="lblTimer" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="39.0" prefWidth="208.0" text="Time Left">
          <font>
