@@ -65,3 +65,14 @@
     -fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa);
     -fx-background-radius: 10;
 }
+
+/* Timer label styling */
+#lblTimer {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 8;
+    -fx-padding: 5 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 3, 0, 0, 1);
+    -fx-alignment: center;
+}
