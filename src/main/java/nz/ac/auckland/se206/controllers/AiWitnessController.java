@@ -29,6 +29,7 @@ public class AiWitnessController extends ChatController {
   @FXML private TextArea txtInput;
   @FXML private Button btnSend;
   @FXML private ImageView imgGraph;
+  @FXML private Button btnGoBack; // Add this field
 
   private Timeline scanTimeline;
   private double scanProgress = 0.0;
