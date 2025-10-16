@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -12,6 +14,8 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 public class AiDefendantController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiDefendent";
+    private static Scene memoryScene;
+    private static Object memoryController;
 
   // Memory interaction elements - only declare ones that exist in FXML
   @FXML private Slider sliderAContagion;
@@ -23,9 +27,13 @@ public class AiDefendantController extends ChatController {
   @FXML private Label lblPatientBContagion;
   @FXML private Label lblPatientBSeverity;
   @FXML private Label lblAlgorithmStatus;
+  @FXML private javafx.scene.control.TextArea txtInput;
 
   // Interaction state tracking
   private String currentMemoryContext = "";
+  // --- Persistent state ---
+
+  
 
   /**
    * Initializes the AI Defendant controller, setting up memory interaction interface.
@@ -242,10 +250,31 @@ public class AiDefendantController extends ChatController {
                         processAiResponse(contextualResponse);
                       });
                 }
+                // Enable user input after running algorithm
+                Platform.runLater(() -> {
+                    txtInput.setDisable(false);
+                    btnSend.setDisable(false);
+                });
+
               } catch (ApiProxyException e) {
                 e.printStackTrace();
               }
             })
         .start();
+  }
+
+  public static javafx.scene.Scene getMemoryScene() throws java.io.IOException {
+    if (memoryScene == null) {
+      java.net.URL url = AiDefendantController.class.getResource("/fxml/aiDef.fxml");
+      if (url == null) {
+        throw new java.io.FileNotFoundException("FXML not found on classpath: /fxml/aiDef.fxml. "
+            + "Make sure src/main/resources/fxml/aiDef.fxml exists and project is built.");
+      }
+      javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(url);
+      javafx.scene.Parent root = loader.load();
+      memoryController = loader.getController();
+      memoryScene = new javafx.scene.Scene(root);
+    }
+    return memoryScene;
   }
 }

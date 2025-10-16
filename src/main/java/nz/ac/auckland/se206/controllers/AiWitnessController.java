@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+
 public class AiWitnessController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiWitness";
