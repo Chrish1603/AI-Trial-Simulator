@@ -32,6 +32,8 @@ public class VerdictController {
   @FXML private Rectangle btnInnocent;
 
   private boolean verdictGiven = false;
+  private boolean verdictSelected = false;
+  private String selectedVerdict = "";
   private String playerRationale = "";
 
   /**
@@ -51,6 +53,11 @@ public class VerdictController {
     if (!GameTimer.getInstance().isInVerdictPhase()) {
       startVerdictTimer();
     }
+
+    // Initially disable text input and send button until verdict is selected
+    txtInput.setDisable(true);
+    btnSend.setDisable(true);
+    txtInput.setPromptText("Select your verdict first");
 
     // Display the conversation summary from the LLM
     displayConversationSummary();
@@ -80,7 +87,7 @@ public class VerdictController {
     txtaChat.appendText("=== TRIAL SUMMARY ===\n");
     txtaChat.appendText("You have gathered evidence from all witnesses.\n");
     txtaChat.appendText("Now you must make your final verdict.\n");
-    txtaChat.appendText("Enter your rationale and select GUILTY or INNOCENT.\n\n");
+    txtaChat.appendText("First, select GUILTY or INNOCENT below.\n\n");
   }
 
   /**
@@ -94,16 +101,22 @@ public class VerdictController {
 
   /**
    * Handles the player submitting their rationale.
-   * Stores the rationale and updates the UI to prompt for verdict selection.
+   * Stores the rationale and proceeds with final verdict processing.
    */
   @FXML
   private void onSendMessage() {
+    if (!verdictSelected) return; // Should not happen due to UI controls
+    
     String message = txtInput.getText().trim();
-    if (message != null && !message.isEmpty() && !message.equals("Enter your rationale here:")) {
+    if (message != null && !message.isEmpty() && !message.equals("Enter your rationale here...")) {
       playerRationale = message;
       txtaChat.appendText("Your rationale: " + message + "\n\n");
       txtInput.clear();
-      txtInput.setPromptText("Rationale submitted. Now select your verdict.");
+      txtInput.setDisable(true);
+      btnSend.setDisable(true);
+      
+      // Process the final verdict with rationale
+      handleFinalVerdict();
     }
   }
 
@@ -115,7 +128,7 @@ public class VerdictController {
   @FXML
   private void onGuiltyClicked(MouseEvent event) {
     System.out.println("Guilty verdict selected");
-    handleVerdict(true);
+    selectVerdict("GUILTY");
   }
 
   /**
@@ -126,35 +139,67 @@ public class VerdictController {
   @FXML
   private void onInnocentClicked(MouseEvent event) {
     System.out.println("Innocent verdict selected");
-    handleVerdict(false);
+    selectVerdict("INNOCENT");
   }
 
   /**
-   * Processes the player's verdict selection and initiates LLM feedback analysis.
-   * Runs the LLM analysis in a background thread to avoid UI freezing.
+   * Handles the initial verdict selection and enables rationale input.
    * 
-   * @param guilty true if the player selected GUILTY, false if INNOCENT
+   * @param verdict the selected verdict ("GUILTY" or "INNOCENT")
    */
-  private void handleVerdict(boolean guilty) {
+  private void selectVerdict(String verdict) {
+    if (verdictSelected) return;
+
+    verdictSelected = true;
+    selectedVerdict = verdict;
+
+    // Add visual styling to selected verdict button
+    if ("GUILTY".equals(verdict)) {
+      btnGuilty.getStyleClass().add("selected");
+    } else if ("INNOCENT".equals(verdict)) {
+      btnInnocent.getStyleClass().add("selected");
+    }
+
+    // Display verdict selection
+    txtaChat.appendText("\n=== VERDICT SELECTED ===\n");
+    txtaChat.appendText("You have chosen: " + verdict + "\n");
+    txtaChat.appendText("Now please provide your rationale below.\n\n");
+
+    // Enable rationale input
+    txtInput.setDisable(false);
+    btnSend.setDisable(false);
+    txtInput.setPromptText("Enter your rationale here...");
+    txtInput.requestFocus();
+
+    // Disable verdict buttons to prevent changing selection
+    btnGuilty.setDisable(true);
+    btnInnocent.setDisable(true);
+  }
+
+  /**
+   * Processes the final verdict with rationale and initiates LLM feedback analysis.
+   * Runs the LLM analysis in a background thread to avoid UI freezing.
+   */
+  private void handleFinalVerdict() {
     if (verdictGiven) return;
 
     verdictGiven = true;
-    txtInput.setDisable(true);
-    btnSend.setDisable(true);
 
-    String verdictText = guilty ? "GUILTY" : "INNOCENT";
     txtaChat.appendText("\n=== FINAL VERDICT ===\n");
-    txtaChat.appendText("You have found the AI defendant: " + verdictText + "\n\n");
+    txtaChat.appendText("You have found the AI defendant: " + selectedVerdict + "\n\n");
 
     // Get LLM feedback on the player's verdict and rationale
     txtaChat.appendText("Analyzing your decision...\n");
+
+    // Determine if guilty for fallback logic
+    boolean guilty = "GUILTY".equals(selectedVerdict);
 
     // Run LLM analysis in a background thread to avoid freezing UI
     Thread analysisThread =
         new Thread(
             () -> {
               try {
-                String feedback = getLLMFeedback(verdictText, playerRationale);
+                String feedback = getLLMFeedback(selectedVerdict, playerRationale);
 
                 // Update UI on JavaFX thread
                 javafx.application.Platform.runLater(
@@ -233,9 +278,6 @@ public class VerdictController {
   private void displayFeedback(String feedback) {
     txtaChat.appendText("\n=== ANALYSIS COMPLETE ===\n");
     txtaChat.appendText(feedback + "\n");
-
-    boolean isCorrect = feedback.toUpperCase().contains("VERDICT: CORRECT");
-
   }
 
   /** Displays basic feedback as fallback when LLM fails. */

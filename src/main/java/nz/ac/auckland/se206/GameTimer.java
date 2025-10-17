@@ -120,7 +120,7 @@ public class GameTimer {
   }
 
   private void updateTimerText() {
-    String label = inVerdictPhase ? "Final Verdict: " : "Time Left: ";
+    String label = "Time Left: ";
     int minutes = timeLeft / 60;
     int seconds = timeLeft % 60;
 
