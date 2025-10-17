@@ -17,15 +17,15 @@
          </image>
       </ImageView>
 
-      <TextArea fx:id="txtaChat" editable="false" layoutX="223.0" layoutY="14.0" prefHeight="176.0" prefWidth="541.0" wrapText="true" />
+      <TextArea fx:id="txtaChat" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="176.0" prefWidth="541.0" wrapText="true" />
 
-      <TextArea fx:id="txtInput" disable="true" layoutX="224.0" layoutY="190.0" prefHeight="60.0" prefWidth="404.0" promptText="Type your message here..." wrapText="true" />
+      <TextArea fx:id="txtInput" disable="true" layoutX="14.0" layoutY="190.0" prefHeight="60.0" prefWidth="404.0" promptText="Type your message here..." wrapText="true" />
 
-      <Button fx:id="btnSend" disable="true" layoutX="628.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="60.0" prefWidth="68.0" text="Send" />
+      <Button fx:id="btnSend" disable="true" layoutX="418.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="60.0" prefWidth="68.0" text="Send" />
 
-      <Button fx:id="btnGoBack" layoutX="696.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="60.0" prefWidth="68.0" text="Go Back" />
+      <Button fx:id="btnGoBack" layoutX="486.0" layoutY="190.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="60.0" prefWidth="68.0" text="Go Back" />
 
-      <Label fx:id="lblTimer" alignment="CENTER" layoutX="8.0" layoutY="14.0" prefHeight="39.0" prefWidth="205.0" text="Time Left">
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="570.0" layoutY="45.0" prefHeight="39.0" prefWidth="205.0" text="Time Left">
          <font>
             <Font name="Arial Black" size="21.0" />
          </font>
