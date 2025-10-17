@@ -57,35 +57,6 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Displays Patient A's medical notes when the corresponding button is clicked.
-   * Shows information about the contagious viral infection case.
-   */
-  @FXML
-  private void viewPatientANotes() {
-    imgNotes.setImage(
-        new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
-
-    if (!noteASeen) {
-      String summaryMessage =
-          "You open Patient A's notes and read:\n"
-              + "Patient A: Middle-aged male with influenza symptoms\n"
-              + "Seen at 10:15AM on 02/24/24\n"
-              + "Mild but highly contagious with fever and dry cough\n"
-              + "No significant respiratory distress";
-
-      ChatController.appendSystemMessage(summaryMessage);
-
-      try {
-        generateSystemPromptedResponse("The doctor notices you reading Patient A's notes.");
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
-    noteASeen = true;
-  }
-
-  /**
    * Displays Patient B's medical notes when the corresponding button is clicked.
    * Shows information about the neurological condition case.
    */
@@ -94,7 +65,11 @@ public class HumanWitnessController extends ChatController {
     imgNotes.setImage(
         new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
-    if (!noteBSeen) {
+    // First update the flag that notes have been seen
+    boolean firstTimeViewing = !noteBSeen;
+    noteBSeen = true;
+
+    if (firstTimeViewing) {
       String summaryMessage =
           "You open Patient B's notes and read:\n"
               + "Patient B: Young adult female with neurological symptoms\n"
@@ -106,14 +81,49 @@ public class HumanWitnessController extends ChatController {
       ChatController.appendSystemMessage(summaryMessage);
 
       try {
+        // Rebuild the chat request with updated context before generating response
+        super.initializeChatRequest();
+        
         generateSystemPromptedResponse(
-            "The doctor notices you looking at Patient B's notes with concern.");
+            "The doctor acknowledges the notes with a brief response. Do NOT repeat the note content - simply acknowledge you can now answer questions about Patient B with a 1-2 sentence response.");
       } catch (Exception e) {
         e.printStackTrace();
       }
     }
+  }
 
-    noteBSeen = true;
+  /**
+   * Displays Patient A's medical notes when the corresponding button is clicked.
+   * Shows information about the contagious viral infection case.
+   */
+  @FXML
+  private void viewPatientANotes() {
+    imgNotes.setImage(
+        new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
+
+    // First update the flag that notes have been seen
+    boolean firstTimeViewing = !noteASeen;
+    noteASeen = true;
+
+    if (firstTimeViewing) {
+      String summaryMessage =
+          "You open Patient A's notes and read:\n"
+              + "Patient A: Middle-aged male with influenza symptoms\n"
+              + "Seen at 10:15AM on 02/24/24\n"
+              + "Mild but highly contagious with fever and dry cough\n"
+              + "No significant respiratory distress";
+
+      ChatController.appendSystemMessage(summaryMessage);
+
+      try {
+        // Rebuild the chat request with updated context before generating response
+        super.initializeChatRequest();
+        
+        generateSystemPromptedResponse("The doctor acknowledges the notes with a brief response. Do NOT repeat the note content - simply acknowledge you can now answer questions about Patient A with a 1-2 sentence response.");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
@@ -176,6 +186,8 @@ public class HumanWitnessController extends ChatController {
     prompt.append(
         "until the player has checked your notes. In your responses prompt the player to check your"
             + " notes if they haven't already. ");
+    prompt.append("Keep your responses very short and professional. ");
+    prompt.append("Answer only the questions asked. ");
 
     if (!noteASeen && !noteBSeen) {
       prompt.append("You haven't checked any of your patient notes yet. Neither has the player. ");
@@ -217,7 +229,7 @@ public class HumanWitnessController extends ChatController {
 
     // Keep responses concise (from main branch)
     prompt.append(
-        "Keep your responses concise and direct, limiting them to 3-4 sentences maximum.");
+        "Keep your responses concise and direct, limiting them to 1-3 sentences maximum.");
 
     return prompt.toString();
   }
