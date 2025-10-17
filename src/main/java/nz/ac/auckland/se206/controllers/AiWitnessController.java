@@ -195,7 +195,7 @@ public class AiWitnessController extends ChatController {
 
   @Override
   protected String getSystemPrompt() {
-    return PromptEngineering.getPrompt("aiwitness.txt", new HashMap<>());
+    return PromptEngineering.getPrompt("aiWitness.txt", new HashMap<>());
   }
 
   @Override
