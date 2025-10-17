@@ -233,3 +233,84 @@
     -fx-effect: none;
     -fx-cursor: default;
 }
+
+/* Add these styles to the end of your existing CSS file */
+
+/* Guilty button styling */
+.guiltyButton {
+    -fx-background-color: rgba(220, 20, 60, 0.7);
+    -fx-background-radius: 10;
+    -fx-border-color: #dc143c;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(220, 20, 60, 0.6), 8, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.guiltyButton:hover {
+    -fx-background-color: rgba(255, 23, 68, 0.8);
+    -fx-border-color: #ff1744;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(gaussian, rgba(255, 23, 68, 0.8), 12, 0, 0, 3);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.guiltyButton:pressed {
+    -fx-background-color: rgba(180, 0, 30, 0.9);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 4, 0, 0, 1);
+}
+
+.guiltyButton.selected {
+    -fx-background-color: rgba(255, 0, 0, 0.9);
+    -fx-border-color: #ffffff;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.7), 15, 0, 0, 0);
+}
+
+/* Innocent button styling */
+.innocentButton {
+    -fx-background-color: rgba(34, 139, 34, 0.7);
+    -fx-background-radius: 10;
+    -fx-border-color: #228b22;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(34, 139, 34, 0.6), 8, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.innocentButton:hover {
+    -fx-background-color: rgba(50, 205, 50, 0.8);
+    -fx-border-color: #32cd32;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.8), 12, 0, 0, 3);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.innocentButton:pressed {
+    -fx-background-color: rgba(20, 100, 20, 0.9);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 4, 0, 0, 1);
+}
+
+.innocentButton.selected {
+    -fx-background-color: rgba(0, 180, 0, 0.9);
+    -fx-border-color: #ffffff;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.7), 15, 0, 0, 0);
+}
+
+/* Disabled state for both buttons */
+.guiltyButton:disabled, .innocentButton:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0, 0, 1);
+}

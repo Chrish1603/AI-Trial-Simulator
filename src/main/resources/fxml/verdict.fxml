@@ -25,8 +25,18 @@
             <Font name="Arial Black" size="46.0" />
          </font>
       </Label>
-      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="54.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="221.0" />
-      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="327.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="235.0" />
+      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="81.0" layoutX="54.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="0" width="221.0" />
+      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="81.0" layoutX="327.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="0" width="235.0" />
       <Button fx:id="btnReplay" layoutX="617.0" layoutY="527.0" mnemonicParsing="false" onAction="#onReplayGame" prefHeight="52.0" prefWidth="162.0" style="-fx-background-color: #3498db; -fx-font-size: 14px; -fx-font-weight: bold;" text="Replay Game" textFill="WHITE" viewOrder="3" visible="false" />
+      <Button fx:id="btnGuiltyOption" layoutX="54.0" layoutY="511.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="221.0" styleClass="guiltyButton" text="GUILTY" textFill="WHITE" viewOrder="1">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnInnocentOption" layoutX="327.0" layoutY="511.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="235.0" styleClass="innocentButton" text="INNOCENT" textFill="WHITE" viewOrder="1">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
