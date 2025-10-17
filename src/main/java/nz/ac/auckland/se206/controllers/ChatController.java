@@ -492,4 +492,13 @@ public class ChatController {
             "(?m)^" + java.util.regex.Pattern.quote(loadingBaseText) + ".*\\n\\n", "");
     txtaChat.setText(chatText);
   }
+
+  // Add this method to the parent ChatController class
+  protected void markMeaningfulInteraction() {
+      String role = getParticipantRole();
+      if (role != null && !role.isEmpty()) {
+          TrialRoomController.markChatboxInteracted(role);
+          System.out.println("Marked meaningful interaction with: " + role);
+      }
+  }
 }
