@@ -165,6 +165,9 @@ public class AiWitnessController extends ChatController {
     imgHandScanner.setOnMousePressed(null);
     imgHandScanner.setOnMouseReleased(null);
 
+    // Mark this as a meaningful interaction
+    markMeaningfulInteraction();
+
     // Append AI witness text
     String aiText =
         "PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak"

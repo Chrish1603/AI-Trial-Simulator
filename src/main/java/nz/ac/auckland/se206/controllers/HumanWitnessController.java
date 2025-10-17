@@ -68,6 +68,7 @@ public class HumanWitnessController extends ChatController {
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteBSeen;
     noteBSeen = true;
+    markMeaningfulInteraction();
 
     if (firstTimeViewing) {
       String summaryMessage =
@@ -104,6 +105,7 @@ public class HumanWitnessController extends ChatController {
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteASeen;
     noteASeen = true;
+    markMeaningfulInteraction();
 
     if (firstTimeViewing) {
       String summaryMessage =
@@ -243,4 +245,15 @@ public class HumanWitnessController extends ChatController {
     noteBSeen = false;
     System.out.println("Human Witness state reset");
   }
+
+//   @Override
+//   public void processUserMessage(String message) {
+//     // Mark this as a meaningful interaction the first time a user sends a message
+//     if (!message.isEmpty() && conversationHistories.get(participantRole).isEmpty()) {
+//         markMeaningfulInteraction();
+//     }
+    
+//     // Continue with normal processing
+//     super.processUserMessage(message);
+// }
 }
