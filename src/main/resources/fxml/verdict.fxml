@@ -25,8 +25,8 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="87.0" layoutX="16.0" layoutY="505.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="215.0" />
-      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="515.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="234.0" />
+      <Rectangle fx:id="btnGuilty" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="14.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="221.0" />
+      <Rectangle fx:id="btnInnocent" arcHeight="5.0" arcWidth="5.0" fill="#1375d100" height="81.0" layoutX="515.0" layoutY="511.0" stroke="TRANSPARENT" strokeType="INSIDE" viewOrder="2" width="235.0" />
       <Button fx:id="btnReplay" layoutX="264.0" layoutY="527.0" mnemonicParsing="false" onAction="#onReplayGame" prefHeight="52.0" prefWidth="215.0" style="-fx-background-color: #3498db; -fx-font-size: 14px; -fx-font-weight: bold;" text="Replay Game" textFill="WHITE" viewOrder="3" visible="false" />
       <Label layoutX="513.0" layoutY="286.0" prefHeight="19.0" prefWidth="241.0" style="-fx-background-color: white; -fx-border-color: black;" text="Choose your verdict below first" viewOrder="4">
          <font>
