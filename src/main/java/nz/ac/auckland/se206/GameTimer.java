@@ -135,6 +135,21 @@ public class GameTimer {
         () -> {
           System.out.println("Round timer ended!");
 
+          // Check if the current scene is a flashback by examining the controller of the current stage
+          boolean isInFlashback = false;
+          if (currentStage != null && currentStage.getScene() != null && 
+              currentStage.getScene().getUserData() instanceof String) {
+            String sceneType = (String) currentStage.getScene().getUserData();
+            isInFlashback = "flashback".equals(sceneType);
+          }
+          
+          // Always go to game over if in flashback
+          if (isInFlashback) {
+            System.out.println("Timer expired while in flashback, showing game over");
+            transitionToGameOver();
+            return;
+          }
+
           boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
           System.out.println("All chatboxes interacted: " + allInteracted);
           
