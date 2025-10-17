@@ -73,7 +73,7 @@ public class AiWitnessController extends ChatController {
 
     if (isUnlocked) {
       // Restore unlocked state
-      lblScanStatus.setText("Authentication Successful.\nWelcome, Investigator.");
+      lblScanStatus.setText("Authentication Successful.\nWelcome");
       progressScan.setProgress(1.0);
       txtInput.setDisable(false);
       btnSend.setDisable(false);

@@ -14,6 +14,7 @@
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-padding: 7;
+    -fx-font-family: "Consolas", "Monaco", monospace;
 }
 
 /* Input field - now matches txtaChat styling */
@@ -26,6 +27,8 @@
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-padding: 5;
+    -fx-prompt-text-fill: white;
+    -fx-font-family: "Consolas", "Monaco", monospace;
 }
 
 #txtInput:focused {
