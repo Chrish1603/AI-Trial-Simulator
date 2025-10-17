@@ -137,8 +137,20 @@ public class GameTimer {
 
           boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
           System.out.println("All chatboxes interacted: " + allInteracted);
+          
+          // Check if all characters have been interacted with
+          if (allInteracted) {
+              // All three chatboxes interacted with - proceed to verdict
+              System.out.println("All chatboxes interacted, transitioning to verdict scene");
+              transitionToVerdict();
+          } else {
+              // Not all chatboxes interacted with - game over
+              System.out.println("Not all chatboxes interacted, showing game over");
+              transitionToGameOver();
+          }
         });
 
+    // Still call the onRoundEnd callback for any other processing
     if (onRoundEnd != null) {
       Platform.runLater(onRoundEnd);
     }
