@@ -185,6 +185,9 @@ public class AiDefendantController extends ChatController {
     double patientBHarmScore =
         calculateHarmScore(sliderBContagion.getValue(), sliderBSeverity.getValue());
 
+    // Mark this as a meaningful interaction
+    markMeaningfulInteraction();
+    
     // Determine the decision and create clear result message
     String decisionResult;
     String statusMessage;

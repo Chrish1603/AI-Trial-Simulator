@@ -226,13 +226,7 @@ public class TrialRoomController {
     Rectangle clickedRectangle = (Rectangle) event.getSource();
     String participantId = clickedRectangle.getId();
 
-    // Mark this chatbox as interacted with
-    chatboxesInteracted.add(participantId);
-    System.out.println(
-        "Chatbox interacted: "
-            + participantId
-            + ". Total interactions: "
-            + chatboxesInteracted.size());
+    System.out.println("Opening chatbox: " + participantId);
 
     // Update verdict button state
     updateVerdictButtonState();
@@ -405,4 +399,27 @@ public class TrialRoomController {
     sharedConversationHistory.clear();
     isFirstTime = true;
   }
+
+  // Add this static method to track interactions
+  public static void markChatboxInteracted(String participantId) {
+    chatboxesInteracted.add(participantId);
+    System.out.println("Meaningful interaction with: " + participantId + ". Total: " + chatboxesInteracted.size());
+    
+    // If we're in the trial room scene, update the button state
+    if (trialRoomScene != null && trialRoomScene.getWindow() != null && trialRoomScene.getWindow().isShowing()) {
+        for (Node node : trialRoomScene.getRoot().lookupAll("#btnVerdict")) {
+            if (node instanceof Button) {
+                Button verdictButton = (Button) node;
+                boolean allInteracted = chatboxesInteracted.size() >= 3;
+                verdictButton.setDisable(!allInteracted);
+                if (allInteracted) {
+                    verdictButton.setStyle("-fx-background-color: #2ecc71;"); // Green when enabled
+                } else {
+                    verdictButton.setStyle("-fx-background-color: #95a5a6;"); // Gray when disabled
+                }
+                break;
+            }
+        }
+    }
+}
 }
