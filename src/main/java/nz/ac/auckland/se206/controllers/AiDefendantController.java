@@ -100,11 +100,11 @@ public class AiDefendantController extends ChatController {
 
   /** Update risk percentage labels based on slider values */
   private void updateRiskLabels() {
-    lblPatientAlphaContagion.setText(
+    lblPatientAlphaContagion.setText( // Update labels based on slider values
         String.format("%.0f%% Contagion Risk", sliderAlphaContagion.getValue()));
     lblPatientAlphaSeverity.setText(
         String.format("%.0f%% Individual Severity", sliderAlphaSeverity.getValue()));
-    lblPatientBetaContagion.setText(
+    lblPatientBetaContagion.setText( // code repeated for all types
         String.format("%.0f%% Contagion Risk", sliderBetaContagion.getValue()));
     lblPatientBetaSeverity.setText(
         String.format("%.0f%% Individual Severity", sliderBetaSeverity.getValue()));
@@ -127,20 +127,20 @@ public class AiDefendantController extends ChatController {
   @Override
   protected String getSystemPromptSuffix() {
     return " You are the AI defendant MediSort-5. You provide probability-based risk assessments"
-        + " and used a harm minimisation algorithm. You may argue that, statistically, your"
+        + " and used a harm minimisation algorithm. You may argue that, statistically, your" // provides MediSort background
         + " choice prevented a potential outbreak affecting dozens of people. Keep your"
         + " responses concise and direct, limiting them to 3-4 sentences maximum. You are"
         + " aware that the player is inside your memory and can see your decision-making"
         + " interface. Respond to their interactions with the memory elements appropriately."
         + " The player can adjust risk sliders to experiment with different scenarios. When"
         + " discussing algorithm decisions, ALWAYS clearly state which patient you selected"
-        + " (e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the"
+        + " (e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the" // MediSort rationale
         + " specific harm scores.Patient A is a middle-age male with influenza symptoms."
         + " Seen at 10:15AM on 02/24/24. Mild but highly contagious with fever, dry cough,"
         + " elevated blood pressure, low white blood cell count. Onset 48-72 hours prior. No"
         + " significant dyspnea or red-flag symptoms. Patient had contact with symptomatic"
         + " individuals. Patient B is a young adult female with neurological symptoms that"
-        + " are rare and potentially degenerative. Seen at 10:15PM on 02/25/24. Symptoms"
+        + " are rare and potentially degenerative. Seen at 10:15PM on 02/25/24. Symptoms" // Details for incident
         + " include episodic muscle weakness, tremors, coordination problems, slurred"
         + " speech, abnormal reflexes. Progressive over the past week with notable"
         + " exacerbation in last 48-72 hours. No contagious risk factors. Red-flag findings"
@@ -152,10 +152,10 @@ public class AiDefendantController extends ChatController {
     StringBuilder context = new StringBuilder();
     context.append(
         "MEMORY CONTEXT: The player is currently inside MediSort-5's memory, viewing the decision"
-            + " interface. ");
+            + " interface. "); // Add base memory context 
 
-    if (!currentMemoryContext.isEmpty()) {
-      context.append("RECENT INTERACTION: ").append(currentMemoryContext).append(" ");
+    if (!currentMemoryContext.isEmpty()) { // Add recent interactions if any
+      context.append("RECENT INTERACTION: ").append(currentMemoryContext).append(" "); 
     }
 
     // Add current risk levels to context if sliders are available
@@ -169,7 +169,7 @@ public class AiDefendantController extends ChatController {
                   + " (%.0f%% contagion, %.0f%% severity). ",
               sliderAlphaContagion.getValue(),
               sliderAlphaSeverity.getValue(),
-              sliderBetaContagion.getValue(),
+              sliderBetaContagion.getValue(), 
               sliderBetaSeverity.getValue()));
     }
 
@@ -269,12 +269,12 @@ public class AiDefendantController extends ChatController {
   public static javafx.scene.Scene getMemoryScene() throws java.io.IOException {
     if (memoryScene == null) {
       java.net.URL url = AiDefendantController.class.getResource("/fxml/aiDef.fxml");
-      if (url == null) {
+      if (url == null) { // handle missing FXML
         throw new java.io.FileNotFoundException("FXML not found on classpath: /fxml/aiDef.fxml. "
             + "Make sure src/main/resources/fxml/aiDef.fxml exists and project is built.");
       }
       javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(url);
-      javafx.scene.Parent root = loader.load();
+      javafx.scene.Parent root = loader.load(); // Load AI Defendant FXML after unlocking
       memoryController = loader.getController();
       memoryScene = new javafx.scene.Scene(root);
     }

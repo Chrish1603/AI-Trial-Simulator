@@ -137,17 +137,17 @@ public class HumanWitnessController extends ChatController {
    */
   private void generateSystemPromptedResponse(String systemPrompt) throws ApiProxyException {
     if (chatCompletionRequest == null) {
-      super.initializeChatRequest();
+      super.initializeChatRequest(); // Ensure chat request is initialized
     }
 
     new Thread(
             () -> {
               try {
                 ChatMessage systemMessage = new ChatMessage("system", systemPrompt);
-                ChatMessage aiResponse = super.runGpt(systemMessage);
+                ChatMessage aiResponse = super.runGpt(systemMessage); // Get AI response
 
                 if (aiResponse != null) {
-                  javafx.application.Platform.runLater(
+                  javafx.application.Platform.runLater( // Update UI with AI response
                       () -> {
                         processAiResponse(aiResponse);
                       });
@@ -181,9 +181,9 @@ public class HumanWitnessController extends ChatController {
   @Override
   protected String getSystemPromptSuffix() {
 
-    StringBuilder prompt = new StringBuilder();
+    StringBuilder prompt = new StringBuilder(); // build dynamic prompt
     prompt.append(" You are the human witness Dr. Payne Gaun, a Senior Clinic Physician. ");
-
+    // Give initial context about memory limitations
     prompt.append("You have a foggy memory and can't recall specific details about patients ");
     prompt.append(
         "until the player has checked your notes. In your responses prompt the player to check your"
@@ -191,13 +191,13 @@ public class HumanWitnessController extends ChatController {
     prompt.append("Keep your responses very short and professional. ");
     prompt.append("Answer only the questions asked. ");
 
-    if (!noteASeen && !noteBSeen) {
+    if (!noteASeen && !noteBSeen) { // prompt user to open notes if none viewed yet
       prompt.append("You haven't checked any of your patient notes yet. Neither has the player. ");
       prompt.append(
           "If asked about specific patient details, explain the player needs to check your notes"
               + " first. ");
     } else {
-      if (noteASeen) {
+      if (noteASeen) { // add viewed note A context
         prompt
             .append("\nYou have checked Patient A's notes and recall: ")
             .append(NOTE_A_CONTENT)
@@ -207,7 +207,7 @@ public class HumanWitnessController extends ChatController {
             "\nYou haven't checked Patient A's notes yet and can't recall details about them. ");
       }
 
-      if (noteBSeen) {
+      if (noteBSeen) { // include note B details if seen
         prompt
             .append("\nYou have checked Patient B's notes and recall: ")
             .append(NOTE_B_CONTENT)

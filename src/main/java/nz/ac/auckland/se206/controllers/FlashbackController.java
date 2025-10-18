@@ -181,14 +181,14 @@ public class FlashbackController {
 
   /** Gets the flashback slides for the specified participant */
   private List<FlashbackSlide> getFlashbackSlides(String participantId) {
-    switch (participantId) {
+    switch (participantId) { // switch based on particiapant clicked on by user
       case "aiDefendent":
         return getAiDefendantFlashback();
       case "humanWitness":
         return getHumanWitnessFlashback();
       case "aiWitness":
         return getAiWitnessFlashback();
-      default:
+      default: // fallback for errors
         return List.of(new FlashbackSlide("/images/doc.png", "No flashback available."));
     }
   }
@@ -196,14 +196,14 @@ public class FlashbackController {
   /** Gets the AI Defendant's flashback slides */
   private List<FlashbackSlide> getAiDefendantFlashback() {
     return List.of(
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 1
             "/images/aiDef-fb1.png",
             "New intake detected: Patient A, middle-aged male, elevated temperature and persistent"
                 + " cough.\n"
                 + "Care-facility worker: high transmission risk. Outbreak model predicts dozens of"
                 + " secondary infections within 48 hours\n"
                 + "I elevate Patient A to the front of the queue."),
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 2
             "/images/aiDef-fb2.png",
             "New intake detected: Patient B, young female, presenting rare neurological symptoms"
                 + " with potential rapid progression.\n"
@@ -222,17 +222,17 @@ public class FlashbackController {
   /** Gets the Human Witness's flashback slides (placeholder) */
   private List<FlashbackSlide> getHumanWitnessFlashback() {
     return List.of(
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 1
             "/images/patientB.png",
             "Patient B arrived in a severe condition. I immediately asked why they had not come in"
                 + " sooner. They mentioned they were advised by an AI system to wait, which puzzled"
                 + " me."),
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 2
             "/images/humanWSlide2.png",
             "I confronted MediSort-5 about the decision it had made. The AI insisted it made the"
                 + " correct call. I informed MediSort-5 that I would be taking this to the review"
                 + " board."),
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 3
             "/images/humanWSlide3.png",
             "At the review, I presented my case. It was deemed that we both had sound logic. "
                 + "A conclusion was not reached, so I decided to escalate the matter further."));
@@ -241,17 +241,17 @@ public class FlashbackController {
   /** Gets the AI Witness's flashback slides (placeholder) */
   private List<FlashbackSlide> getAiWitnessFlashback() {
     return List.of(
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 1
             "/images/vitals-detections.png",
             "I scanned Patient A's vitals. Elevated fever and cough aligned with my contagion"
                 + " models.Outbreak simulation predicted a 73% probability of facility-wide"
                 + " infection within 48 hours if left untreated."),
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 2
             "/images/graph-charts.png",
             "I generated 1,024 outbreak scenarios across the care-facility network. In 94.7% of"
                 + " outcomes, prioritising Patient A reduced projected fatalities by one-third or"
                 + " more. Statistical evidence favoured containment."),
-        new FlashbackSlide(
+        new FlashbackSlide( // slide 3
             "/images/ai-witness-testimony.png",
             "During the review, I presented infection curves and probability intervals. My testimony"
                 + " was impartial: MediSort-5’s decision aligned with epidemiological logic,even"
@@ -260,14 +260,14 @@ public class FlashbackController {
 
   /** Gets the display name for a participant */
   private String getParticipantDisplayName(String participantId) {
-    switch (participantId) {
+    switch (participantId) { // maps participant IDs to display names
       case "aiDefendent":
         return "MediSort-5";
       case "humanWitness":
         return "Dr. Payne Gaun";
       case "aiWitness":
         return "PathoScan-7";
-      default:
+      default: // fallback for error
         return "Unknown";
     }
   }

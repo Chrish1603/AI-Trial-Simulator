@@ -238,10 +238,10 @@ public class ChatController {
         () -> {
           loadingBaseText = getDisplayName(participantRole) + ": Loading";
           txtaChat.appendText(loadingBaseText + " .\n\n");
-          txtInput.setDisable(true);
+          txtInput.setDisable(true); // stops input while waiting
           btnSend.setDisable(true);
 
-          // Start loading animation
+          // moves text on screen to keep user engaged
           startLoadingAnimation();
         });
 
@@ -448,15 +448,14 @@ public class ChatController {
     }
   }
 
-  /** Maps display names back to API roles. */
   private String mapSpeakerToRole(String speaker) {
-    switch (speaker) {
+    switch (speaker) { // maps display names back to roles
       case "MediSort-5":
       case "Dr. Payne Gaun":
       case "PathoScan-7":
         return "assistant";
       case "User":
-      default:
+      default: // fallback to user role
         return "user";
     }
   }
@@ -468,12 +467,12 @@ public class ChatController {
             new KeyFrame(
                 Duration.seconds(0.5),
                 event -> {
-                  loadingDotCount = (loadingDotCount % 3) + 1;
-                  String dots = " " + ".".repeat(loadingDotCount);
+                  loadingDotCount = (loadingDotCount % 3) + 1; // cycle through 1 to 3 dots
+                  String dots = " " + ".".repeat(loadingDotCount); // create dots string
                   removeLoadingText();
                   txtaChat.appendText(loadingBaseText + dots + "\n\n");
                 }));
-    loadingTimeline.setCycleCount(Timeline.INDEFINITE);
+    loadingTimeline.setCycleCount(Timeline.INDEFINITE); // repeat indefinitely
     loadingTimeline.play();
   }
 

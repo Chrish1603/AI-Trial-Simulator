@@ -305,13 +305,13 @@ public class TrialRoomController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
     Parent root = loader.load();
 
-    FlashbackController controller = loader.getController();
-    String returnFxml = getFxmlFileForParticipant(participantId);
+    FlashbackController controller = loader.getController(); 
+    String returnFxml = getFxmlFileForParticipant(participantId); 
     controller.initializeFlashback(participantId, returnFxml);
-
+    // Set up scene
     Scene scene = new Scene(root);
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    stage.setScene(scene);
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get current stage
+    stage.setScene(scene); 
     stage.show();
   }
 
@@ -358,7 +358,7 @@ public class TrialRoomController {
    * @return the FXML file path for the participant, or null if not found
    */
   private String getFxmlFileForParticipant(String participantId) {
-    switch (participantId) {
+    switch (participantId) { // Return appropriate FXML file based on participant ID
       case AI_DEFENDANT:
         return "/fxml/aiDef.fxml";
       case HUMAN_WITNESS:
@@ -366,7 +366,7 @@ public class TrialRoomController {
       case AI_WITNESS:
         return "/fxml/aiWit.fxml";
       default:
-        return null;
+        return null; // fallback for errors
     }
   }
 

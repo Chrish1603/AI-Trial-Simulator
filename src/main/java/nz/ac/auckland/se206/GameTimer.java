@@ -42,18 +42,17 @@ public class GameTimer {
 
   private GameTimer() {}
 
-  // === Public methods ===
   public void start(Runnable onRoundEnd, Runnable onVerdictEnd) {
-    this.onRoundEnd = onRoundEnd;
+    this.onRoundEnd = onRoundEnd; // Set the round end callback
     this.onVerdictEnd = onVerdictEnd;
     inVerdictPhase = false;
     timeLeft = ROUND_SECONDS;
-    updateTimerText();
+    updateTimerText(); // Ensure timer text is initialized
     if (timeline != null) {
       timeline.stop();
     }
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
-    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick())); // Tick every second
+    timeline.setCycleCount(Timeline.INDEFINITE); 
     timeline.play();
   }
 
@@ -106,13 +105,13 @@ public class GameTimer {
   private void tick() {
     timeLeft--;
     updateTimerText();
-    if (timeLeft <= 0) {
-      if (!inVerdictPhase) {
+    if (timeLeft <= 0) { 
+      if (!inVerdictPhase) { // Transition to verdict phase
         inVerdictPhase = true;
         timeLeft = VERDICT_SECONDS;
         updateTimerText();
         handleRoundEnd();
-      } else {
+      } else { // End of verdict phase
         timeline.stop();
         handleVerdictEnd();
       }
@@ -182,13 +181,13 @@ public class GameTimer {
         () -> {
           try {
             if (currentStage == null) {
-              currentStage = getActiveStage();
+              currentStage = getActiveStage(); // Try to find active stage if not set
             }
 
             if (currentStage != null) {
               FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
               Parent root = loader.load();
-              Scene scene = new Scene(root);
+              Scene scene = new Scene(root); // Set up verdict scene
               currentStage.setScene(scene);
               currentStage.show();
 
@@ -209,13 +208,13 @@ public class GameTimer {
         () -> {
           try {
             if (currentStage == null) {
-              currentStage = getActiveStage();
+              currentStage = getActiveStage(); // Try to get the active stage if not set
             }
 
             if (currentStage != null) {
               FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
-              Parent root = loader.load();
-              Scene scene = new Scene(root);
+              Parent root = loader.load(); // Load game over scene
+              Scene scene = new Scene(root); 
               currentStage.setScene(scene);
               currentStage.show();
             } else {
