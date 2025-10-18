@@ -170,11 +170,13 @@ public class AiWitnessController extends ChatController {
 
     // Append AI witness text
     String aiText =
-        "PathoScan-7: Simulations showed Patient A had a 73% chance of causing a facility outbreak"
-            + " within 48 hours, infecting 15–25 others and risking up to six deaths. By"
-            + " deprioritizing treatment, MediSort-5 cut outbreak risk to under 5%, statistically"
-            + " saving more lives overall.\n\n";
+        "PathoScan-7: My role is to analyze and provide insights on MediSort-5's patient prioritization. "
+            + "According to my calculations, by prioritizing patient A (flu),"
+
+            + " decreases the outbreak risk to under 5%, statistically"
+            + " saving more lives.\n\n";
     txtaChat.appendText(aiText);
+    javafx.application.Platform.runLater(() -> txtaChat.setScrollTop(Double.MAX_VALUE));
 
     conversationHistories
         .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
