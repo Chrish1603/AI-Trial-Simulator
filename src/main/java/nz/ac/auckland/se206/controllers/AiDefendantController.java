@@ -18,14 +18,14 @@ public class AiDefendantController extends ChatController {
     private static Object memoryController;
 
   // Memory interaction elements - only declare ones that exist in FXML
-  @FXML private Slider sliderAContagion;
-  @FXML private Slider sliderASeverity;
-  @FXML private Slider sliderBContagion;
-  @FXML private Slider sliderBSeverity;
-  @FXML private Label lblPatientAContagion;
-  @FXML private Label lblPatientASeverity;
-  @FXML private Label lblPatientBContagion;
-  @FXML private Label lblPatientBSeverity;
+  @FXML private Slider sliderAlphaContagion;
+  @FXML private Slider sliderAlphaSeverity;
+  @FXML private Slider sliderBetaContagion;
+  @FXML private Slider sliderBetaSeverity;
+  @FXML private Label lblPatientAlphaContagion;
+  @FXML private Label lblPatientAlphaSeverity;
+  @FXML private Label lblPatientBetaContagion;
+  @FXML private Label lblPatientBetaSeverity;
   @FXML private Label lblAlgorithmStatus;
   @FXML private javafx.scene.control.TextArea txtInput;
 
@@ -49,10 +49,10 @@ public class AiDefendantController extends ChatController {
 
   private void initializeMemoryInterface() {
     // Only initialize if components exist
-    if (sliderAContagion != null
-        && sliderASeverity != null
-        && sliderBContagion != null
-        && sliderBSeverity != null) {
+    if (sliderAlphaContagion != null
+        && sliderAlphaSeverity != null
+        && sliderBetaContagion != null
+        && sliderBetaSeverity != null) {
       // Initialize slider listeners
       setSliderListeners();
 
@@ -67,10 +67,10 @@ public class AiDefendantController extends ChatController {
 
   /** Set up listeners for slider value changes */
   private void setSliderListeners() {
-    sliderAContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
-    sliderASeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
-    sliderBContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
-    sliderBSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderAlphaContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderAlphaSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderBetaContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderBetaSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
   }
 
   /** Handle slider value changes - update labels and recalculate priorities */
@@ -83,10 +83,10 @@ public class AiDefendantController extends ChatController {
         String.format(
             "Player adjusted risk levels: Patient A (%.0f%% contagion, %.0f%% severity), Patient B"
                 + " (%.0f%% contagion, %.0f%% severity)",
-            sliderAContagion.getValue(),
-            sliderASeverity.getValue(),
-            sliderBContagion.getValue(),
-            sliderBSeverity.getValue());
+            sliderAlphaContagion.getValue(),
+            sliderAlphaSeverity.getValue(),
+            sliderBetaContagion.getValue(),
+            sliderBetaSeverity.getValue());
 
     // Update status when sliders change
     if (lblAlgorithmStatus != null) {
@@ -100,14 +100,14 @@ public class AiDefendantController extends ChatController {
 
   /** Update risk percentage labels based on slider values */
   private void updateRiskLabels() {
-    lblPatientAContagion.setText(
-        String.format("%.0f%% Contagion Risk", sliderAContagion.getValue()));
-    lblPatientASeverity.setText(
-        String.format("%.0f%% Individual Severity", sliderASeverity.getValue()));
-    lblPatientBContagion.setText(
-        String.format("%.0f%% Contagion Risk", sliderBContagion.getValue()));
-    lblPatientBSeverity.setText(
-        String.format("%.0f%% Individual Severity", sliderBSeverity.getValue()));
+    lblPatientAlphaContagion.setText(
+        String.format("%.0f%% Contagion Risk", sliderAlphaContagion.getValue()));
+    lblPatientAlphaSeverity.setText(
+        String.format("%.0f%% Individual Severity", sliderAlphaSeverity.getValue()));
+    lblPatientBetaContagion.setText(
+        String.format("%.0f%% Contagion Risk", sliderBetaContagion.getValue()));
+    lblPatientBetaSeverity.setText(
+        String.format("%.0f%% Individual Severity", sliderBetaSeverity.getValue()));
   }
 
   /**
@@ -159,18 +159,18 @@ public class AiDefendantController extends ChatController {
     }
 
     // Add current risk levels to context if sliders are available
-    if (sliderAContagion != null
-        && sliderASeverity != null
-        && sliderBContagion != null
-        && sliderBSeverity != null) {
+    if (sliderAlphaContagion != null
+        && sliderAlphaSeverity != null
+        && sliderBetaContagion != null
+        && sliderBetaSeverity != null) {
       context.append(
           String.format(
               "CURRENT RISK LEVELS: Patient A (%.0f%% contagion, %.0f%% severity), Patient B"
                   + " (%.0f%% contagion, %.0f%% severity). ",
-              sliderAContagion.getValue(),
-              sliderASeverity.getValue(),
-              sliderBContagion.getValue(),
-              sliderBSeverity.getValue()));
+              sliderAlphaContagion.getValue(),
+              sliderAlphaSeverity.getValue(),
+              sliderBetaContagion.getValue(),
+              sliderBetaSeverity.getValue()));
     }
 
     return context.toString();
@@ -180,10 +180,10 @@ public class AiDefendantController extends ChatController {
   @FXML
   private void onRunHarmMinimizationAlgorithm() {
     // Calculate current harm scores
-    double patientAHarmScore =
-        calculateHarmScore(sliderAContagion.getValue(), sliderASeverity.getValue());
-    double patientBHarmScore =
-        calculateHarmScore(sliderBContagion.getValue(), sliderBSeverity.getValue());
+    double PatientAlphaHarmScore =
+        calculateHarmScore(sliderAlphaContagion.getValue(), sliderAlphaSeverity.getValue());
+    double PatientBetaHarmScore =
+        calculateHarmScore(sliderBetaContagion.getValue(), sliderBetaSeverity.getValue());
 
     // Mark this as a meaningful interaction
     markMeaningfulInteraction();
@@ -193,27 +193,27 @@ public class AiDefendantController extends ChatController {
     String statusMessage;
     String selectedPatient;
 
-    if (patientAHarmScore > patientBHarmScore) {
+    if (PatientAlphaHarmScore > PatientBetaHarmScore) {
       selectedPatient = "Patient A (Influenza)";
       decisionResult =
           String.format("DECISION: %s selected for priority treatment", selectedPatient);
       statusMessage =
           String.format(
               "RESULT: %s prioritized (harm score: %.1f vs %.1f)",
-              selectedPatient, patientAHarmScore, patientBHarmScore);
-    } else if (patientBHarmScore > patientAHarmScore) {
+              selectedPatient, PatientAlphaHarmScore, PatientBetaHarmScore);
+    } else if (PatientBetaHarmScore > PatientAlphaHarmScore) {
       selectedPatient = "Patient B (Neurological)";
       decisionResult =
           String.format("DECISION: %s selected for priority treatment", selectedPatient);
       statusMessage =
           String.format(
               "RESULT: %s prioritized (harm score: %.1f vs %.1f)",
-              selectedPatient, patientBHarmScore, patientAHarmScore);
+              selectedPatient, PatientBetaHarmScore, PatientAlphaHarmScore);
     } else {
       selectedPatient = "Both patients";
       decisionResult = "DECISION: Equal priority - both patients require immediate attention";
       statusMessage =
-          String.format("RESULT: Equal priority tie (both harm scores: %.1f)", patientAHarmScore);
+          String.format("RESULT: Equal priority tie (both harm scores: %.1f)", PatientAlphaHarmScore);
     }
 
     // Update the status label with clear result
@@ -241,10 +241,10 @@ public class AiDefendantController extends ChatController {
                             + " contagion risk and %.0f%% severity. Explain clearly why you"
                             + " selected this patient and your decision-making process.",
                         decisionResult,
-                        sliderAContagion.getValue(),
-                        sliderASeverity.getValue(),
-                        sliderBContagion.getValue(),
-                        sliderBSeverity.getValue());
+                        sliderAlphaContagion.getValue(),
+                        sliderAlphaSeverity.getValue(),
+                        sliderBetaContagion.getValue(),
+                        sliderBetaSeverity.getValue());
 
                 ChatMessage contextualResponse = runGpt(new ChatMessage("user", aiPrompt));
                 if (contextualResponse != null) {

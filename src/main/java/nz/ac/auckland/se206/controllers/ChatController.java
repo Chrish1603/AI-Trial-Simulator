@@ -403,12 +403,12 @@ public class ChatController {
    */
   private void addConversationHistoryToRequest(ChatCompletionRequest request) {
     // Limit conversation history to last 6 messages to prevent token overflow
-    final int MAX_HISTORY_MESSAGES = 6;
+    final int MAXIMUM_HISTORY_MESSAGES = 6;
 
     // Add participant's own history (recent messages only)
     java.util.List<String> participantHistory = conversationHistories.get(participantRole);
     if (participantHistory != null) {
-      int startIndex = Math.max(0, participantHistory.size() - MAX_HISTORY_MESSAGES);
+      int startIndex = Math.max(0, participantHistory.size() - MAXIMUM_HISTORY_MESSAGES);
       java.util.List<String> recentHistory =
           participantHistory.subList(startIndex, participantHistory.size());
       addHistoryMessagesToRequest(request, recentHistory);
@@ -417,7 +417,7 @@ public class ChatController {
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
     java.util.List<String> currentHistory = conversationHistories.get(participantRole);
-    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAX_HISTORY_MESSAGES);
+    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGES);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
