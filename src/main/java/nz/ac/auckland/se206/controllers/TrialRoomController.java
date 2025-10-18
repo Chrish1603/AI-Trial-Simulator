@@ -40,7 +40,7 @@ public class TrialRoomController {
   static final java.util.Map<String, List<String>> conversationHistories =
       new java.util.HashMap<>();
   // Shared conversation history (excluding flashbacks) that all participants can access
-  static final java.util.List<String> sharedConversationHistory = new java.util.ArrayList<>();
+  static final List<String> sharedConversationHistory = new ArrayList<>();
   private boolean verdictGiven = false;
 
   // === FXML lifecycle ===

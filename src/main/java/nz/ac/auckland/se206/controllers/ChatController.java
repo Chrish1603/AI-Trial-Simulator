@@ -141,7 +141,7 @@ public class ChatController {
           () -> {
             if (lblTimer != null
                 && lblTimer.getScene() != null
-                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
+                && lblTimer.getScene().getWindow() instanceof Stage) {
               nz.ac.auckland.se206.GameTimer.getInstance()
                   .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
             }

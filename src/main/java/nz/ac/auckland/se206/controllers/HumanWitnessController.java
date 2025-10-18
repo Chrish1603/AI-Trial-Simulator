@@ -79,7 +79,7 @@ public class HumanWitnessController extends ChatController {
               + "Symptoms: Muscle weakness, tremors, coordination problems\n"
               + "Red flags: Abnormal reflexes, progressive worsening over past week";
 
-      ChatController.appendSystemMessage(summaryMessage);
+      appendSystemMessage(summaryMessage);
 
       try {
         // Rebuild the chat request with updated context before generating response
