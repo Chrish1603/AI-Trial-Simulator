@@ -40,7 +40,7 @@ public class TrialRoomController {
   static final java.util.Map<String, List<String>> conversationHistories =
       new java.util.HashMap<>();
   // Shared conversation history (excluding flashbacks) that all participants can access
-  static final java.util.List<String> sharedConversationHistory = new java.util.ArrayList<>();
+  static final List<String> sharedConversationHistory = new ArrayList<>();
   private boolean verdictGiven = false;
 
   // === FXML lifecycle ===
@@ -91,7 +91,7 @@ public class TrialRoomController {
     if (lblTimer != null) {
       lblTimer
           .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().getTimerTextProperty());
     }
 
     // Start timer if not already running
@@ -305,13 +305,13 @@ public class TrialRoomController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
     Parent root = loader.load();
 
-    FlashbackController controller = loader.getController();
-    String returnFxml = getFxmlFileForParticipant(participantId);
+    FlashbackController controller = loader.getController(); 
+    String returnFxml = getFxmlFileForParticipant(participantId); 
     controller.initializeFlashback(participantId, returnFxml);
-
+    // Set up scene
     Scene scene = new Scene(root);
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    stage.setScene(scene);
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get current stage
+    stage.setScene(scene); 
     stage.show();
   }
 
@@ -358,7 +358,7 @@ public class TrialRoomController {
    * @return the FXML file path for the participant, or null if not found
    */
   private String getFxmlFileForParticipant(String participantId) {
-    switch (participantId) {
+    switch (participantId) { // Return appropriate FXML file based on participant ID
       case AI_DEFENDANT:
         return "/fxml/aiDef.fxml";
       case HUMAN_WITNESS:
@@ -366,7 +366,7 @@ public class TrialRoomController {
       case AI_WITNESS:
         return "/fxml/aiWit.fxml";
       default:
-        return null;
+        return null; // fallback for errors
     }
   }
 

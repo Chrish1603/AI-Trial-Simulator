@@ -95,7 +95,7 @@ public class ChatController {
     }
   }
 
-  public static void showConversationHistory(java.util.List<String> history) {
+  public static void showConversationHistory(List<String> history) {
     if (instance != null && instance.txtaChat != null && history != null) {
       instance.txtaChat.clear();
       for (String msg : history) {
@@ -134,16 +134,16 @@ public class ChatController {
     if (lblTimer != null) {
       lblTimer
           .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().getTimerTextProperty());
 
       // Store current stage for timer transitions
       javafx.application.Platform.runLater(
           () -> {
             if (lblTimer != null
                 && lblTimer.getScene() != null
-                && lblTimer.getScene().getWindow() instanceof javafx.stage.Stage) {
+                && lblTimer.getScene().getWindow() instanceof Stage) {
               nz.ac.auckland.se206.GameTimer.getInstance()
-                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
+                  .setCurrentStage((Stage) lblTimer.getScene().getWindow());
             }
           });
     }
@@ -238,10 +238,10 @@ public class ChatController {
         () -> {
           loadingBaseText = getDisplayName(participantRole) + ": Loading";
           txtaChat.appendText(loadingBaseText + " .\n\n");
-          txtInput.setDisable(true);
+          txtInput.setDisable(true); // stops input while waiting
           btnSend.setDisable(true);
 
-          // Start loading animation
+          // moves text on screen to keep user engaged
           startLoadingAnimation();
         });
 
@@ -403,21 +403,21 @@ public class ChatController {
    */
   private void addConversationHistoryToRequest(ChatCompletionRequest request) {
     // Limit conversation history to last 6 messages to prevent token overflow
-    final int MAX_HISTORY_MESSAGES = 6;
+    final int MAXIMUM_HISTORY_MESSAGES = 6;
 
     // Add participant's own history (recent messages only)
-    java.util.List<String> participantHistory = conversationHistories.get(participantRole);
+    List<String> participantHistory = conversationHistories.get(participantRole);
     if (participantHistory != null) {
-      int startIndex = Math.max(0, participantHistory.size() - MAX_HISTORY_MESSAGES);
-      java.util.List<String> recentHistory =
+      int startIndex = Math.max(0, participantHistory.size() - MAXIMUM_HISTORY_MESSAGES);
+      List<String> recentHistory =
           participantHistory.subList(startIndex, participantHistory.size());
       addHistoryMessagesToRequest(request, recentHistory);
     }
 
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
-    java.util.List<String> currentHistory = conversationHistories.get(participantRole);
-    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAX_HISTORY_MESSAGES);
+    List<String> currentHistory = conversationHistories.get(participantRole);
+    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGES);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
@@ -429,7 +429,7 @@ public class ChatController {
 
   /** Adds a list of history messages to the chat request. */
   private void addHistoryMessagesToRequest(
-      ChatCompletionRequest request, java.util.List<String> history) {
+      ChatCompletionRequest request, List<String> history) {
     if (history != null) {
       for (String historyMsg : history) {
         addParsedMessageToRequest(request, historyMsg);
@@ -448,15 +448,14 @@ public class ChatController {
     }
   }
 
-  /** Maps display names back to API roles. */
   private String mapSpeakerToRole(String speaker) {
-    switch (speaker) {
+    switch (speaker) { // maps display names back to roles
       case "MediSort-5":
       case "Dr. Payne Gaun":
       case "PathoScan-7":
         return "assistant";
       case "User":
-      default:
+      default: // fallback to user role
         return "user";
     }
   }
@@ -468,12 +467,12 @@ public class ChatController {
             new KeyFrame(
                 Duration.seconds(0.5),
                 event -> {
-                  loadingDotCount = (loadingDotCount % 3) + 1;
-                  String dots = " " + ".".repeat(loadingDotCount);
+                  loadingDotCount = (loadingDotCount % 3) + 1; // cycle through 1 to 3 dots
+                  String dots = " " + ".".repeat(loadingDotCount); // create dots string
                   removeLoadingText();
                   txtaChat.appendText(loadingBaseText + dots + "\n\n");
                 }));
-    loadingTimeline.setCycleCount(Timeline.INDEFINITE);
+    loadingTimeline.setCycleCount(Timeline.INDEFINITE); // repeat indefinitely
     loadingTimeline.play();
   }
 

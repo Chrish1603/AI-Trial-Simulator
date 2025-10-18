@@ -46,10 +46,10 @@
                <Font name="Arial Bold" size="12.0" />
             </font>
          </Label>
-         <Slider fx:id="sliderAContagion" layoutX="20.0" layoutY="60.0" max="100.0" min="0.0" prefWidth="150.0" value="85.0" />
-         <Label fx:id="lblPatientAContagion" layoutX="180.0" layoutY="60.0" text="85% Contagion Risk" textFill="WHITE" />
-         <Slider fx:id="sliderASeverity" layoutX="20.0" layoutY="85.0" max="100.0" min="0.0" prefWidth="150.0" value="35.0" />
-         <Label fx:id="lblPatientASeverity" layoutX="180.0" layoutY="85.0" text="35% Individual Severity" textFill="WHITE" />
+         <Slider fx:id="sliderAlphaContagion" layoutX="20.0" layoutY="60.0" max="100.0" min="0.0" prefWidth="150.0" value="85.0" />
+         <Label fx:id="lblPatientAlphaContagion" layoutX="180.0" layoutY="60.0" text="85% Contagion Risk" textFill="WHITE" />
+         <Slider fx:id="sliderAlphaSeverity" layoutX="20.0" layoutY="85.0" max="100.0" min="0.0" prefWidth="150.0" value="35.0" />
+         <Label fx:id="lblPatientAlphaSeverity" layoutX="180.0" layoutY="85.0" text="35% Individual Severity" textFill="WHITE" />
          
          <!-- Patient B Risk Assessment -->
          <Label layoutX="20.0" layoutY="115.0" text="Patient B (Neurological): Risk Assessment" textFill="#40a5e8">
@@ -57,10 +57,10 @@
                <Font name="Arial Bold" size="12.0" />
             </font>
          </Label>
-         <Slider fx:id="sliderBContagion" layoutX="20.0" layoutY="135.0" max="100.0" min="0.0" prefWidth="150.0" value="0.0" />
-         <Label fx:id="lblPatientBContagion" layoutX="180.0" layoutY="135.0" text="0% Contagion Risk" textFill="WHITE" />
-         <Slider fx:id="sliderBSeverity" layoutX="20.0" layoutY="160.0" max="100.0" min="0.0" prefWidth="150.0" value="90.0" />
-         <Label fx:id="lblPatientBSeverity" layoutX="180.0" layoutY="160.0" text="90% Individual Severity" textFill="WHITE" />
+         <Slider fx:id="sliderBetaContagion" layoutX="20.0" layoutY="135.0" max="100.0" min="0.0" prefWidth="150.0" value="0.0" />
+         <Label fx:id="lblPatientBetaContagion" layoutX="180.0" layoutY="135.0" text="0% Contagion Risk" textFill="WHITE" />
+         <Slider fx:id="sliderBetaSeverity" layoutX="20.0" layoutY="160.0" max="100.0" min="0.0" prefWidth="150.0" value="90.0" />
+         <Label fx:id="lblPatientBetaSeverity" layoutX="180.0" layoutY="160.0" text="90% Individual Severity" textFill="WHITE" />
 
          
          <!-- Harm Minimization Algorithm Button -->

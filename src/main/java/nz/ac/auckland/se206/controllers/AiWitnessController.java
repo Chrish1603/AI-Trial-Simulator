@@ -100,8 +100,8 @@ public class AiWitnessController extends ChatController {
   switch (event.getCode()) {
     case ENTER:
       if (!event.isShiftDown()) {
-        event.consume(); // prevent newline
-        btnSend.fire(); // simulate send button
+       event.consume(); // prevent newline
+       btnSend.fire(); // simulate send button
       }
       break;
     default:
@@ -123,7 +123,7 @@ public class AiWitnessController extends ChatController {
     scanProgress = 0.0;
     progressScan.setProgress(0.0);
     lblScanStatus.setText("Scanning...");
-    imgHandScanner.setEffect(new Glow(0.7));
+    imgHandScanner.setEffect(new Glow(0.7)); // start glowing for interaction
     imgHandScanner.setImage(new Image(getClass().getResourceAsStream(SCAN_DEFAULT_IMAGE)));
 
     scanTimeline =
@@ -131,16 +131,16 @@ public class AiWitnessController extends ChatController {
             new KeyFrame(
                 Duration.millis(50),
                 e -> {
-                  scanProgress += 0.05 / SCAN_DURATION;
+                  scanProgress += 0.05 / SCAN_DURATION; // increment progress for 50ms frame
                   progressScan.setProgress(scanProgress);
                   imgHandScanner.setEffect(
                       new Glow(0.7 + 0.3 * Math.sin(scanProgress * Math.PI * 4)));
-                  if (scanProgress >= 1.0) {
+                  if (scanProgress >= 1.0) { // completed scan
                     scanTimeline.stop();
                     onScanComplete();
                   }
                 }));
-    scanTimeline.setCycleCount(Timeline.INDEFINITE);
+    scanTimeline.setCycleCount(Timeline.INDEFINITE); // repeat until stopped
     scanTimeline.play();
   }
 
@@ -207,8 +207,8 @@ public class AiWitnessController extends ChatController {
   protected String getSystemPromptSuffix() {
     return " You are the AI witness PathoScan-7, a Disease Spread AI. You are an independent system"
         + " that models contagion spread in the city. You will testify that Patient A's"
-        + " illness had a very high transmission potential in the care facility. You argue"
-        + " that MediSort-5's decision statistically protected more lives. You speak in a"
+        + " illness had a very high transmission potential in the care facility. You argue" // Ensures clarity for LLM
+        + " that MediSort-5's decision statistically protected more lives. You speak in a" // supports medisort
         + " precise, analytical manner with statistical data to support your testimony. Keep"
         + " your responses concise and direct, limiting them to 3-4 sentences maximum.";
   }
@@ -225,10 +225,10 @@ public class AiWitnessController extends ChatController {
   }
 
   public static javafx.scene.Scene getMemoryScene() throws IOException {
-    if (memoryScene == null) {
-      javafx.fxml.FXMLLoader loader =
-          new javafx.fxml.FXMLLoader(AiWitnessController.class.getResource("/fxml/aiWit.fxml"));
-      javafx.scene.Parent root = loader.load();
+    if (memoryScene == null) { // ensure memory is there
+      javafx.fxml.FXMLLoader loader = // Load AI Witness FXML after unlocking
+          new javafx.fxml.FXMLLoader(AiWitnessController.class.getResource("/fxml/aiWit.fxml")); 
+      javafx.scene.Parent root = loader.load(); 
       memoryController = loader.getController();
       memoryScene = new javafx.scene.Scene(root);
     }
@@ -236,7 +236,9 @@ public class AiWitnessController extends ChatController {
   }
 
   public static AiWitnessController getMemoryController() throws IOException {
-    if (memoryController == null) getMemoryScene();
+    if (memoryController == null) {
+      getMemoryScene();
+    }
     return memoryController;
   }
 }
