@@ -110,19 +110,19 @@
 }
 
 /* Sliders in Memory Panel */
-#sliderAContagion, #sliderASeverity, #sliderBContagion, #sliderBSeverity {
+#sliderAlphaContagion, #sliderAlphaSeverity, #sliderBetaContagion, #sliderBetaSeverity {
     -fx-background-color: #1e293b;
 }
 
-#sliderAContagion .track, #sliderASeverity .track,
-#sliderBContagion .track, #sliderBSeverity .track {
+#sliderAlphaContagion .track, #sliderAlphaSeverity .track,
+#sliderBetaContagion .track, #sliderBetaSeverity .track {
     -fx-background-color: #334155;
     -fx-background-radius: 5;
     -fx-border-color: #475569;
     -fx-border-radius: 5;
 }
 
-#sliderAContagion .thumb, #sliderASeverity .thumb {
+#sliderAlphaContagion .thumb, #sliderAlphaSeverity .thumb {
     -fx-background-color: #ef4444;
     -fx-background-radius: 8;
     -fx-border-color: #dc2626;
@@ -130,7 +130,7 @@
     -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.6), 4, 0, 0, 0);
 }
 
-#sliderBContagion .thumb, #sliderBSeverity .thumb {
+#sliderBetaContagion .thumb, #sliderBetaSeverity .thumb {
     -fx-background-color: #3b82f6;
     -fx-background-radius: 8;
     -fx-border-color: #2563eb;
@@ -187,13 +187,13 @@
 }
 
 /* Patient Risk Labels */
-#lblPatientAContagion, #lblPatientASeverity {
+#lblPatientAlphaContagion, #lblPatientAlphaSeverity {
     -fx-text-fill: #fca5a5 !important;
     -fx-font-family: "Consolas", "Monaco", monospace;
     -fx-font-size: 11px;
 }
 
-#lblPatientBContagion, #lblPatientBSeverity {
+#lblPatientBetaContagion, #lblPatientBetaSeverity {
     -fx-text-fill: #93c5fd !important;
     -fx-font-family: "Consolas", "Monaco", monospace;
     -fx-font-size: 11px;
@@ -210,11 +210,11 @@
 }
 
 /* Hover effects for interactive elements */
-#sliderAContagion:hover .thumb, #sliderASeverity:hover .thumb {
+#sliderAlphaContagion:hover .thumb, #sliderAlphaSeverity:hover .thumb {
     -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.8), 6, 0, 0, 0);
 }
 
-#sliderBContagion:hover .thumb, #sliderBSeverity:hover .thumb {
+#sliderBetaContagion:hover .thumb, #sliderBetaSeverity:hover .thumb {
     -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.8), 6, 0, 0, 0);
 }
 
@@ -255,12 +255,12 @@
 }
 
 /* Slider value range coloring */
-#sliderAContagion .track:filled,
-#sliderASeverity .track:filled {
+#sliderAlphaContagion .track:filled,
+#sliderAlphaSeverity .track:filled {
     -fx-background-color: linear-gradient(to right, #fca5a5, #ef4444);
 }
 
-#sliderBContagion .track:filled,
-#sliderBSeverity .track:filled {
+#sliderBetaContagion .track:filled,
+#sliderBetaSeverity .track:filled {
     -fx-background-color: linear-gradient(to right, #93c5fd, #3b82f6);
 }
