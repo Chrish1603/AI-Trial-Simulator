@@ -185,6 +185,9 @@ public class VerdictController {
 
     verdictGiven = true;
 
+    // Stop the timer immediately when verdict is submitted
+    GameTimer.getInstance().stop();
+
     txtaChat.appendText("\n=== FINAL VERDICT ===\n");
     txtaChat.appendText("You have found the AI defendant: " + selectedVerdict + "\n\n");
 

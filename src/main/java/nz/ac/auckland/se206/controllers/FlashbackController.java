@@ -243,19 +243,18 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide( // slide 1
             "/images/vitals-detections.png",
-            "I scanned Patient A's vitals. Elevated fever and cough aligned with my contagion"
-                + " models.Outbreak simulation predicted a 73% probability of facility-wide"
+            "Scanning Patient A's vitals shows elevated temperature and cough. "
+                + " My analysis shows an 73% probability of an outbreak causing 15-25 secondary"
                 + " infection within 48 hours if left untreated."),
         new FlashbackSlide( // slide 2
             "/images/graph-charts.png",
-            "I generated 1,024 outbreak scenarios across the care-facility network. In 94.7% of"
+            "Through my calculations I generated 1,024 outbreak scenarios. In 94.7% of"
                 + " outcomes, prioritising Patient A reduced projected fatalities by one-third or"
-                + " more. Statistical evidence favoured containment."),
-        new FlashbackSlide( // slide 3
+                + " more. Statistical evidence favoured containing the infection."),
+        new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I presented infection curves and probability intervals. My testimony"
-                + " was impartial: MediSort-5’s decision aligned with epidemiological logic,even"
-                + " though it delayed Patient B's diagnosis."));
+            "During the review, I have presented the calculation data and statistics of MediSort-5, reprioritization strategies."
+                + " My analysis agrees with MediSort-5's decision (prioritizing Patient A), to prevent the flu outbreak."));
   }
 
   /** Gets the display name for a participant */
