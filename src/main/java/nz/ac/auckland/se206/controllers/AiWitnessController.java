@@ -170,9 +170,10 @@ public class AiWitnessController extends ChatController {
 
     // Append AI witness text
     String aiText =
-        "PathoScan-7: Patient A had a 73% chance of causing an outbreak"
-            + " within 48 hours. By"
-            + " prioritizing the patient with the flu, MediSort-5 decrease the outbreak risk to under 5%, statistically"
+        "PathoScan-7: My role is to analyze and provide insights on MediSort-5's patient prioritization. "
+            + "According to my calculations, by prioritizing patient A (flu),"
+
+            + " decreases the outbreak risk to under 5%, statistically"
             + " saving more lives.\n\n";
     txtaChat.appendText(aiText);
     javafx.application.Platform.runLater(() -> txtaChat.setScrollTop(Double.MAX_VALUE));
