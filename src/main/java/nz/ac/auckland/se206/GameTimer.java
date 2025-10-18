@@ -98,7 +98,7 @@ public class GameTimer {
     return inVerdictPhase;
   }
 
-  public StringProperty timerTextProperty() {
+  public StringProperty getTimerTextProperty() {
     return timerText;
   }
 

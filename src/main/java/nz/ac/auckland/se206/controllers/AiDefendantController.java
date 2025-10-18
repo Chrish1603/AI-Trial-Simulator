@@ -54,7 +54,7 @@ public class AiDefendantController extends ChatController {
         && sliderBContagion != null
         && sliderBSeverity != null) {
       // Initialize slider listeners
-      setupSliderListeners();
+      setSliderListeners();
 
       // Initialize status message
       if (lblAlgorithmStatus != null) {
@@ -66,7 +66,7 @@ public class AiDefendantController extends ChatController {
   }
 
   /** Set up listeners for slider value changes */
-  private void setupSliderListeners() {
+  private void setSliderListeners() {
     sliderAContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
     sliderASeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
     sliderBContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());

@@ -91,7 +91,7 @@ public class TrialRoomController {
     if (lblTimer != null) {
       lblTimer
           .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().getTimerTextProperty());
     }
 
     // Start timer if not already running

@@ -46,7 +46,7 @@ public class VerdictController {
 
     // Bind the timer label to the global timer
     if (lblVerdictTimer != null) {
-      lblVerdictTimer.textProperty().bind(GameTimer.getInstance().timerTextProperty());
+      lblVerdictTimer.textProperty().bind(GameTimer.getInstance().getTimerTextProperty());
     }
 
     // Make sure we're in verdict phase
@@ -199,7 +199,7 @@ public class VerdictController {
         new Thread(
             () -> {
               try {
-                String feedback = getLLMFeedback(selectedVerdict, playerRationale);
+                String feedback = getFeedback(selectedVerdict, playerRationale);
 
                 // Update UI on JavaFX thread
                 javafx.application.Platform.runLater(
@@ -234,7 +234,7 @@ public class VerdictController {
   }
 
   /** Gets LLM feedback on the player's verdict and rationale. */
-  private String getLLMFeedback(String verdict, String rationale)
+  private String getFeedback(String verdict, String rationale)
       throws ApiProxyException, IOException {
     // Read the verdict prompt
     String verdictPrompt =

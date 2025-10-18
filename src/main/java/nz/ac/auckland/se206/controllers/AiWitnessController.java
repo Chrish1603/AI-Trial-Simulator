@@ -100,8 +100,8 @@ public class AiWitnessController extends ChatController {
   switch (event.getCode()) {
     case ENTER:
       if (!event.isShiftDown()) {
-        event.consume(); // prevent newline
-        btnSend.fire(); // simulate send button
+       event.consume(); // prevent newline
+       btnSend.fire(); // simulate send button
       }
       break;
     default:
@@ -234,7 +234,9 @@ public class AiWitnessController extends ChatController {
   }
 
   public static AiWitnessController getMemoryController() throws IOException {
-    if (memoryController == null) getMemoryScene();
+    if (memoryController == null) {
+      getMemoryScene();
+    }
     return memoryController;
   }
 }

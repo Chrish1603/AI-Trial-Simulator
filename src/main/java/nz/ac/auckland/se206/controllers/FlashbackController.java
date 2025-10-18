@@ -66,13 +66,13 @@ public class FlashbackController {
 
     // Mark this scene as a flashback
     Platform.runLater(() -> {
-        if (lblTimer != null && lblTimer.getScene() != null) {
-            lblTimer.getScene().setUserData("flashback");
-        }
+      if (lblTimer != null && lblTimer.getScene() != null) {
+        lblTimer.getScene().setUserData("flashback");
+      }
     });
 
     if (lblTimer != null) {
-      lblTimer.textProperty().bind(GameTimer.getInstance().timerTextProperty());
+      lblTimer.textProperty().bind(GameTimer.getInstance().getTimerTextProperty());
 
       // Store current stage for timer transitions
       Platform.runLater(() -> {

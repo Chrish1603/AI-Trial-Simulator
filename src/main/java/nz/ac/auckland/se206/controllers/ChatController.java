@@ -134,7 +134,7 @@ public class ChatController {
     if (lblTimer != null) {
       lblTimer
           .textProperty()
-          .bind(nz.ac.auckland.se206.GameTimer.getInstance().timerTextProperty());
+          .bind(nz.ac.auckland.se206.GameTimer.getInstance().getTimerTextProperty());
 
       // Store current stage for timer transitions
       javafx.application.Platform.runLater(
