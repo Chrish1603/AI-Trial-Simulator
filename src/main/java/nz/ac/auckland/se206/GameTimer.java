@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.controllers.TrialRoomController;
 import nz.ac.auckland.se206.controllers.VerdictController;
-import nz.ac.auckland.se206.speech.TextToSpeech;
 
 /**
  * Singleton timer manager for the game. Handles the main round timer and the final verdict timer.

@@ -248,7 +248,7 @@ public class AiDefendantController extends ChatController {
 
                 ChatMessage contextualResponse = runGpt(new ChatMessage("user", aiPrompt));
                 if (contextualResponse != null) {
-                  javafx.application.Platform.runLater(
+                  Platform.runLater(
                       () -> {
                         processAiResponse(contextualResponse);
                       });
@@ -266,7 +266,7 @@ public class AiDefendantController extends ChatController {
         .start();
   }
 
-  public static javafx.scene.Scene getMemoryScene() throws java.io.IOException {
+  public static Scene getMemoryScene() throws java.io.IOException {
     if (memoryScene == null) {
       java.net.URL url = AiDefendantController.class.getResource("/fxml/aiDef.fxml");
       if (url == null) { // handle missing FXML
@@ -276,7 +276,7 @@ public class AiDefendantController extends ChatController {
       javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(url);
       javafx.scene.Parent root = loader.load(); // Load AI Defendant FXML after unlocking
       memoryController = loader.getController();
-      memoryScene = new javafx.scene.Scene(root);
+      memoryScene = new Scene(root);
     }
     return memoryScene;
   }

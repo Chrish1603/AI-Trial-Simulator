@@ -95,7 +95,7 @@ public class ChatController {
     }
   }
 
-  public static void showConversationHistory(java.util.List<String> history) {
+  public static void showConversationHistory(List<String> history) {
     if (instance != null && instance.txtaChat != null && history != null) {
       instance.txtaChat.clear();
       for (String msg : history) {
@@ -143,7 +143,7 @@ public class ChatController {
                 && lblTimer.getScene() != null
                 && lblTimer.getScene().getWindow() instanceof Stage) {
               nz.ac.auckland.se206.GameTimer.getInstance()
-                  .setCurrentStage((javafx.stage.Stage) lblTimer.getScene().getWindow());
+                  .setCurrentStage((Stage) lblTimer.getScene().getWindow());
             }
           });
     }
@@ -406,17 +406,17 @@ public class ChatController {
     final int MAXIMUM_HISTORY_MESSAGES = 6;
 
     // Add participant's own history (recent messages only)
-    java.util.List<String> participantHistory = conversationHistories.get(participantRole);
+    List<String> participantHistory = conversationHistories.get(participantRole);
     if (participantHistory != null) {
       int startIndex = Math.max(0, participantHistory.size() - MAXIMUM_HISTORY_MESSAGES);
-      java.util.List<String> recentHistory =
+      List<String> recentHistory =
           participantHistory.subList(startIndex, participantHistory.size());
       addHistoryMessagesToRequest(request, recentHistory);
     }
 
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
-    java.util.List<String> currentHistory = conversationHistories.get(participantRole);
+    List<String> currentHistory = conversationHistories.get(participantRole);
     int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGES);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
@@ -429,7 +429,7 @@ public class ChatController {
 
   /** Adds a list of history messages to the chat request. */
   private void addHistoryMessagesToRequest(
-      ChatCompletionRequest request, java.util.List<String> history) {
+      ChatCompletionRequest request, List<String> history) {
     if (history != null) {
       for (String historyMsg : history) {
         addParsedMessageToRequest(request, historyMsg);

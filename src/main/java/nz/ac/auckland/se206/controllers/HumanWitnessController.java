@@ -63,7 +63,7 @@ public class HumanWitnessController extends ChatController {
   @FXML
   private void viewFemalePatientNotes() {
     imgNotes.setImage(
-        new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
+        new Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteBSeen;
@@ -100,7 +100,7 @@ public class HumanWitnessController extends ChatController {
   @FXML
   private void viewMalePatientNotes() {
     imgNotes.setImage(
-        new javafx.scene.image.Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
+        new Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteASeen;
@@ -115,7 +115,7 @@ public class HumanWitnessController extends ChatController {
               + "Mild but highly contagious with fever and dry cough\n"
               + "No significant respiratory distress";
 
-      ChatController.appendSystemMessage(summaryMessage);
+      appendSystemMessage(summaryMessage);
 
       try {
         // Rebuild the chat request with updated context before generating response
@@ -147,7 +147,7 @@ public class HumanWitnessController extends ChatController {
                 ChatMessage aiResponse = super.runGpt(systemMessage); // Get AI response
 
                 if (aiResponse != null) {
-                  javafx.application.Platform.runLater( // Update UI with AI response
+                  Platform.runLater( // Update UI with AI response
                       () -> {
                         processAiResponse(aiResponse);
                       });
