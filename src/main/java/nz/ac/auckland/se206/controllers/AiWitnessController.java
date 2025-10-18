@@ -175,6 +175,7 @@ public class AiWitnessController extends ChatController {
             + " prioritizing the patient with the flu, MediSort-5 decrease the outbreak risk to under 5%, statistically"
             + " saving more lives.\n\n";
     txtaChat.appendText(aiText);
+    javafx.application.Platform.runLater(() -> txtaChat.setScrollTop(Double.MAX_VALUE));
 
     conversationHistories
         .computeIfAbsent(participantRole, k -> new java.util.ArrayList<>())
