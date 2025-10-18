@@ -180,9 +180,9 @@ public class AiDefendantController extends ChatController {
   @FXML
   private void onRunHarmMinimizationAlgorithm() {
     // Calculate current harm scores
-    double PatientAlphaHarmScore =
+    double patientAlphaHarmScore =
         calculateHarmScore(sliderAlphaContagion.getValue(), sliderAlphaSeverity.getValue());
-    double PatientBetaHarmScore =
+    double patientBetaHarmScore =
         calculateHarmScore(sliderBetaContagion.getValue(), sliderBetaSeverity.getValue());
 
     // Mark this as a meaningful interaction
@@ -193,27 +193,26 @@ public class AiDefendantController extends ChatController {
     String statusMessage;
     String selectedPatient;
 
-    if (PatientAlphaHarmScore > PatientBetaHarmScore) {
+    if (patientAlphaHarmScore > patientBetaHarmScore) {
       selectedPatient = "Patient A (Influenza)";
       decisionResult =
           String.format("DECISION: %s selected for priority treatment", selectedPatient);
       statusMessage =
           String.format(
               "RESULT: %s prioritized (harm score: %.1f vs %.1f)",
-              selectedPatient, PatientAlphaHarmScore, PatientBetaHarmScore);
-    } else if (PatientBetaHarmScore > PatientAlphaHarmScore) {
+              selectedPatient, patientAlphaHarmScore, patientBetaHarmScore);
+    } else if (patientBetaHarmScore > patientAlphaHarmScore) {
       selectedPatient = "Patient B (Neurological)";
       decisionResult =
           String.format("DECISION: %s selected for priority treatment", selectedPatient);
       statusMessage =
           String.format(
               "RESULT: %s prioritized (harm score: %.1f vs %.1f)",
-              selectedPatient, PatientBetaHarmScore, PatientAlphaHarmScore);
+              selectedPatient, patientBetaHarmScore, patientAlphaHarmScore);
     } else {
-      selectedPatient = "Both patients";
       decisionResult = "DECISION: Equal priority - both patients require immediate attention";
       statusMessage =
-          String.format("RESULT: Equal priority tie (both harm scores: %.1f)", PatientAlphaHarmScore);
+          String.format("RESULT: Equal priority tie (both harm scores: %.1f)", patientAlphaHarmScore);
     }
 
     // Update the status label with clear result
@@ -279,5 +278,9 @@ public class AiDefendantController extends ChatController {
       memoryScene = new Scene(root);
     }
     return memoryScene;
+  }
+
+  public static AiDefendantController getMemoryController() {
+    return (AiDefendantController) memoryController;
   }
 }

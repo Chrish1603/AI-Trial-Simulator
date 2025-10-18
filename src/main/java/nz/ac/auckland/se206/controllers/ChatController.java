@@ -245,7 +245,7 @@ public class ChatController {
           startLoadingAnimation();
         });
 
-    new Thread(
+    new Thread( // run in background thread to avoid blocking UI
             () -> {
               try {
                 ChatMessage aiResponse = runGpt(userMessage);
@@ -255,7 +255,7 @@ public class ChatController {
                         stopLoadingAnimation();
                         removeLoadingText();
                         processAiResponse(aiResponse);
-                        txtInput.setDisable(false);
+                        txtInput.setDisable(false); // re-enable user input once response is received
                         btnSend.setDisable(false);
                       });
                 } else {
@@ -265,7 +265,7 @@ public class ChatController {
                         removeLoadingText();
                         txtaChat.appendText(
                             "SYSTEM: No response received from AI. Please try again.\n\n");
-                        txtInput.setDisable(false);
+                        txtInput.setDisable(false); // fallback for no response
                         btnSend.setDisable(false);
                       });
                 }
@@ -277,12 +277,12 @@ public class ChatController {
                       removeLoadingText();
                       txtaChat.appendText(
                           "SYSTEM: Error generating response. Please try again.\n\n");
-                      txtInput.setDisable(false);
+                      txtInput.setDisable(false); // fallback for error
                       btnSend.setDisable(false);
                     });
               }
             })
-        .start();
+        .start(); // begin running thread
   }
 
   /** Processes and displays the AI response, adding it to conversation histories. */
@@ -403,12 +403,12 @@ public class ChatController {
    */
   private void addConversationHistoryToRequest(ChatCompletionRequest request) {
     // Limit conversation history to last 6 messages to prevent token overflow
-    final int MAXIMUM_HISTORY_MESSAGES = 6;
+    final int MAXIMUM_HISTORY_MESSAGE_COUNT = 6;
 
     // Add participant's own history (recent messages only)
     List<String> participantHistory = conversationHistories.get(participantRole);
     if (participantHistory != null) {
-      int startIndex = Math.max(0, participantHistory.size() - MAXIMUM_HISTORY_MESSAGES);
+      int startIndex = Math.max(0, participantHistory.size() - MAXIMUM_HISTORY_MESSAGE_COUNT);
       List<String> recentHistory =
           participantHistory.subList(startIndex, participantHistory.size());
       addHistoryMessagesToRequest(request, recentHistory);
@@ -417,7 +417,7 @@ public class ChatController {
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
     List<String> currentHistory = conversationHistories.get(participantRole);
-    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGES);
+    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGE_COUNT);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
