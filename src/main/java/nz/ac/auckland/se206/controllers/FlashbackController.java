@@ -230,8 +230,8 @@ public class FlashbackController {
                 + " board."),
         new FlashbackSlide( // slide 3
             "/images/humanWSlide3.png",
-            "At the review, I presented my case. It was deemed that we both had sound logic. "
-                + "A conclusion was not reached, so I decided to escalate the matter further."));
+            "At the review, I presented my case. It was deemed that we both had sound logic."
+                + " A conclusion was not reached, so I decided to escalate the matter further."));
   }
 
   // Gets the AI Witness's flashback slides (placeholder).
@@ -239,7 +239,7 @@ public class FlashbackController {
     return List.of(
         new FlashbackSlide( // slide 1
             "/images/vitals-detections.png",
-            "Scanning Patient A's vitals shows elevated temperature and cough. "
+            "Scanning Patient A's vitals shows elevated temperature and cough."
                 + " My analysis shows an 73% probability of an outbreak causing 15-25 secondary"
                 + " infection within 48 hours if left untreated."),
         new FlashbackSlide( // slide 2
@@ -249,7 +249,7 @@ public class FlashbackController {
                 + " more. Statistical evidence favoured containing the infection."),
         new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I have presented the calculation data and statistics of MediSort-5,"
+            "During the review, I have presented the calculation data and statistics of MediSort-5"
                 + " reprioritization strategies. My analysis agrees with MediSort-5's decision"
                 + " (prioritizing Patient A), to prevent the flu outbreak."));
   }

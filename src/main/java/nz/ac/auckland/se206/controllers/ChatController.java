@@ -422,7 +422,8 @@ public class ChatController {
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
     List<String> currentHistory = conversationHistories.get(participantRole);
-    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - HISTORY_MESSAGE_LIMIT);
+    int sharedStartIndex =
+        Math.max(0, sharedConversationHistory.size() - HISTORY_MESSAGE_LIMIT);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
