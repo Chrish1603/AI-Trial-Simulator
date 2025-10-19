@@ -121,7 +121,7 @@ public class TrialRoomController {
       javafx.application.Platform.runLater(
           () -> {
             try {
-              handleVerdictButton();
+              handleVerdictButtonClick();
             } catch (Exception e) {
               System.err.println("Failed to switch to verdict scene:");
               e.printStackTrace();
@@ -265,7 +265,7 @@ public class TrialRoomController {
    * Switches to the verdict scene if all chatboxes have been interacted with.
    */
   @FXML
-  private void handleVerdictButton() {
+  private void handleVerdictButtonClick() {
     // Only allow switching to verdict if all chatboxes have been interacted with
     if (chatboxesInteracted.size() < 3) {
       TextToSpeech.speak("You need to interview all witnesses first.");

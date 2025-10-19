@@ -44,8 +44,8 @@
             </Button>
             <MenuButton fx:id="notesSelector" layoutX="113.0" layoutY="399.0" mnemonicParsing="false" text="Patient Notes">
                <items>
-                  <MenuItem fx:id="patientANotes" mnemonicParsing="false" onAction="#viewMalePatientNotes" text="Patient A" />
-                  <MenuItem fx:id="patientBNotes" mnemonicParsing="false" onAction="#viewFemalePatientNotes" text="Patient B" />
+                  <MenuItem fx:id="patientANotes" mnemonicParsing="false" onAction="#viewPatientAlphaNotes" text="Patient A" />
+                  <MenuItem fx:id="patientBNotes" mnemonicParsing="false" onAction="#viewPatientBetaNotes" text="Patient B" />
                </items>
             </MenuButton>
          </children>
