@@ -2,6 +2,8 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,10 +33,13 @@ public class VerdictController {
   @FXML private Rectangle btnGuilty;
   @FXML private Rectangle btnInnocent;
 
-  private boolean verdictGiven = false;
+  // Track if verdict has been selected and submitted
   private boolean verdictSelected = false;
-  private String selectedVerdict = "";
-  private String playerRationale = "";
+  private boolean verdictSubmitted = false;
+  private String selectedVerdict;
+
+  private String playerRationale;   // Missing declaration
+  private boolean verdictGiven = false;  // Missing declaration
 
   /**
    * Initializes the verdict controller.
@@ -43,6 +48,7 @@ public class VerdictController {
   @FXML
   public void initialize() {
     System.out.println("VerdictController initialized");
+    GameTimer.setActiveController(this);
 
     // Bind the timer label to the global timer
     if (lblVerdictTimer != null) {
@@ -64,6 +70,23 @@ public class VerdictController {
 
     // Set up the click handlers for verdict buttons
     setupVerdictButtons();
+
+    // Subscribe to timer expiration event
+    GameTimer.getInstance().setTimeExpiredCallback(() -> {
+      if (verdictSelected && !verdictSubmitted && !verdictGiven) {
+        Platform.runLater(() -> {
+          System.out.println("Timer expired - auto-submitting verdict rationale");
+          onSubmitRationale(); // Now this will work
+        });
+      } else if (!verdictSelected) {
+        // Handle case where no verdict was selected
+        Platform.runLater(() -> {
+          System.out.println("Timer expired - selecting default verdict");
+          selectVerdict("INNOCENT"); // Choose default verdict
+          onSubmitRationale();
+        });
+      }
+    });
   }
 
   /**
@@ -78,6 +101,14 @@ public class VerdictController {
       btnInnocent.setOnMouseClicked(this::onInnocentClicked);
     }
   }
+  /** Automatically submits the selected verdict when time runs out. */
+  public void autoSubmitVerdict() {
+    if (verdictSelected && !verdictSubmitted) {
+      txtaChat.appendText("\nTime is up! Automatically submitting your verdict...\n");
+      handleFinalVerdict();
+    }
+  }
+
 
   /**
    * Displays a summary of the trial and instructions for the player.
@@ -96,7 +127,9 @@ public class VerdictController {
    */
   public void startVerdictTimer() {
     System.out.println("Starting verdict timer phase");
+    GameTimer.setActiveController(this);
     GameTimer.getInstance().switchToVerdictPhase();
+    
   }
 
   /**
@@ -351,4 +384,21 @@ public class VerdictController {
       System.err.println("Error loading trial room scene: " + e.getMessage());
     }
   }
+
+  private void onSubmitRationale() {
+  // Get rationale text
+  String message = txtInput.getText().trim();
+  if (message == null || message.isEmpty()) {
+    playerRationale = "No rationale provided (auto-submitted)";
+  } else {
+    playerRationale = message;
+  }
+  
+  txtaChat.appendText("Your rationale: " + playerRationale + "\n\n");
+  txtInput.setDisable(true);
+  btnSend.setDisable(true);
+  
+  // Process the final verdict with rationale
+  handleFinalVerdict();
+}
 }

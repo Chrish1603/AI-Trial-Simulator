@@ -29,8 +29,9 @@ public class GameTimer {
   }
 
   private static final int ROUND_SECONDS = 300;
-  private static final int VERDICT_SECONDS = 60;
+  private static final int VERDICT_SECONDS = 10;
 
+  private Object activeController;
   private int timeLeft;
   private Runnable onRoundEnd;
   private Runnable onVerdictEnd;
@@ -38,6 +39,7 @@ public class GameTimer {
   private Timeline timeline;
   private boolean inVerdictPhase = false;
   private Stage currentStage;
+  private Runnable timeExpiredCallback;
 
   private GameTimer() {}
 
@@ -96,8 +98,18 @@ public class GameTimer {
     return inVerdictPhase;
   }
 
-  public StringProperty getTimerTextProperty() {
-    return timerText;
+public StringProperty getTimerTextProperty() {
+  return timerText;
+}
+public static void setActiveController(Object controller) {
+  getInstance().activeController = controller;
+}
+
+  /**
+   * Sets a callback to run when timer expires
+   */
+  public void setTimeExpiredCallback(Runnable callback) {
+      this.timeExpiredCallback = callback;
   }
 
   // === Private methods ===
@@ -117,6 +129,9 @@ public class GameTimer {
     }
   }
 
+  /**
+   * Updates the timer display
+   */
   private void updateTimerText() {
     String label = "Time Left: ";
     int minutes = timeLeft / 60;
@@ -126,6 +141,19 @@ public class GameTimer {
     String timeFormatted = String.format("%d:%02d", minutes, seconds);
 
     timerText.set(label + timeFormatted);
+
+    if (timeLeft <= 0) {
+        // Timer expired
+        timeline.stop();
+        timerText.set("Time's Up!");
+        
+        // Execute callback if set
+        if (timeExpiredCallback != null) {
+            timeExpiredCallback.run();
+        }
+        
+        // ...other timer expiration code...
+    }
   }
 
   private void handleRoundEnd() {
@@ -169,11 +197,21 @@ public class GameTimer {
     }
   }
 
-  private void handleVerdictEnd() {
+private void handleVerdictEnd() {
+  Platform.runLater(() -> {
+    System.out.println("Verdict timer ended!");
     if (onVerdictEnd != null) {
-      Platform.runLater(onVerdictEnd);
+      onVerdictEnd.run();
     }
-  }
+
+    // Try to auto-submit verdict if user ran out of time
+    if (activeController instanceof VerdictController) {
+        ((VerdictController) activeController).autoSubmitVerdict();
+    }
+
+  });
+}
+
 
   public void transitionToVerdict() {
     Platform.runLater(
@@ -187,6 +225,7 @@ public class GameTimer {
               FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/verdict.fxml"));
               Parent root = loader.load();
               Scene scene = new Scene(root); // Set up verdict scene
+              scene.getProperties().put("controller", loader.getController());
               currentStage.setScene(scene);
               currentStage.show();
 
