@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +49,6 @@ public class FlashbackController {
     }
   }
 
-  /** Initializes the flashback with the given participant data. */
   /**
    * Initializes the flashback with participant-specific content.
    *

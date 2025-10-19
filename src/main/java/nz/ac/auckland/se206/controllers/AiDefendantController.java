@@ -51,7 +51,7 @@ public class AiDefendantController extends ChatController {
         && sliderBetaContagion != null
         && sliderBetaSeverity != null) {
       // Initialize slider listeners
-      setupSliderListeners();
+      initializeSliderListeners();
 
       // Initialize status message
       if (lblAlgorithmStatus != null) {
@@ -63,7 +63,7 @@ public class AiDefendantController extends ChatController {
   }
 
   // Set up listeners for slider value changes.
-  private void setupSliderListeners() {
+  private void initializeSliderListeners() {
     sliderAlphaContagion
         .valueProperty()
         .addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
@@ -111,7 +111,7 @@ public class AiDefendantController extends ChatController {
 
   /**
    * Calculate harm score using MediSort-5's algorithm Weights contagion risk higher due to
-   * community impact
+   * community impact.
    */
   private double calculateHarmScore(double contagionRisk, double severityRisk) {
     // Contagion risk weighted 2x more than individual severity (community vs individual harm)

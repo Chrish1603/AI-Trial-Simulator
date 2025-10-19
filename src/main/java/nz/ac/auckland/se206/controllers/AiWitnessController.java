@@ -46,12 +46,6 @@ public class AiWitnessController extends ChatController {
   private static Image memoryGraphImage = null;
 
   /**
-   * Initializes the AI Witness controller, setting up the hand scanner interface.
-   *
-   * @throws ApiProxyException if there is an error initializing the API proxy
-   */
-
-  /**
    * Resets the static state variables for the AI Witness controller. This should be called when
    * restarting the game.
    */
@@ -64,6 +58,11 @@ public class AiWitnessController extends ChatController {
     System.out.println("AI Witness state reset");
   }
 
+  /**
+   * Initializes the AI Witness controller, setting up the hand scanner interface.
+   *
+   * @throws ApiProxyException if there is an error initializing the API proxy
+   */
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
