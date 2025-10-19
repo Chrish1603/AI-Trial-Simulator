@@ -141,6 +141,7 @@ public class AiWitnessController extends ChatController {
     scanTimeline.play();
   }
 
+  // Handles scan end event, checking if scan was completed.
   private void onScanEnd(MouseEvent event) {
     if (scanProgress < 1.0) {
       if (scanTimeline != null) {
@@ -153,6 +154,7 @@ public class AiWitnessController extends ChatController {
     }
   }
 
+  // Called when scan is successfully completed
   private void onScanComplete() {
     isUnlocked = true;
     lblScanStatus.setText("Authentication Successful.\nWelcome, Investigator.");
