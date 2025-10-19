@@ -144,7 +144,9 @@ public class AiWitnessController extends ChatController {
 
   private void onScanEnd(MouseEvent event) {
     if (scanProgress < 1.0) {
-      if (scanTimeline != null) scanTimeline.stop();
+      if (scanTimeline != null) {
+        scanTimeline.stop();
+      }
       progressScan.setProgress(0.0);
       lblScanStatus.setText("Scan Incomplete. Please retry.");
       imgHandScanner.setEffect(null);

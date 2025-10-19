@@ -135,7 +135,9 @@ public class VerdictController {
    */
   @FXML
   private void onSendMessage() {
-    if (!verdictSelected) return; // Should not happen due to UI controls
+    if (!verdictSelected) {
+      return; // Should not happen due to UI controls
+    }
 
     String message = txtInput.getText().trim();
     if (message != null && !message.isEmpty() && !message.equals("Enter your rationale here...")) {
@@ -178,7 +180,9 @@ public class VerdictController {
    * @param verdict the selected verdict ("GUILTY" or "INNOCENT")
    */
   private void selectVerdict(String verdict) {
-    if (verdictSelected) return;
+    if (verdictSelected) {
+      return;
+    }
 
     verdictSelected = true;
     selectedVerdict = verdict;
@@ -211,7 +215,9 @@ public class VerdictController {
    * analysis in a background thread to avoid UI freezing.
    */
   private void handleFinalVerdict() {
-    if (verdictGiven) return;
+    if (verdictGiven) {
+      return;
+    }
 
     verdictGiven = true;
 
