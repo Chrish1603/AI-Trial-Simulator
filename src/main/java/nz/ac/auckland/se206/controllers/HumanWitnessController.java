@@ -107,9 +107,7 @@ public class HumanWitnessController extends ChatController {
       String summaryMessage =
           "You open Patient A's notes and read:\n"
               + "Patient A: Middle-aged male with influenza symptoms\n"
-              + "Seen at 10:15AM on 02/24/24\n"
-              + "Mild but highly contagious with fever and dry cough\n"
-              + "No significant respiratory distress";
+              + "Seen at 10:15AM on 02/24/24";
 
       appendSystemMessage(summaryMessage);
 
