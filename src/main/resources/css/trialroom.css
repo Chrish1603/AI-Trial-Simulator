@@ -7,7 +7,7 @@
     -fx-font-family: "Courier New", monospace;
     -fx-font-size: 18px;
     -fx-alignment: center;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 2);
     -fx-border-color: #00695c;
     -fx-border-width: 1;
     -fx-border-radius: 6;
@@ -19,10 +19,10 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0, 0, 1);
 }
 
 #btnVerdict:hover {
     -fx-background-color: #00695c;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 2);
 }

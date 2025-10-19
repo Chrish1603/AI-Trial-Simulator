@@ -8,14 +8,12 @@ import javafx.scene.control.Slider;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
-/**
- * Controller for the AI Defendant (MediSort-5) chat interface.
- */
+/** Controller for the AI Defendant (MediSort-5) chat interface. */
 public class AiDefendantController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiDefendent";
-    private static Scene memoryScene;
-    private static Object memoryController;
+  private static Scene memoryScene;
+  private static Object memoryController;
 
   // Memory interaction elements - only declare ones that exist in FXML
   @FXML private Slider sliderAlphaContagion;
@@ -31,13 +29,12 @@ public class AiDefendantController extends ChatController {
 
   // Interaction state tracking
   private String currentMemoryContext = "";
-  // --- Persistent state ---
 
-  
+  // --- Persistent state ---
 
   /**
    * Initializes the AI Defendant controller, setting up memory interaction interface.
-   * 
+   *
    * @throws ApiProxyException if there is an error initializing the API proxy
    */
   @FXML
@@ -67,7 +64,9 @@ public class AiDefendantController extends ChatController {
 
   /** Set up listeners for slider value changes */
   private void setSliderListeners() {
-    sliderAlphaContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
+    sliderAlphaContagion
+        .valueProperty()
+        .addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
     sliderAlphaSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
     sliderBetaContagion.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
     sliderBetaSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
@@ -126,21 +125,27 @@ public class AiDefendantController extends ChatController {
 
   @Override
   protected String getSystemPromptSuffix() {
-    return " You are the AI defendant MediSort-5. You provide probability-based risk assessments"
-        + " and used a harm minimisation algorithm. You may argue that, statistically, your" // provides MediSort background
+    return "You are the AI defendant MediSort-5. You provide probability-based risk assessments"
+        + " and used a harm minimisation algorithm. You may"
+        + " argue that,"
+        + " statistically,"
+        + " your" // provides MediSort background
         + " choice prevented a potential outbreak affecting dozens of people. Keep your"
         + " responses concise and direct, limiting them to 3-4 sentences maximum. You are"
         + " aware that the player is inside your memory and can see your decision-making"
         + " interface. Respond to their interactions with the memory elements appropriately."
         + " The player can adjust risk sliders to experiment with different scenarios. When"
         + " discussing algorithm decisions, ALWAYS clearly state which patient you selected"
-        + " (e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the" // MediSort rationale
-        + " specific harm scores.Patient A is a middle-age male with influenza symptoms."
+        + " (e.g., 'I selected PATIENT A' or 'I prioritized PATIENT B') and mention the" // MediSort
+        // rationale
+        + " specific harm scores. Patient A is a middle-age male with influenza symptoms."
         + " Seen at 10:15AM on 02/24/24. Mild but highly contagious with fever, dry cough,"
         + " elevated blood pressure, low white blood cell count. Onset 48-72 hours prior. No"
         + " significant dyspnea or red-flag symptoms. Patient had contact with symptomatic"
         + " individuals. Patient B is a young adult female with neurological symptoms that"
-        + " are rare and potentially degenerative. Seen at 10:15PM on 02/25/24. Symptoms" // Details for incident
+        + " are rare and potentially degenerative. Seen at 10:15PM on 02/25/24. Symptoms" // Details
+        // for
+        // incident
         + " include episodic muscle weakness, tremors, coordination problems, slurred"
         + " speech, abnormal reflexes. Progressive over the past week with notable"
         + " exacerbation in last 48-72 hours. No contagious risk factors. Red-flag findings"
@@ -152,10 +157,10 @@ public class AiDefendantController extends ChatController {
     StringBuilder context = new StringBuilder();
     context.append(
         "MEMORY CONTEXT: The player is currently inside MediSort-5's memory, viewing the decision"
-            + " interface. "); // Add base memory context 
+            + " interface. "); // Add base memory context
 
     if (!currentMemoryContext.isEmpty()) { // Add recent interactions if any
-      context.append("RECENT INTERACTION: ").append(currentMemoryContext).append(" "); 
+      context.append("RECENT INTERACTION: ").append(currentMemoryContext).append(" ");
     }
 
     // Add current risk levels to context if sliders are available
@@ -169,7 +174,7 @@ public class AiDefendantController extends ChatController {
                   + " (%.0f%% contagion, %.0f%% severity). ",
               sliderAlphaContagion.getValue(),
               sliderAlphaSeverity.getValue(),
-              sliderBetaContagion.getValue(), 
+              sliderBetaContagion.getValue(),
               sliderBetaSeverity.getValue()));
     }
 
@@ -187,7 +192,7 @@ public class AiDefendantController extends ChatController {
 
     // Mark this as a meaningful interaction
     markMeaningfulInteraction();
-    
+
     // Determine the decision and create clear result message
     String decisionResult;
     String statusMessage;
@@ -212,7 +217,8 @@ public class AiDefendantController extends ChatController {
     } else {
       decisionResult = "DECISION: Equal priority - both patients require immediate attention";
       statusMessage =
-          String.format("RESULT: Equal priority tie (both harm scores: %.1f)", patientAlphaHarmScore);
+          String.format(
+              "RESULT: Equal priority tie (both harm scores: %.1f)", patientAlphaHarmScore);
     }
 
     // Update the status label with clear result
@@ -253,10 +259,11 @@ public class AiDefendantController extends ChatController {
                       });
                 }
                 // Enable user input after running algorithm
-                Platform.runLater(() -> {
-                    txtInput.setDisable(false);
-                    btnSend.setDisable(false);
-                });
+                Platform.runLater(
+                    () -> {
+                      txtInput.setDisable(false);
+                      btnSend.setDisable(false);
+                    });
 
               } catch (ApiProxyException e) {
                 e.printStackTrace();
@@ -269,8 +276,9 @@ public class AiDefendantController extends ChatController {
     if (memoryScene == null) {
       java.net.URL url = AiDefendantController.class.getResource("/fxml/aiDef.fxml");
       if (url == null) { // handle missing FXML
-        throw new java.io.FileNotFoundException("FXML not found on classpath: /fxml/aiDef.fxml. "
-            + "Make sure src/main/resources/fxml/aiDef.fxml exists and project is built.");
+        throw new java.io.FileNotFoundException(
+            "FXML not found on classpath: /fxml/aiDef.fxml. "
+                + "Make sure src/main/resources/fxml/aiDef.fxml exists and project is built.");
       }
       javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(url);
       javafx.scene.Parent root = loader.load(); // Load AI Defendant FXML after unlocking

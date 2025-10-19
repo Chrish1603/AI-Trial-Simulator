@@ -18,7 +18,6 @@ import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
-
 public class AiWitnessController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "aiWitness";
@@ -48,13 +47,13 @@ public class AiWitnessController extends ChatController {
 
   /**
    * Initializes the AI Witness controller, setting up the hand scanner interface.
-   * 
+   *
    * @throws ApiProxyException if there is an error initializing the API proxy
    */
 
   /**
-   * Resets the static state variables for the AI Witness controller.
-   * This should be called when restarting the game.
+   * Resets the static state variables for the AI Witness controller. This should be called when
+   * restarting the game.
    */
   public static void resetState() {
     isUnlocked = false;
@@ -64,7 +63,6 @@ public class AiWitnessController extends ChatController {
     memoryController = null;
     System.out.println("AI Witness state reset");
   }
-
 
   @FXML
   @Override
@@ -96,19 +94,19 @@ public class AiWitnessController extends ChatController {
       txtInput.setDisable(true);
       btnSend.setDisable(true);
     }
-    txtInput.setOnKeyPressed(event -> {
-  switch (event.getCode()) {
-    case ENTER:
-      if (!event.isShiftDown()) {
-       event.consume(); // prevent newline
-       btnSend.fire(); // simulate send button
-      }
-      break;
-    default:
-      break;
-  }
-});
-
+    txtInput.setOnKeyPressed(
+        event -> {
+          switch (event.getCode()) {
+            case ENTER:
+              if (!event.isShiftDown()) {
+                event.consume(); // prevent newline
+                btnSend.fire(); // simulate send button
+              }
+              break;
+            default:
+              break;
+          }
+        });
   }
 
   private void setupHandScanner() {
@@ -170,11 +168,9 @@ public class AiWitnessController extends ChatController {
 
     // Append AI witness text
     String aiText =
-        "PathoScan-7: My role is to analyze and provide insights on MediSort-5's patient prioritization. "
-            + "According to my calculations, by prioritizing patient A (flu),"
-
-            + " decreases the outbreak risk to under 5%, statistically"
-            + " saving more lives.\n\n";
+        "PathoScan-7: My role is to analyze and provide insights on MediSort-5's patient"
+            + " prioritization. According to my calculations, by prioritizing patient A (flu),"
+            + " decreases the outbreak risk to under 5%, statistically saving more lives.\n\n";
     txtaChat.appendText(aiText);
     javafx.application.Platform.runLater(() -> txtaChat.setScrollTop(Double.MAX_VALUE));
 
@@ -205,10 +201,12 @@ public class AiWitnessController extends ChatController {
 
   @Override
   protected String getSystemPromptSuffix() {
-    return " You are the AI witness PathoScan-7, a Disease Spread AI. You are an independent system"
-        + " that models contagion spread in the city. You will testify that Patient A's"
-        + " illness had a very high transmission potential in the care facility. You argue" // Ensures clarity for LLM
-        + " that MediSort-5's decision statistically protected more lives. You speak in a" // supports medisort
+    return "You are the AI witness PathoScan-7, a Disease Spread AI. You are an independent system"
+               + " that models contagion spread in the city. You will testify that Patient A's"
+               + " illness had a very high transmission potential in the"
+               + " care facility. You argue" // Ensures clarity for LLM
+        + " that MediSort-5's decision statistically protected more lives. You"
+        + " speak in a" // supports medisort
         + " precise, analytical manner with statistical data to support your testimony. Keep"
         + " your responses concise and direct, limiting them to 3-4 sentences maximum.";
   }
@@ -227,8 +225,8 @@ public class AiWitnessController extends ChatController {
   public static javafx.scene.Scene getMemoryScene() throws IOException {
     if (memoryScene == null) { // ensure memory is there
       javafx.fxml.FXMLLoader loader = // Load AI Witness FXML after unlocking
-          new javafx.fxml.FXMLLoader(AiWitnessController.class.getResource("/fxml/aiWit.fxml")); 
-      javafx.scene.Parent root = loader.load(); 
+          new javafx.fxml.FXMLLoader(AiWitnessController.class.getResource("/fxml/aiWit.fxml"));
+      javafx.scene.Parent root = loader.load();
       memoryController = loader.getController();
       memoryScene = new javafx.scene.Scene(root);
     }

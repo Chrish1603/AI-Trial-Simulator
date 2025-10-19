@@ -57,8 +57,7 @@ public class TrialRoomController {
             trialRoomScene = btnVerdict.getScene();
 
             // Store current stage for timer transitions
-            if (trialRoomScene != null
-                && trialRoomScene.getWindow() instanceof Stage) {
+            if (trialRoomScene != null && trialRoomScene.getWindow() instanceof Stage) {
               nz.ac.auckland.se206.GameTimer.getInstance()
                   .setCurrentStage((Stage) trialRoomScene.getWindow());
             }
@@ -106,8 +105,8 @@ public class TrialRoomController {
   // === Event Handlers ===
 
   /**
-   * Called when the 5-minute round timer expires. 
-   * Checks if all three chatboxes have been interacted with to determine next action.
+   * Called when the 5-minute round timer expires. Checks if all three chatboxes have been
+   * interacted with to determine next action.
    */
   private void onRoundEnd() {
     // Called when 5 minutes expires
@@ -146,7 +145,8 @@ public class TrialRoomController {
   }
 
   /**
-   * Called when the verdict timer expires. Auto-submits the verdict as guilty if no verdict was given.
+   * Called when the verdict timer expires. Auto-submits the verdict as guilty if no verdict was
+   * given.
    */
   private void onVerdictEnd() {
     // Called when verdict timer expires, auto-submit or lock input
@@ -160,9 +160,7 @@ public class TrialRoomController {
     }
   }
 
-  /**
-   * Displays the game over screen when the player fails to gather enough evidence.
-   */
+  /** Displays the game over screen when the player fails to gather enough evidence. */
   private void showGameOverScreen() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
@@ -179,17 +177,13 @@ public class TrialRoomController {
     }
   }
 
-  /**
-   * Handles the "Guilty" button press event.
-   */
+  /** Handles the "Guilty" button press event. */
   @FXML
   private void onGuiltyPressed() {
     handleVerdict(true);
   }
 
-  /**
-   * Handles the "Not Guilty" button press event.
-   */
+  /** Handles the "Not Guilty" button press event. */
   @FXML
   private void onNotGuiltyPressed() {
     handleVerdict(false);
@@ -197,7 +191,7 @@ public class TrialRoomController {
 
   /**
    * Handles the verdict logic after a button is pressed.
-   * 
+   *
    * @param guilty true if the verdict is guilty, false if not guilty
    */
   private void handleVerdict(boolean guilty) {
@@ -245,9 +239,7 @@ public class TrialRoomController {
     showChatInterface(participantId, event);
   }
 
-  /**
-   * Updates the verdict button's visual state and enabled status based on chatbox interactions.
-   */
+  /** Updates the verdict button's visual state and enabled status based on chatbox interactions. */
   private void updateVerdictButtonState() {
     if (btnVerdict != null) {
       boolean allChatboxesInteracted = chatboxesInteracted.size() >= 3;
@@ -261,9 +253,7 @@ public class TrialRoomController {
     }
   }
 
-  /**
-   * Switches to the verdict scene if all chatboxes have been interacted with.
-   */
+  /** Switches to the verdict scene if all chatboxes have been interacted with. */
   @FXML
   private void handleVerdictButtonClick() {
     // Only allow switching to verdict if all chatboxes have been interacted with
@@ -296,7 +286,7 @@ public class TrialRoomController {
 
   /**
    * Shows the flashback for the given participant.
-   * 
+   *
    * @param participantId the ID of the participant whose flashback to show
    * @param event the mouse event that triggered this action
    * @throws IOException if there is an error loading the flashback FXML
@@ -305,19 +295,19 @@ public class TrialRoomController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/flashback.fxml"));
     Parent root = loader.load();
 
-    FlashbackController controller = loader.getController(); 
-    String returnFxml = getFxmlFileForParticipant(participantId); 
+    FlashbackController controller = loader.getController();
+    String returnFxml = getFxmlFileForParticipant(participantId);
     controller.initializeFlashback(participantId, returnFxml);
     // Set up scene
     Scene scene = new Scene(root);
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get current stage
-    stage.setScene(scene); 
+    stage.setScene(scene);
     stage.show();
   }
 
   /**
    * Shows the chat interface for the given participant.
-   * 
+   *
    * @param participantId the ID of the participant to chat with
    * @param event the mouse event that triggered this action
    * @throws IOException if there is an error loading the chat FXML
@@ -353,7 +343,7 @@ public class TrialRoomController {
 
   /**
    * Gets the FXML file path for a given participant ID.
-   * 
+   *
    * @param participantId the ID of the participant
    * @return the FXML file path for the participant, or null if not found
    */
@@ -372,7 +362,7 @@ public class TrialRoomController {
 
   /**
    * Gets the trial room scene for returning from flashback.
-   * 
+   *
    * @return the trial room scene
    */
   public static Scene getTrialRoomScene() {
@@ -381,7 +371,7 @@ public class TrialRoomController {
 
   /**
    * Checks if all chatboxes have been interacted with.
-   * 
+   *
    * @return true if all three chatboxes have been interacted with, false otherwise
    */
   public static boolean areAllChatboxesInteracted() {
@@ -389,8 +379,8 @@ public class TrialRoomController {
   }
 
   /**
-   * Resets all game interactions and state for a new game.
-   * Clears chatbox interactions, flashback history, and conversation data.
+   * Resets all game interactions and state for a new game. Clears chatbox interactions, flashback
+   * history, and conversation data.
    */
   public static void resetInteractions() {
     chatboxesInteracted.clear();
@@ -403,23 +393,26 @@ public class TrialRoomController {
   // Add this static method to track interactions
   public static void markChatboxInteracted(String participantId) {
     chatboxesInteracted.add(participantId);
-    System.out.println("Meaningful interaction with: " + participantId + ". Total: " + chatboxesInteracted.size());
-    
+    System.out.println(
+        "Meaningful interaction with: " + participantId + ". Total: " + chatboxesInteracted.size());
+
     // If we're in the trial room scene, update the button state
-    if (trialRoomScene != null && trialRoomScene.getWindow() != null && trialRoomScene.getWindow().isShowing()) {
-        for (Node node : trialRoomScene.getRoot().lookupAll("#btnVerdict")) {
-            if (node instanceof Button) {
-                Button verdictButton = (Button) node;
-                boolean allInteracted = chatboxesInteracted.size() >= 3;
-                verdictButton.setDisable(!allInteracted);
-                if (allInteracted) {
-                    verdictButton.setStyle("-fx-background-color: #2ecc71;"); // Green when enabled
-                } else {
-                    verdictButton.setStyle("-fx-background-color: #95a5a6;"); // Gray when disabled
-                }
-                break;
-            }
+    if (trialRoomScene != null
+        && trialRoomScene.getWindow() != null
+        && trialRoomScene.getWindow().isShowing()) {
+      for (Node node : trialRoomScene.getRoot().lookupAll("#btnVerdict")) {
+        if (node instanceof Button) {
+          Button verdictButton = (Button) node;
+          boolean allInteracted = chatboxesInteracted.size() >= 3;
+          verdictButton.setDisable(!allInteracted);
+          if (allInteracted) {
+            verdictButton.setStyle("-fx-background-color: #2ecc71;"); // Green when enabled
+          } else {
+            verdictButton.setStyle("-fx-background-color: #95a5a6;"); // Gray when disabled
+          }
+          break;
         }
+      }
     }
-}
+  }
 }
