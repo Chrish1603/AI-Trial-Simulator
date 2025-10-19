@@ -2,18 +2,16 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.application.Platform;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 
-/**
- * Controller for the Human Witness (Dr. Payne Gaun) chat interface.
- */
+/** Controller for the Human Witness (Dr. Payne Gaun) chat interface. */
 public class HumanWitnessController extends ChatController {
 
   private static final String PARTICIPANT_ROLE = "humanWitness";
@@ -33,9 +31,9 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Handles clicking on the notepad to view patient notes.
-   * Opens the notes panel for the player to examine evidence.
-   * 
+   * Handles clicking on the notepad to view patient notes. Opens the notes panel for the player to
+   * examine evidence.
+   *
    * @param event the mouse click event
    * @throws IOException if there's an error loading the notes interface
    */
@@ -46,9 +44,7 @@ public class HumanWitnessController extends ChatController {
     }
   }
 
-  /**
-   * Closes the notes panel when the player is done viewing patient notes.
-   */
+  /** Closes the notes panel when the player is done viewing patient notes. */
   @FXML
   private void onCloseNotes() {
     if (notePane != null) {
@@ -57,13 +53,12 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Displays Patient B's medical notes when the corresponding button is clicked.
-   * Shows information about the neurological condition case.
+   * Displays Patient B's medical notes when the corresponding button is clicked. Shows information
+   * about the neurological condition case.
    */
   @FXML
   private void viewPatientBetaNotes() {
-    imgNotes.setImage(
-        new Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
+    imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteBSeen;
@@ -84,9 +79,11 @@ public class HumanWitnessController extends ChatController {
       try {
         // Rebuild the chat request with updated context before generating response
         super.initializeChatRequest();
-        
+
         generateSystemPromptedResponse(
-            "The doctor acknowledges the notes with a brief response. Do NOT repeat the note content - simply acknowledge you can now answer questions about Patient B with a 1-2 sentence response.");
+            "The doctor acknowledges the notes with a brief response. Do NOT repeat the note"
+                + " content - simply acknowledge you can now answer questions about Patient B with"
+                + " a 1-2 sentence response.");
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -94,13 +91,12 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Displays Patient A's medical notes when the corresponding button is clicked.
-   * Shows information about the contagious viral infection case.
+   * Displays Patient A's medical notes when the corresponding button is clicked. Shows information
+   * about the contagious viral infection case.
    */
   @FXML
   private void viewPatientAlphaNotes() {
-    imgNotes.setImage(
-        new Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
+    imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
     // First update the flag that notes have been seen
     boolean firstTimeViewing = !noteASeen;
@@ -120,8 +116,11 @@ public class HumanWitnessController extends ChatController {
       try {
         // Rebuild the chat request with updated context before generating response
         super.initializeChatRequest();
-        
-        generateSystemPromptedResponse("The doctor acknowledges the notes with a brief response. Do NOT repeat the note content - simply acknowledge you can now answer questions about Patient A with a 1-2 sentence response.");
+
+        generateSystemPromptedResponse(
+            "The doctor acknowledges the notes with a brief response. Do NOT repeat the note"
+                + " content - simply acknowledge you can now answer questions about Patient A with"
+                + " a 1-2 sentence response.");
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -129,9 +128,9 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Generates an AI response based on a system prompt.
-   * Used to create contextual responses when the player examines evidence.
-   * 
+   * Generates an AI response based on a system prompt. Used to create contextual responses when the
+   * player examines evidence.
+   *
    * @param systemPrompt the system message to prompt the AI with
    * @throws ApiProxyException if there's an error communicating with the AI API
    */
@@ -237,8 +236,8 @@ public class HumanWitnessController extends ChatController {
   }
 
   /**
-   * Resets the static state variables for the Human Witness controller.
-   * This should be called when restarting the game.
+   * Resets the static state variables for the Human Witness controller. This should be called when
+   * restarting the game.
    */
   public static void resetState() {
     noteASeen = false;
@@ -246,14 +245,14 @@ public class HumanWitnessController extends ChatController {
     System.out.println("Human Witness state reset");
   }
 
-//   @Override
-//   public void processUserMessage(String message) {
-//     // Mark this as a meaningful interaction the first time a user sends a message
-//     if (!message.isEmpty() && conversationHistories.get(participantRole).isEmpty()) {
-//         markMeaningfulInteraction();
-//     }
-    
-//     // Continue with normal processing
-//     super.processUserMessage(message);
-// }
+  //   @Override
+  //   public void processUserMessage(String message) {
+  //     // Mark this as a meaningful interaction the first time a user sends a message
+  //     if (!message.isEmpty() && conversationHistories.get(participantRole).isEmpty()) {
+  //         markMeaningfulInteraction();
+  //     }
+
+  //     // Continue with normal processing
+  //     super.processUserMessage(message);
+  // }
 }

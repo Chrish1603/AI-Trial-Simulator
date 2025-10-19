@@ -53,7 +53,7 @@ public class GameTimer {
       timeline.stop();
     }
     timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick())); // Tick every second
-    timeline.setCycleCount(Timeline.INDEFINITE); 
+    timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
   }
 
@@ -98,25 +98,24 @@ public class GameTimer {
     return inVerdictPhase;
   }
 
-public StringProperty getTimerTextProperty() {
-  return timerText;
-}
-public static void setActiveController(Object controller) {
-  getInstance().activeController = controller;
-}
+  public StringProperty getTimerTextProperty() {
+    return timerText;
+  }
 
-  /**
-   * Sets a callback to run when timer expires
-   */
+  public static void setActiveController(Object controller) {
+    getInstance().activeController = controller;
+  }
+
+  /** Sets a callback to run when timer expires */
   public void setTimeExpiredCallback(Runnable callback) {
-      this.timeExpiredCallback = callback;
+    this.timeExpiredCallback = callback;
   }
 
   // === Private methods ===
   private void tick() {
     timeLeft--;
     updateTimerText();
-    if (timeLeft <= 0) { 
+    if (timeLeft <= 0) {
       if (!inVerdictPhase) { // Transition to verdict phase
         inVerdictPhase = true;
         timeLeft = VERDICT_SECONDS;
@@ -129,9 +128,7 @@ public static void setActiveController(Object controller) {
     }
   }
 
-  /**
-   * Updates the timer display
-   */
+  /** Updates the timer display */
   private void updateTimerText() {
     String label = "Time Left: ";
     int minutes = timeLeft / 60;
@@ -143,16 +140,16 @@ public static void setActiveController(Object controller) {
     timerText.set(label + timeFormatted);
 
     if (timeLeft <= 0) {
-        // Timer expired
-        timeline.stop();
-        timerText.set("Time's Up!");
-        
-        // Execute callback if set
-        if (timeExpiredCallback != null) {
-            timeExpiredCallback.run();
-        }
-        
-        // ...other timer expiration code...
+      // Timer expired
+      timeline.stop();
+      timerText.set("Time's Up!");
+
+      // Execute callback if set
+      if (timeExpiredCallback != null) {
+        timeExpiredCallback.run();
+      }
+
+      // ...other timer expiration code...
     }
   }
 
@@ -161,14 +158,16 @@ public static void setActiveController(Object controller) {
         () -> {
           System.out.println("Round timer ended!");
 
-          // Check if the current scene is a flashback by examining the controller of the current stage
+          // Check if the current scene is a flashback by examining the controller of the current
+          // stage
           boolean isInFlashback = false;
-          if (currentStage != null && currentStage.getScene() != null && 
-              currentStage.getScene().getUserData() instanceof String) {
+          if (currentStage != null
+              && currentStage.getScene() != null
+              && currentStage.getScene().getUserData() instanceof String) {
             String sceneType = (String) currentStage.getScene().getUserData();
             isInFlashback = "flashback".equals(sceneType);
           }
-          
+
           // Always go to game over if in flashback
           if (isInFlashback) {
             System.out.println("Timer expired while in flashback, showing game over");
@@ -178,16 +177,16 @@ public static void setActiveController(Object controller) {
 
           boolean allInteracted = TrialRoomController.areAllChatboxesInteracted();
           System.out.println("All chatboxes interacted: " + allInteracted);
-          
+
           // Check if all characters have been interacted with
           if (allInteracted) {
-              // All three chatboxes interacted with - proceed to verdict
-              System.out.println("All chatboxes interacted, transitioning to verdict scene");
-              transitionToVerdict();
+            // All three chatboxes interacted with - proceed to verdict
+            System.out.println("All chatboxes interacted, transitioning to verdict scene");
+            transitionToVerdict();
           } else {
-              // Not all chatboxes interacted with - game over
-              System.out.println("Not all chatboxes interacted, showing game over");
-              transitionToGameOver();
+            // Not all chatboxes interacted with - game over
+            System.out.println("Not all chatboxes interacted, showing game over");
+            transitionToGameOver();
           }
         });
 
@@ -197,21 +196,20 @@ public static void setActiveController(Object controller) {
     }
   }
 
-private void handleVerdictEnd() {
-  Platform.runLater(() -> {
-    System.out.println("Verdict timer ended!");
-    if (onVerdictEnd != null) {
-      onVerdictEnd.run();
-    }
+  private void handleVerdictEnd() {
+    Platform.runLater(
+        () -> {
+          System.out.println("Verdict timer ended!");
+          if (onVerdictEnd != null) {
+            onVerdictEnd.run();
+          }
 
-    // Try to auto-submit verdict if user ran out of time
-    if (activeController instanceof VerdictController) {
-        ((VerdictController) activeController).autoSubmitVerdict();
-    }
-
-  });
-}
-
+          // Try to auto-submit verdict if user ran out of time
+          if (activeController instanceof VerdictController) {
+            ((VerdictController) activeController).autoSubmitVerdict();
+          }
+        });
+  }
 
   public void transitionToVerdict() {
     Platform.runLater(
@@ -252,7 +250,7 @@ private void handleVerdictEnd() {
             if (currentStage != null) {
               FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameover.fxml"));
               Parent root = loader.load(); // Load game over scene
-              Scene scene = new Scene(root); 
+              Scene scene = new Scene(root);
               currentStage.setScene(scene);
               currentStage.show();
             } else {

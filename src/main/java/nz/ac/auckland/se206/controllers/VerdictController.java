@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,12 +37,12 @@ public class VerdictController {
   private boolean verdictSubmitted = false;
   private String selectedVerdict;
 
-  private String playerRationale;   // Missing declaration
-  private boolean verdictGiven = false;  // Missing declaration
+  private String playerRationale; // Missing declaration
+  private boolean verdictGiven = false; // Missing declaration
 
   /**
-   * Initializes the verdict controller.
-   * Sets up timer binding, verdict phase, conversation summary, and verdict button handlers.
+   * Initializes the verdict controller. Sets up timer binding, verdict phase, conversation summary,
+   * and verdict button handlers.
    */
   @FXML
   public void initialize() {
@@ -72,26 +71,28 @@ public class VerdictController {
     setupVerdictButtons();
 
     // Subscribe to timer expiration event
-    GameTimer.getInstance().setTimeExpiredCallback(() -> {
-      if (verdictSelected && !verdictSubmitted && !verdictGiven) {
-        Platform.runLater(() -> {
-          System.out.println("Timer expired - auto-submitting verdict rationale");
-          onSubmitRationale(); // Now this will work
-        });
-      } else if (!verdictSelected) {
-        // Handle case where no verdict was selected
-        Platform.runLater(() -> {
-          System.out.println("Timer expired - selecting default verdict");
-          selectVerdict("INNOCENT"); // Choose default verdict
-          onSubmitRationale();
-        });
-      }
-    });
+    GameTimer.getInstance()
+        .setTimeExpiredCallback(
+            () -> {
+              if (verdictSelected && !verdictSubmitted && !verdictGiven) {
+                Platform.runLater(
+                    () -> {
+                      System.out.println("Timer expired - auto-submitting verdict rationale");
+                      onSubmitRationale(); // Now this will work
+                    });
+              } else if (!verdictSelected) {
+                // Handle case where no verdict was selected
+                Platform.runLater(
+                    () -> {
+                      System.out.println("Timer expired - selecting default verdict");
+                      selectVerdict("INNOCENT"); // Choose default verdict
+                      onSubmitRationale();
+                    });
+              }
+            });
   }
 
-  /**
-   * Sets up click handlers for the verdict buttons (GUILTY and INNOCENT).
-   */
+  /** Sets up click handlers for the verdict buttons (GUILTY and INNOCENT). */
   private void setupVerdictButtons() {
     if (btnGuilty != null) {
       btnGuilty.setOnMouseClicked(this::onGuiltyClicked);
@@ -101,6 +102,7 @@ public class VerdictController {
       btnInnocent.setOnMouseClicked(this::onInnocentClicked);
     }
   }
+
   /** Automatically submits the selected verdict when time runs out. */
   public void autoSubmitVerdict() {
     if (verdictSelected && !verdictSubmitted) {
@@ -109,10 +111,9 @@ public class VerdictController {
     }
   }
 
-
   /**
-   * Displays a summary of the trial and instructions for the player.
-   * Shows that evidence has been gathered and prompts for final verdict.
+   * Displays a summary of the trial and instructions for the player. Shows that evidence has been
+   * gathered and prompts for final verdict.
    */
   private void displayConversationSummary() {
     txtaChat.appendText("=== TRIAL SUMMARY ===\n");
@@ -121,25 +122,21 @@ public class VerdictController {
     txtaChat.appendText("First, select GUILTY or INNOCENT below.\n\n");
   }
 
-  /**
-   * Starts the verdict timer phase.
-   * Switches the global timer to verdict phase countdown.
-   */
+  /** Starts the verdict timer phase. Switches the global timer to verdict phase countdown. */
   public void startVerdictTimer() {
     System.out.println("Starting verdict timer phase");
     GameTimer.setActiveController(this);
     GameTimer.getInstance().switchToVerdictPhase();
-    
   }
 
   /**
-   * Handles the player submitting their rationale.
-   * Stores the rationale and proceeds with final verdict processing.
+   * Handles the player submitting their rationale. Stores the rationale and proceeds with final
+   * verdict processing.
    */
   @FXML
   private void onSendMessage() {
     if (!verdictSelected) return; // Should not happen due to UI controls
-    
+
     String message = txtInput.getText().trim();
     if (message != null && !message.isEmpty() && !message.equals("Enter your rationale here...")) {
       playerRationale = message;
@@ -147,7 +144,7 @@ public class VerdictController {
       txtInput.clear();
       txtInput.setDisable(true);
       btnSend.setDisable(true);
-      
+
       // Process the final verdict with rationale
       handleFinalVerdict();
     }
@@ -155,7 +152,7 @@ public class VerdictController {
 
   /**
    * Handles the player clicking the GUILTY verdict button.
-   * 
+   *
    * @param event the mouse click event
    */
   @FXML
@@ -166,7 +163,7 @@ public class VerdictController {
 
   /**
    * Handles the player clicking the INNOCENT verdict button.
-   * 
+   *
    * @param event the mouse click event
    */
   @FXML
@@ -177,7 +174,7 @@ public class VerdictController {
 
   /**
    * Handles the initial verdict selection and enables rationale input.
-   * 
+   *
    * @param verdict the selected verdict ("GUILTY" or "INNOCENT")
    */
   private void selectVerdict(String verdict) {
@@ -210,8 +207,8 @@ public class VerdictController {
   }
 
   /**
-   * Processes the final verdict with rationale and initiates LLM feedback analysis.
-   * Runs the LLM analysis in a background thread to avoid UI freezing.
+   * Processes the final verdict with rationale and initiates LLM feedback analysis. Runs the LLM
+   * analysis in a background thread to avoid UI freezing.
    */
   private void handleFinalVerdict() {
     if (verdictGiven) return;
@@ -344,8 +341,8 @@ public class VerdictController {
   }
 
   /**
-   * Displays the final results and shows the replay button.
-   * Called after the LLM feedback has been displayed to the player.
+   * Displays the final results and shows the replay button. Called after the LLM feedback has been
+   * displayed to the player.
    */
   private void showResults() {
     txtaChat.appendText("\nThank you for participating in the AI Ethics Trial!\n");
@@ -357,8 +354,8 @@ public class VerdictController {
   }
 
   /**
-   * Handles the replay button click to restart the game.
-   * Resets game state, stops the timer, and loads the trial room scene.
+   * Handles the replay button click to restart the game. Resets game state, stops the timer, and
+   * loads the trial room scene.
    */
   @FXML
   private void onReplayGame() {
@@ -386,19 +383,19 @@ public class VerdictController {
   }
 
   private void onSubmitRationale() {
-  // Get rationale text
-  String message = txtInput.getText().trim();
-  if (message == null || message.isEmpty()) {
-    playerRationale = "No rationale provided (auto-submitted)";
-  } else {
-    playerRationale = message;
+    // Get rationale text
+    String message = txtInput.getText().trim();
+    if (message == null || message.isEmpty()) {
+      playerRationale = "No rationale provided (auto-submitted)";
+    } else {
+      playerRationale = message;
+    }
+
+    txtaChat.appendText("Your rationale: " + playerRationale + "\n\n");
+    txtInput.setDisable(true);
+    btnSend.setDisable(true);
+
+    // Process the final verdict with rationale
+    handleFinalVerdict();
   }
-  
-  txtaChat.appendText("Your rationale: " + playerRationale + "\n\n");
-  txtInput.setDisable(true);
-  btnSend.setDisable(true);
-  
-  // Process the final verdict with rationale
-  handleFinalVerdict();
-}
 }

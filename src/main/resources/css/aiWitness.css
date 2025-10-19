@@ -37,20 +37,23 @@
 }
 
 /* Send and Go Back buttons */
-#btnSend, #btnGoBack {
+#btnSend,
+#btnGoBack {
     -fx-background-color: #425e9b;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 10;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 2);
 }
 
-#btnSend:hover, #btnGoBack:hover {
+#btnSend:hover,
+#btnGoBack:hover {
     -fx-background-color: #1d4ed8;
 }
 
-#btnSend:pressed, #btnGoBack:pressed {
+#btnSend:pressed,
+#btnGoBack:pressed {
     -fx-background-color: #4e66b4;
 }
 
@@ -60,11 +63,12 @@
 }
 
 /* Progress bar style */
-.progress-bar > .track {
+.progress-bar>.track {
     -fx-background-color: #1f2937;
     -fx-background-radius: 10;
 }
-.progress-bar > .bar {
+
+.progress-bar>.bar {
     -fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa);
     -fx-background-radius: 10;
 }
@@ -79,7 +83,7 @@
     -fx-font-family: "Courier New", monospace;
     -fx-font-size: 18px;
     -fx-alignment: center;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 2);
     -fx-border-color: #00695c;
     -fx-border-width: 1;
     -fx-border-radius: 6;

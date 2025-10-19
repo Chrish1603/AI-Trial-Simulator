@@ -27,7 +27,7 @@ public class GameOverController {
       // Reset all controller states
       AiWitnessController.resetState();
       HumanWitnessController.resetState();
-      
+
       // Load trial room scene
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/trialroom.fxml"));
       Parent root = loader.load();

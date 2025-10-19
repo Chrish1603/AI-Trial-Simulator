@@ -37,9 +37,11 @@ public class ChatController {
   protected static ChatController instance;
 
   // Reference to per-participant conversation histories in TrialRoomController
-  protected static Map<String, List<String>> conversationHistories = TrialRoomController.conversationHistories;
+  protected static Map<String, List<String>> conversationHistories =
+      TrialRoomController.conversationHistories;
   // Reference to shared conversation history (excluding flashbacks)
-  protected static List<String> sharedConversationHistory = TrialRoomController.sharedConversationHistory;
+  protected static List<String> sharedConversationHistory =
+      TrialRoomController.sharedConversationHistory;
 
   @FXML protected ImageView imgDefendant;
   @FXML protected javafx.scene.control.Label lblTimer;
@@ -119,7 +121,7 @@ public class ChatController {
   // === FXML lifecycle ===
   /**
    * Initializes the chat controller, setting up UI bindings and API configuration.
-   * 
+   *
    * @throws ApiProxyException if there is an error initializing the API proxy
    */
   @FXML
@@ -148,23 +150,25 @@ public class ChatController {
           });
     }
     if (txtInput != null) {
-      txtInput.addEventFilter(KEY_PRESSED, event -> {
-        if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
-          event.consume(); // prevent inserting newline
-          try {
-            onSendMessage(null); // send
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      txtInput.addEventFilter(
+          KEY_PRESSED,
+          event -> {
+            if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
+              event.consume(); // prevent inserting newline
+              try {
+                onSendMessage(null); // send
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+            }
+          });
     }
   }
 
   // === Public instance methods ===
   /**
    * Sets the participant ID for this chat controller.
-   * 
+   *
    * @param participantId the ID of the participant to chat with
    */
   public void setParticipant(String participantId) {
@@ -193,7 +197,7 @@ public class ChatController {
   // === Event handler methods ===
   /**
    * Handles the send message button click event.
-   * 
+   *
    * @param event the action event (can be null if called programmatically)
    * @throws ApiProxyException if there is an error with the API proxy
    * @throws IOException if there is an I/O error
@@ -255,7 +259,8 @@ public class ChatController {
                         stopLoadingAnimation();
                         removeLoadingText();
                         processAiResponse(aiResponse);
-                        txtInput.setDisable(false); // re-enable user input once response is received
+                        txtInput.setDisable(
+                            false); // re-enable user input once response is received
                         btnSend.setDisable(false);
                       });
                 } else {
@@ -417,7 +422,8 @@ public class ChatController {
     // Add shared conversation history (recent messages only, excluding messages already in
     // participant's history)
     List<String> currentHistory = conversationHistories.get(participantRole);
-    int sharedStartIndex = Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGE_COUNT);
+    int sharedStartIndex =
+        Math.max(0, sharedConversationHistory.size() - MAXIMUM_HISTORY_MESSAGE_COUNT);
 
     for (int i = sharedStartIndex; i < sharedConversationHistory.size(); i++) {
       String sharedMsg = sharedConversationHistory.get(i);
@@ -428,8 +434,7 @@ public class ChatController {
   }
 
   /** Adds a list of history messages to the chat request. */
-  private void addHistoryMessagesToRequest(
-      ChatCompletionRequest request, List<String> history) {
+  private void addHistoryMessagesToRequest(ChatCompletionRequest request, List<String> history) {
     if (history != null) {
       for (String historyMsg : history) {
         addParsedMessageToRequest(request, historyMsg);
@@ -494,10 +499,10 @@ public class ChatController {
 
   // Add this method to the parent ChatController class
   protected void markMeaningfulInteraction() {
-      String role = getParticipantRole();
-      if (role != null && !role.isEmpty()) {
-          TrialRoomController.markChatboxInteracted(role);
-          System.out.println("Marked meaningful interaction with: " + role);
-      }
+    String role = getParticipantRole();
+    if (role != null && !role.isEmpty()) {
+      TrialRoomController.markChatboxInteracted(role);
+      System.out.println("Marked meaningful interaction with: " + role);
+    }
   }
 }

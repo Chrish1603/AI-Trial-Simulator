@@ -14,20 +14,22 @@
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-padding: 8;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);
 }
 
 /* Input area styling */
 #txtInput {
-    -fx-background-color: #ffffff;  /* Solid white instead of semi-transparent */
+    -fx-background-color: #ffffff;
+    /* Solid white instead of semi-transparent */
     -fx-text-fill: #2c3e50;
     -fx-font-size: 14px;
     -fx-border-color: #00a4bd;
     -fx-border-width: 2;
     -fx-border-radius: 8;
-    -fx-background-radius: 10;  /* Slightly larger than border radius */
+    -fx-background-radius: 10;
+    /* Slightly larger than border radius */
     -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
 }
 
 #txtInput:focused {
@@ -43,21 +45,22 @@
     -fx-background-radius: 6;
     -fx-cursor: hand;
     -fx-padding: 10 15;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 2);
 }
 
 .button:hover {
     -fx-background-color: #00c1df;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 2);
 }
 
 .button:pressed {
     -fx-background-color: #00879c;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
 }
 
 /* Specific button styling */
-#btnSend, #btnGoBack {
+#btnSend,
+#btnGoBack {
     -fx-min-width: 55px;
     -fx-min-height: 40px;
     -fx-background-color: #00a4bd;
@@ -66,7 +69,7 @@
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-padding: 8 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0, 0, 1);
 }
 
 #btnSend {
@@ -90,10 +93,11 @@
 }
 
 /* Enhanced hover effect for Send and Go Back buttons */
-#btnSend:hover, #btnGoBack:hover {
+#btnSend:hover,
+#btnGoBack:hover {
     -fx-background-color: #00c1df;
-    -fx-effect: dropshadow(gaussian, rgba(0,179,214,0.7), 10, 0.6, 0, 0), 
-                innershadow(gaussian, rgba(255,255,255,0.3), 1, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 179, 214, 0.7), 10, 0.6, 0, 0),
+        innershadow(gaussian, rgba(255, 255, 255, 0.3), 1, 0, 0, 0);
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
     -fx-cursor: hand;
@@ -101,9 +105,10 @@
 }
 
 /* Button press effect */
-#btnSend:pressed, #btnGoBack:pressed {
+#btnSend:pressed,
+#btnGoBack:pressed {
     -fx-background-color: #007d91;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 0);
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
 }
@@ -118,7 +123,7 @@
     -fx-font-family: "Courier New", monospace;
     -fx-font-size: 18px;
     -fx-alignment: center;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 2);
     -fx-border-color: #00695c;
     -fx-border-width: 1;
     -fx-border-radius: 6;
@@ -126,12 +131,14 @@
 
 /* Notes panel styling */
 #notePane {
-    -fx-background-color: #ffffff;  /* Solid white instead of semi-transparent */
+    -fx-background-color: #ffffff;
+    /* Solid white instead of semi-transparent */
     -fx-border-color: #00a4bd;
     -fx-border-width: 2;
     -fx-border-radius: 8;
-    -fx-background-radius: 10;  /* Slightly larger than border radius */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+    -fx-background-radius: 10;
+    /* Slightly larger than border radius */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 3);
 }
 
 /* Close notes button */
@@ -176,16 +183,19 @@
 }
 
 .menu-item .label {
-    -fx-text-fill: #2c3e50;  /* Dark blue-gray for text contrast */
+    -fx-text-fill: #2c3e50;
+    /* Dark blue-gray for text contrast */
     -fx-font-size: 14px;
 }
 
 .menu-item:focused {
-    -fx-background-color: #d4f1f9;  /* Light teal for selection highlight */
+    -fx-background-color: #d4f1f9;
+    /* Light teal for selection highlight */
 }
 
 .menu-item:focused .label {
-    -fx-text-fill: #00879c;  /* Darker teal for selected text */
+    -fx-text-fill: #00879c;
+    /* Darker teal for selected text */
 }
 
 .context-menu {
@@ -194,7 +204,7 @@
     -fx-border-width: 2;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 0, 2);
     -fx-padding: 2;
 }
 
@@ -205,16 +215,19 @@
 }
 
 .menu-item .label {
-    -fx-text-fill: #084652;  /* Very dark teal for maximum contrast */
+    -fx-text-fill: #084652;
+    /* Very dark teal for maximum contrast */
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
 
-.menu-item:hover, .menu-item:focused {
+.menu-item:hover,
+.menu-item:focused {
     -fx-background-color: #00c1df;
 }
 
-.menu-item:hover .label, .menu-item:focused .label {
+.menu-item:hover .label,
+.menu-item:focused .label {
     -fx-text-fill: white;
 }
 
@@ -239,58 +252,64 @@
 }
 
 /* Force override any potential conflicting styles */
-.menu-item > * > .label {
+.menu-item>*>.label {
     -fx-text-fill: #084652 !important;
 }
 
-.menu-item:focused > * > .label {
+.menu-item:focused>*>.label {
     -fx-text-fill: white !important;
 }
 
 /* Fix the border overlap issues */
 #txtInput {
-    -fx-background-color: #ffffff;  /* Solid white instead of semi-transparent */
+    -fx-background-color: #ffffff;
+    /* Solid white instead of semi-transparent */
     -fx-text-fill: #2c3e50;
     -fx-font-size: 14px;
     -fx-border-color: #00a4bd;
     -fx-border-width: 2;
     -fx-border-radius: 8;
-    -fx-background-radius: 10;  /* Slightly larger than border radius */
+    -fx-background-radius: 10;
+    /* Slightly larger than border radius */
     -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
 }
 
 /* Notes panel styling fix */
 #notePane {
-    -fx-background-color: #ffffff;  /* Solid white instead of semi-transparent */
+    -fx-background-color: #ffffff;
+    /* Solid white instead of semi-transparent */
     -fx-border-color: #00a4bd;
     -fx-border-width: 2;
     -fx-border-radius: 8;
-    -fx-background-radius: 10;  /* Slightly larger than border radius */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+    -fx-background-radius: 10;
+    /* Slightly larger than border radius */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 3);
 }
 
 /* Send and Go Back button improvements */
-#btnSend, #btnGoBack {
+#btnSend,
+#btnGoBack {
     -fx-background-color: #00a4bd;
     -fx-background-radius: 8;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-padding: 8 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0, 0, 1);
 }
 
 /* Timer label positioning */
 #lblTimer {
-    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-color: rgba(0, 0, 0, 0.5);
     -fx-background-radius: 8;
     -fx-padding: 5 10;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 3, 0, 0, 1);
     -fx-alignment: center;
-    -fx-translate-x: -3;  /* Slight adjustment to ensure it's visible */
+    -fx-translate-x: -3;
+    /* Slight adjustment to ensure it's visible */
 }
 
 /* Force BLACK text for menu items - highest specificity */

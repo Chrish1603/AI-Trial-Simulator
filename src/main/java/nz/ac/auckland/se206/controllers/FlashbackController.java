@@ -16,9 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nz.ac.auckland.se206.GameTimer;
 
-/**
- * Controller for the flashback slideshow functionality.
- */
+/** Controller for the flashback slideshow functionality. */
 public class FlashbackController {
 
   @FXML private Label lblTitle;
@@ -55,7 +53,7 @@ public class FlashbackController {
   /** Initializes the flashback with the given participant data */
   /**
    * Initializes the flashback with participant-specific content.
-   * 
+   *
    * @param participantId the ID of the participant whose flashback to show
    * @param returnFxml the FXML file to return to after the flashback
    */
@@ -65,22 +63,25 @@ public class FlashbackController {
     this.slides = getFlashbackSlides(participantId);
 
     // Mark this scene as a flashback
-    Platform.runLater(() -> {
-      if (lblTimer != null && lblTimer.getScene() != null) {
-        lblTimer.getScene().setUserData("flashback");
-      }
-    });
+    Platform.runLater(
+        () -> {
+          if (lblTimer != null && lblTimer.getScene() != null) {
+            lblTimer.getScene().setUserData("flashback");
+          }
+        });
 
     if (lblTimer != null) {
       lblTimer.textProperty().bind(GameTimer.getInstance().getTimerTextProperty());
 
       // Store current stage for timer transitions
-      Platform.runLater(() -> {
-        if (lblTimer != null && lblTimer.getScene() != null 
-            && lblTimer.getScene().getWindow() instanceof Stage) {
-          GameTimer.getInstance().setCurrentStage((Stage) lblTimer.getScene().getWindow());
-        }
-      });
+      Platform.runLater(
+          () -> {
+            if (lblTimer != null
+                && lblTimer.getScene() != null
+                && lblTimer.getScene().getWindow() instanceof Stage) {
+              GameTimer.getInstance().setCurrentStage((Stage) lblTimer.getScene().getWindow());
+            }
+          });
     }
 
     // Set the title based on participant
@@ -136,9 +137,7 @@ public class FlashbackController {
   }
 
   /** Handles the next button click */
-  /**
-   * Handles the next slide button click event.
-   */
+  /** Handles the next slide button click event. */
   @FXML
   private void onNextSlide() {
     if (currentSlideIndex < slides.size() - 1) {
@@ -253,8 +252,9 @@ public class FlashbackController {
                 + " more. Statistical evidence favoured containing the infection."),
         new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I have presented the calculation data and statistics of MediSort-5, reprioritization strategies."
-                + " My analysis agrees with MediSort-5's decision (prioritizing Patient A), to prevent the flu outbreak."));
+            "During the review, I have presented the calculation data and statistics of MediSort-5,"
+                + " reprioritization strategies. My analysis agrees with MediSort-5's decision"
+                + " (prioritizing Patient A), to prevent the flu outbreak."));
   }
 
   /** Gets the display name for a participant */
