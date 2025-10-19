@@ -106,7 +106,7 @@ public class GameTimer {
     getInstance().activeController = controller;
   }
 
-  /** Sets a callback to run when timer expires */
+  // Sets a callback to run when timer expires.
   public void setTimeExpiredCallback(Runnable callback) {
     this.timeExpiredCallback = callback;
   }

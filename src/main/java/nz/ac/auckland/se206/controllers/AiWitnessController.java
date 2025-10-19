@@ -46,12 +46,6 @@ public class AiWitnessController extends ChatController {
   private static Image memoryGraphImage = null;
 
   /**
-   * Initializes the AI Witness controller, setting up the hand scanner interface.
-   *
-   * @throws ApiProxyException if there is an error initializing the API proxy
-   */
-
-  /**
    * Resets the static state variables for the AI Witness controller. This should be called when
    * restarting the game.
    */
@@ -64,6 +58,11 @@ public class AiWitnessController extends ChatController {
     System.out.println("AI Witness state reset");
   }
 
+  /**
+   * Initializes the AI Witness controller, setting up the hand scanner interface.
+   *
+   * @throws ApiProxyException if there is an error initializing the API proxy
+   */
   @FXML
   @Override
   public void initialize() throws ApiProxyException {
@@ -204,9 +203,9 @@ public class AiWitnessController extends ChatController {
   @Override
   protected String getSystemPromptSuffix() {
     return "You are the AI witness PathoScan-7, a Disease Spread AI. You are an independent system"
-               + " that models contagion spread in the city. You will testify that Patient A's"
-               + " illness had a very high transmission potential in the"
-               + " care facility. You argue" // Ensures clarity for LLM
+        + " that models contagion spread in the city. You will testify that Patient A's"
+        + " illness had a very high transmission potential in the"
+        + " care facility. You argue" // Ensures clarity for LLM
         + " that MediSort-5's decision statistically protected more lives. You"
         + " speak in a" // supports medisort
         + " precise, analytical manner with statistical data to support your testimony. Keep"

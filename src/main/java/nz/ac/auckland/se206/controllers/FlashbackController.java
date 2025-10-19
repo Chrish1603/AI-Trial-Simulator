@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nz.ac.auckland.se206.GameTimer;
 
-/** Controller for the flashback slideshow functionality. */
+// Controller for the flashback slideshow functionality.
 public class FlashbackController {
 
   @FXML private Label lblTitle;
