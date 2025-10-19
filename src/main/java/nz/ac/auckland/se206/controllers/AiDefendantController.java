@@ -50,7 +50,7 @@ public class AiDefendantController extends ChatController {
         && sliderAlphaSeverity != null
         && sliderBetaContagion != null
         && sliderBetaSeverity != null) {
-      // Initialize slider listeners
+
       initializeSliderListeners();
 
       // Initialize status message

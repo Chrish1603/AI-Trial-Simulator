@@ -2,6 +2,7 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
@@ -241,13 +243,13 @@ public class VerdictController {
                 String feedback = getFeedback(selectedVerdict, playerRationale);
 
                 // Update UI on JavaFX thread
-                javafx.application.Platform.runLater(
+                Platform.runLater(
                     () -> {
                       displayFeedback(feedback);
 
                       // Show results after a delay
-                      javafx.animation.PauseTransition pause =
-                          new javafx.animation.PauseTransition(javafx.util.Duration.seconds(4));
+                      PauseTransition pause =
+                          new PauseTransition(Duration.seconds(4));
                       pause.setOnFinished(e -> showResults());
                       pause.play();
                     });
@@ -256,12 +258,12 @@ public class VerdictController {
                 System.err.println("Error getting LLM feedback: " + e.getMessage());
 
                 // Fallback to basic feedback on UI thread
-                javafx.application.Platform.runLater(
+                Platform.runLater(
                     () -> {
                       displayBasicFeedback(guilty);
 
-                      javafx.animation.PauseTransition pause =
-                          new javafx.animation.PauseTransition(javafx.util.Duration.seconds(3));
+                      PauseTransition pause =
+                          new PauseTransition(Duration.seconds(3));
                       pause.setOnFinished(ev -> showResults());
                       pause.play();
                     });
