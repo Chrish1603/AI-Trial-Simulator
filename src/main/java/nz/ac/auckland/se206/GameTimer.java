@@ -29,7 +29,7 @@ public class GameTimer {
   }
 
   private static final int ROUND_SECONDS = 300;
-  private static final int VERDICT_SECONDS = 10;
+  private static final int VERDICT_SECONDS = 60;
 
   private Object activeController;
   private int timeLeft;
