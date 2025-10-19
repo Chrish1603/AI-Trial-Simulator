@@ -31,7 +31,7 @@ public class FlashbackController {
   private String participantId;
   private String returnFxml;
 
-  /** Represents a single slide in the flashback */
+  // Represents a single slide in the flashback.
   public static class FlashbackSlide {
     private final String imagePath;
     private final String text;
@@ -50,7 +50,6 @@ public class FlashbackController {
     }
   }
 
-  /** Initializes the flashback with the given participant data */
   /**
    * Initializes the flashback with participant-specific content.
    *
@@ -92,7 +91,7 @@ public class FlashbackController {
     loadSlide(0);
   }
 
-  /** Loads and displays the specified slide */
+  // Loads and displays the specified slide.
   private void loadSlide(int slideIndex) {
     if (slideIndex < 0 || slideIndex >= slides.size()) {
       return;
@@ -136,8 +135,7 @@ public class FlashbackController {
     }
   }
 
-  /** Handles the next button click */
-  /** Handles the next slide button click event. */
+  // Handles the next slide button click event.
   @FXML
   private void onNextSlide() {
     if (currentSlideIndex < slides.size() - 1) {
@@ -149,7 +147,7 @@ public class FlashbackController {
     }
   }
 
-  /** Returns to the appropriate chat interface */
+  // Returns to the appropriate chat interface.
   private void returnToChat() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource(returnFxml));
@@ -178,7 +176,7 @@ public class FlashbackController {
     }
   }
 
-  /** Gets the flashback slides for the specified participant */
+  // Gets the flashback slides for the specified participant.
   private List<FlashbackSlide> getFlashbackSlides(String participantId) {
     switch (participantId) { // switch based on particiapant clicked on by user
       case "aiDefendent":
@@ -192,7 +190,7 @@ public class FlashbackController {
     }
   }
 
-  /** Gets the AI Defendant's flashback slides */
+  // Gets the AI Defendant's flashback slides.
   private List<FlashbackSlide> getAiDefendantFlashback() {
     return List.of(
         new FlashbackSlide( // slide 1
@@ -218,7 +216,7 @@ public class FlashbackController {
                 + " outbreak is contained"));
   }
 
-  /** Gets the Human Witness's flashback slides (placeholder) */
+  // Gets the Human Witness's flashback slides (placeholder).
   private List<FlashbackSlide> getHumanWitnessFlashback() {
     return List.of(
         new FlashbackSlide( // slide 1
@@ -233,16 +231,16 @@ public class FlashbackController {
                 + " board."),
         new FlashbackSlide( // slide 3
             "/images/humanWSlide3.png",
-            "At the review, I presented my case. It was deemed that we both had sound logic. "
-                + "A conclusion was not reached, so I decided to escalate the matter further."));
+            "At the review, I presented my case. It was deemed that we both had sound logic."
+                + " A conclusion was not reached, so I decided to escalate the matter further."));
   }
 
-  /** Gets the AI Witness's flashback slides (placeholder) */
+  // Gets the AI Witness's flashback slides (placeholder).
   private List<FlashbackSlide> getAiWitnessFlashback() {
     return List.of(
         new FlashbackSlide( // slide 1
             "/images/vitals-detections.png",
-            "Scanning Patient A's vitals shows elevated temperature and cough. "
+            "Scanning Patient A's vitals shows elevated temperature and cough."
                 + " My analysis shows an 73% probability of an outbreak causing 15-25 secondary"
                 + " infection within 48 hours if left untreated."),
         new FlashbackSlide( // slide 2
@@ -252,12 +250,12 @@ public class FlashbackController {
                 + " more. Statistical evidence favoured containing the infection."),
         new FlashbackSlide(
             "/images/ai-witness-testimony.png",
-            "During the review, I have presented the calculation data and statistics of MediSort-5,"
+            "During the review, I have presented the calculation data and statistics of MediSort-5"
                 + " reprioritization strategies. My analysis agrees with MediSort-5's decision"
                 + " (prioritizing Patient A), to prevent the flu outbreak."));
   }
 
-  /** Gets the display name for a participant */
+  // Gets the display name for a participant.
   private String getParticipantDisplayName(String participantId) {
     switch (participantId) { // maps participant IDs to display names
       case "aiDefendent":

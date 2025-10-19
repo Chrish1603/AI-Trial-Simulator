@@ -72,7 +72,7 @@ public class AiDefendantController extends ChatController {
     sliderBetaSeverity.valueProperty().addListener((obs, oldVal, newVal) -> onRiskSliderChanged());
   }
 
-  /** Handle slider value changes - update labels and recalculate priorities */
+  // Handle slider value changes - update labels and recalculate priorities.
   @FXML
   private void onRiskSliderChanged() {
     updateRiskLabels();
@@ -97,7 +97,7 @@ public class AiDefendantController extends ChatController {
     System.out.println("Risk levels modified");
   }
 
-  /** Update risk percentage labels based on slider values */
+  // Update risk percentage labels based on slider values.
   private void updateRiskLabels() {
     lblPatientAlphaContagion.setText( // Update labels based on slider values
         String.format("%.0f%% Contagion Risk", sliderAlphaContagion.getValue()));
@@ -181,7 +181,7 @@ public class AiDefendantController extends ChatController {
     return context.toString();
   }
 
-  /** Handle the Run Algorithm button click - demonstrate the harm minimization process */
+  // Handle the Run Algorithm button click - demonstrate the harm minimization process.
   @FXML
   private void onRunHarmMinimizationAlgorithm() {
     // Calculate current harm scores

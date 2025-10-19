@@ -128,7 +128,7 @@ public class GameTimer {
     }
   }
 
-  /** Updates the timer display */
+  // Updates the timer display.
   private void updateTimerText() {
     String label = "Time Left: ";
     int minutes = timeLeft / 60;
