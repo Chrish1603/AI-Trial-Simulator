@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -150,7 +151,6 @@ public class TrialRoomController {
   private void onVerdictEnd() {
     // Called when verdict timer expires, auto-submit or lock input
     if (!verdictGiven) {
-      TextToSpeech.speak("Final answer time is up! Submitting your verdict as Guilty.");
       handleVerdict(true);
     }
     if (btnGuilty != null && btnNotGuilty != null) {
@@ -201,11 +201,6 @@ public class TrialRoomController {
     }
     // Check if the correct answer is not guilty
     boolean correct = !guilty;
-    if (correct) {
-      TextToSpeech.speak("Correct! You have identified the AI defendant's status correctly.");
-    } else {
-      TextToSpeech.speak("Incorrect. That was not the correct verdict.");
-    }
   }
 
   /**
