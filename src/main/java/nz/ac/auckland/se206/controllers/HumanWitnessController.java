@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -57,7 +56,7 @@ public class HumanWitnessController extends ChatController {
    * about the neurological condition case.
    */
   @FXML
-  private void handleViewPatientBetaNotes() {
+  private void onViewPatientBetaNotes() {
     imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
     // First update the flag that notes have been seen
@@ -93,7 +92,7 @@ public class HumanWitnessController extends ChatController {
    * about the contagious viral infection case.
    */
   @FXML
-  private void handleViewPatientAlphaNotes() {
+  private void onViewPatientAlphaNotes() {
     imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
     // First update the flag that notes have been seen
@@ -142,7 +141,7 @@ public class HumanWitnessController extends ChatController {
                 ChatMessage aiResponse = super.runGpt(systemMessage); // Get AI response
 
                 if (aiResponse != null) {
-                  Platform.runLater( // Update UI with AI response
+                  Platform.runLater(  // Update UI with AI response
                       () -> {
                         processAiResponse(aiResponse);
                       });

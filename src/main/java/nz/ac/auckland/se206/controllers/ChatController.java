@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -249,7 +248,7 @@ public class ChatController {
           startLoadingAnimation();
         });
 
-    new Thread( // run in background thread to avoid blocking UI
+    new Thread(  // run in background thread to avoid blocking UI
             () -> {
               try {
                 ChatMessage aiResponse = runGpt(userMessage);

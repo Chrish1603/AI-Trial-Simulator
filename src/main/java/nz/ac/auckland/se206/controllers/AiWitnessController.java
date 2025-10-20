@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -142,14 +141,13 @@ public class AiWitnessController extends ChatController {
   }
 
   // Handles scan end event, checking if scan was completed.
-  // checks if scanProgress < 1.0 to determine if scan was incomplete.
-  // If incomplete, it stops the timeline, resets progress bar
-  // and updates UI to indicate failure.
   private void onScanEnd(MouseEvent event) {
     if (scanProgress < 1.0) {
+      // Incomplete scan
       if (scanTimeline != null) {
         scanTimeline.stop();
       }
+      // Reset progress bar and UI
       progressScan.setProgress(0.0);
       lblScanStatus.setText("Scan Incomplete. Please retry.");
       imgHandScanner.setEffect(null);
