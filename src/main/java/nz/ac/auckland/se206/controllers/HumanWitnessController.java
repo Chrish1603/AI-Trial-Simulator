@@ -141,7 +141,7 @@ public class HumanWitnessController extends ChatController {
                 ChatMessage aiResponse = super.runGpt(systemMessage); // Get AI response
 
                 if (aiResponse != null) {
-                  Platform.runLater( // Update UI with AI response
+                  Platform.runLater(  // Update UI with AI response
                       () -> {
                         processAiResponse(aiResponse);
                       });

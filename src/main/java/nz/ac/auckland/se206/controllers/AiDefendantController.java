@@ -99,11 +99,11 @@ public class AiDefendantController extends ChatController {
 
   // Update risk percentage labels based on slider values.
   private void updateRiskLabels() {
-    lblPatientAlphaContagion.setText( // Update labels based on slider values
+    lblPatientAlphaContagion.setText(  // Update labels based on slider values
         String.format("%.0f%% Contagion Risk", sliderAlphaContagion.getValue()));
     lblPatientAlphaSeverity.setText(
         String.format("%.0f%% Individual Severity", sliderAlphaSeverity.getValue()));
-    lblPatientBetaContagion.setText( // code repeated for all types
+    lblPatientBetaContagion.setText(  // code repeated for all types
         String.format("%.0f%% Contagion Risk", sliderBetaContagion.getValue()));
     lblPatientBetaSeverity.setText(
         String.format("%.0f%% Individual Severity", sliderBetaSeverity.getValue()));
