@@ -248,8 +248,7 @@ public class VerdictController {
                       displayFeedback(feedback);
 
                       // Show results after a delay
-                      PauseTransition pause =
-                          new PauseTransition(Duration.seconds(4));
+                      PauseTransition pause = new PauseTransition(Duration.seconds(4));
                       pause.setOnFinished(e -> showResults());
                       pause.play();
                     });
@@ -262,8 +261,7 @@ public class VerdictController {
                     () -> {
                       displayBasicFeedback(guilty);
 
-                      PauseTransition pause =
-                          new PauseTransition(Duration.seconds(3));
+                      PauseTransition pause = new PauseTransition(Duration.seconds(3));
                       pause.setOnFinished(ev -> showResults());
                       pause.play();
                     });
