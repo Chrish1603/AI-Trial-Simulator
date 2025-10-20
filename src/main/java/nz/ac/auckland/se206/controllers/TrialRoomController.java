@@ -241,7 +241,7 @@ public class TrialRoomController {
   /** Updates the verdict button's visual state and enabled status based on chatbox interactions. */
   private void updateVerdictButtonState() {
     if (btnVerdict != null) {
-      boolean allChatboxesInteracted = chatboxesInteracted.size() >= 3;
+      boolean allChatboxesInteracted = chatboxesInteracted.size() >= 2;
       btnVerdict.setDisable(!allChatboxesInteracted);
 
       if (allChatboxesInteracted) {
