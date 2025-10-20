@@ -57,7 +57,7 @@ public class HumanWitnessController extends ChatController {
    * about the neurological condition case.
    */
   @FXML
-  private void viewPatientBetaNotes() {
+  private void handleViewPatientBetaNotes() {
     imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesB.png")));
 
     // First update the flag that notes have been seen
@@ -93,7 +93,7 @@ public class HumanWitnessController extends ChatController {
    * about the contagious viral infection case.
    */
   @FXML
-  private void viewPatientAlphaNotes() {
+  private void handleViewPatientAlphaNotes() {
     imgNotes.setImage(new Image(getClass().getResourceAsStream("/images/doctorNotesA.png")));
 
     // First update the flag that notes have been seen
