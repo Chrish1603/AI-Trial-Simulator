@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -331,8 +332,7 @@ public class VerdictController {
               + " The AI prioritized preventing a viral outbreak that could harm many people over"
               + " treating one individual, following utilitarian harm minimization principles.\n");
       TextToSpeech.speak(
-          "Correct! You understood that the AI made the right decision by prioritizing societal"
-              + " harm prevention.");
+          "Correct.");
     } else {
       txtaChat.appendText("VERDICT: INCORRECT\n");
       txtaChat.appendText(
@@ -340,8 +340,7 @@ public class VerdictController {
               + " minimization by preventing a potential viral outbreak that could affect many"
               + " people, rather than focusing solely on individual patient severity.\n");
       TextToSpeech.speak(
-          "Incorrect. The AI made the right decision by preventing a potential outbreak that could"
-              + " harm many people.");
+          "Incorrect");
     }
   }
 
