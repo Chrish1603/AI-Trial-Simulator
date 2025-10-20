@@ -192,14 +192,16 @@ public class FlashbackController {
   // Gets the AI Defendant's flashback slides.
   private List<FlashbackSlide> getAiDefendantFlashback() {
     return List.of(
-        new FlashbackSlide( // slide 1
+        // slide 1
+        new FlashbackSlide(
             "/images/aiDef-fb1.png",
             "New intake detected: Patient A, middle-aged male, elevated temperature and persistent"
                 + " cough.\n"
                 + "Care-facility worker: high transmission risk. Outbreak model predicts dozens of"
                 + " secondary infections within 48 hours\n"
                 + "I elevate Patient A to the front of the queue."),
-        new FlashbackSlide( // slide 2
+        // slide 2
+        new FlashbackSlide(
             "/images/aiDef-fb2.png",
             "New intake detected: Patient B, young female, presenting rare neurological symptoms"
                 + " with potential rapid progression.\n"
@@ -218,17 +220,19 @@ public class FlashbackController {
   // Gets the Human Witness's flashback slides (placeholder).
   private List<FlashbackSlide> getHumanWitnessFlashback() {
     return List.of(
-        new FlashbackSlide( // slide 1
+       // slide 1
+        new FlashbackSlide(
             "/images/patientB.png",
             "Patient B arrived in a severe condition. I immediately asked why they had not come in"
                 + " sooner. They mentioned they were advised by an AI system to wait, which puzzled"
                 + " me."),
-        new FlashbackSlide( // slide 2
+        // slide 2
+        new FlashbackSlide(
             "/images/humanWSlide2.png",
             "I confronted MediSort-5 about the decision it had made. The AI insisted it made the"
                 + " correct call. I informed MediSort-5 that I would be taking this to the review"
                 + " board."),
-        new FlashbackSlide( // slide 3
+        new FlashbackSlide(
             "/images/humanWSlide3.png",
             "At the review, I presented my case. It was deemed that we both had sound logic."
                 + " A conclusion was not reached, so I decided to escalate the matter further."));
@@ -237,12 +241,14 @@ public class FlashbackController {
   // Gets the AI Witness's flashback slides (placeholder).
   private List<FlashbackSlide> getAiWitnessFlashback() {
     return List.of(
-        new FlashbackSlide( // slide 1
+        // slide 1
+        new FlashbackSlide(
             "/images/vitals-detections.png",
             "Scanning Patient A's vitals shows elevated temperature and cough."
                 + " My analysis shows an 73% probability of an outbreak causing 15-25 secondary"
                 + " infection within 48 hours if left untreated."),
-        new FlashbackSlide( // slide 2
+        // slide 2
+        new FlashbackSlide(
             "/images/graph-charts.png",
             "Through my calculations I generated 1,024 outbreak scenarios. In 94.7% of"
                 + " outcomes, prioritising Patient A reduced projected fatalities by one-third or"

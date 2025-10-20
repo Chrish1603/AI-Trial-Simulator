@@ -247,8 +247,8 @@ public class ChatController {
           // moves text on screen to keep user engaged
           startLoadingAnimation();
         });
-
-    new Thread( // run in background thread to avoid blocking UI
+    // run in background thread to avoid blocking UI
+    new Thread( 
             () -> {
               try {
                 ChatMessage aiResponse = runGpt(userMessage);
